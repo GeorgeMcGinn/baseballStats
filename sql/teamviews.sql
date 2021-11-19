@@ -1,0 +1,86 @@
+USE baseballDB;
+
+CREATE OR REPLACE VIEW tempteambattingStatsView AS 
+	SELECT 
+		teamName AS 'TEAM', 
+		SUM(atbats) AS 'AB',  
+		SUM(runs) AS 'R',  
+		SUM(hits) AS 'H',  
+		SUM(rbis) AS 'RBI',  
+		SUM(doubles) AS '2B', 
+		SUM(triples) AS '3B', 
+		SUM(homeruns) AS 'HR', 
+		SUM(walks) AS 'BB', 
+		SUM(strikeouts) AS 'K', 
+		SUM(hitbypitch) AS 'HBP', 
+		SUM(sacrifices) AS 'SAC',
+		SUM(stolenbases) AS 'SB',
+		SUM(attstolenbases) AS 'ASB', 
+		SUM(putouts) AS 'PO', 
+		SUM(assists) AS 'AST', 
+		SUM(errors) AS 'E' 
+	FROM batting  
+	GROUP BY teamName; 
+CREATE OR REPLACE VIEW teambattingView AS 
+	SELECT 
+		TEAM, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
+		FORMAT(AVG(H/AB), 3) AS 'AVG', 
+		FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
+		FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
+		FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
+		FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
+	FROM tempteambattingStatsView 
+	GROUP BY TEAM;
+SELECT * FROM teambattingView INTO OUTFILE '/var/lib/mysql-files/teambattingstats.file';
+
+CREATE OR REPLACE VIEW tempteampitchingStatsView AS 
+	SELECT  
+		teamName AS 'TEAM', 
+		SUM(wins) AS 'W',
+		SUM(loses) AS 'L',
+		SUM(saves) AS 'SV',
+		SUM(saveopportunities) AS 'SVO',
+		SUM(gamesstarted) AS 'GP',
+		SUM(completedgames) AS 'GC',
+		SUM(inningspitched) AS 'IP',
+		SUM(totalbattersfaced) AS 'TBF',
+		SUM(hits) AS 'H',
+		SUM(walks) AS 'BB',
+		SUM(strikeouts) AS 'K',
+		SUM(runsallowed) AS 'RA',
+		SUM(earnedruns) AS 'ER',
+		SUM(homeruns) AS 'HR',
+		SUM(hitbypitch) AS 'HBP',
+		SUM(sacrificeflies) AS 'SF'
+		FROM pitching  
+	GROUP BY 
+		teamName; 
+CREATE OR REPLACE VIEW teampitchingView AS 
+	SELECT 
+		TEAM, W, L, SV, SVO, GP, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
+		FORMAT((ER*9/IP), 2) AS 'ERA', 
+		FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+		FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
+		FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+3.214), 2) AS 'FIP' 
+	FROM 
+		tempteampitchingStatsView 
+	GROUP BY TEAM
+	ORDER BY W DESC, L ASC;  
+SELECT * FROM teampitchingView INTO OUTFILE '/var/lib/mysql-files/teampitchingstats.file';
+
+CREATE OR REPLACE VIEW leagueView AS
+	SELECT
+		teampitchingView.TEAM,
+		teampitchingView.W, 
+        teampitchingView.L,
+		teampitchingView.ERA, 
+        teambattingView.AVG AS 'BAVG',
+        teambattingView.SLUG,
+		teambattingView.FPCT,
+		FORMAT(teampitchingView.W/(teampitchingView.W+teampitchingView.L), 3) AS 'WPCT'
+	FROM
+		teampitchingView, teambattingView
+	WHERE
+		teampitchingView.TEAM = teambattingView.TEAM
+	ORDER BY WPCT DESC;	
+SELECT * FROM leagueView INTO OUTFILE '/var/lib/mysql-files/leaguestats.file';

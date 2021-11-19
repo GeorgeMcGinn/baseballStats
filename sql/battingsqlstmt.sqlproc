@@ -1,0 +1,36 @@
+35
+USE <SQLDB>;
+CREATE OR REPLACE VIEW tempbattingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(games) AS 'GMSP',  
+SUM(atbats) AS 'AB',  
+SUM(runs) AS 'R',  
+SUM(hits) AS 'H',  
+SUM(rbis) AS 'RBI',  
+SUM(doubles) AS '2B', 
+SUM(triples) AS '3B', 
+SUM(homeruns) AS 'HR', 
+SUM(walks) AS 'BB', 
+SUM(strikeouts) AS 'K', 
+SUM(hitbypitch) AS 'HBP', 
+SUM(sacrifices) AS 'SAC',
+SUM(stolenbases) AS 'SB',
+SUM(attstolenbases) AS 'ASB', 
+SUM(putouts) AS 'PO', 
+SUM(assists) AS 'AST', 
+SUM(errors) AS 'E' 
+FROM <BATSQLTBL> 
+WHERE teamName='<TEAMNAME>' 
+GROUP BY playerName; 
+
+CREATE OR REPLACE VIEW <TEAMNAME>battingStatsView AS 
+SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
+FORMAT(AVG(H/AB), 3) AS 'AVG', 
+FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
+FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
+FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
+FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
+FROM tempbattingStatsView 
+GROUP BY PLAYER; 
+
+SELECT * FROM <TEAMNAME>battingStatsView INTO OUTFILE '/var/lib/mysql-files/<TEAMNAME>-battingstats.file';

@@ -1,0 +1,49 @@
+Game Score
+by Neil Weinberg
+April 25, 2016
+
+Game Score was originally created by Bill James to measure the quality of individual starts. While most baseball fans are familiar with the traditional “pitching line” of Innings, Hits, Runs, Earned Runs, Walks, and Strikeouts, James’ Game Score consolidates those statistics into a single number that makes comparing starts easier.
+
+Game Score isn’t meant to be a perfectly precise estimate of pitcher performance, but it is generally a useful tool when used properly. At FanGraphs, we publish Game Score Version 2.0 (GSv2), developed by Tom Tango, on our pitcher game log pages. You can find the original version of Game Score at Baseball-Reference or by calculating it yourself with data available here at FanGraphs.
+
+Calculation:
+
+Calculating Game Score (original or v2) is extremely simple, requiring some basic addition, subtraction, and multiplication. 
+The original Game Score is calculated like this:
+
+Game Score = 50 + Outs + 2*(IP Completed After the 4th) + Strikeouts – Hits – 4*Earned Runs – 2*Unearned Runs – Walks
+
+Game Score Version 2.0 is calculated like this:
+
+GSv2 = Constant + 2*Outs + Strikeouts – 2*Walks – 2*Hits – 3*Runs – 6*HR
+
+The constant is designed so that the average game score in each league, each year is equal to 50. In 2015, the constant for both leagues was 38. In 2014, the AL constant was 37 and the NL constant was 36.
+
+Why Game Score:
+
+Game Score tries to answer the fundamental question, “how good was that start?” Its creators and proponents would not argue that Game Score answers the question in a definitive way, but it does a good job separate starts into various tiers.
+
+For example, if Pitcher A’s line is 7 IP, 5 H, 3 R, 3 ER, 2 BB, 5 K (no HR) and Pitcher B’s is 5 IP, 4 H, 1 R, 1 ER, 0 BB, and 7 K (no HR), which is better? There are a lot of ways to answer that question and Game Score is one such method. Using Game Score, Pitcher A has a Game Score of 62 and GSv2 of 58. Pitcher B has a Game Score of 62 and a GSv2 of 65. Generally speaking, those are very similar scores and we wouldn’t make a bold statement about who pitched better. Game Score allows us to arrive at that conclusion by consolidating the full lines into single numbers which we can compare directly.
+
+How To Use Game Score:
+
+Game Score is best used as a benchmark of individual pitcher performance in a given start. Game Score does not measure true talent directly and is not necessarily predictive of future performance. You should trust Game Score only as much as you trust its components. If you think outs, strikeouts, walks, runs, and home runs are useful statistics for judging a given start, Game Score is a quick way to compare performances. If you prefer to judge performance in other ways, Game Score might not be helpful. Game Score brings more information than wins/losses and quality starts, but less than a full statistical workup of a start.
+
+It is helpful to see Game Score as a way to separate performances into tiers. Everyone knows 8 IP, 2 H, 1 R, 1 ER, 1 BB, 11 K is a better start than 5 IP, 6 H, 4 R, 4 ER, 2 BB, 4 K, but Game Score allows you to slide both starts into an overall ranking system that you can use to compare many starts. It is important not to treat the exact values too rigidly, as an 84 and an 86 are not terribly different, but an 84 and a 64 are significantly different starts.
+
+Context:
+
+Game Score is designed so that league average is 50 and values higher than 50 are above average and values below 50 are below average. The original Game Score doesn’t quite adhere to this rule, but it adhere’s closely enough that you can still follow it. Game Score Version 2.0, as published on FanGraphs, adjusts the constant so that 50 is league average each season.
+
+Game Score Rules of Thumb
+Game Score 	Rating
+0-10 		Unspeakable
+10-20 		Awful
+20-30 		Bad
+30-40 		Poor
+40-50 		Below Average
+50-60 		Above Average
+60-70 		Good
+70-80 		Great
+80-90 		Excellent
+90+ 		Make Sure Your Friends Are Watching

@@ -1,0 +1,16 @@
+*** Batting Stats Log File ***
+
+>>>>> Executing SUB LoadConfigFile
+
+Number of ARGS:  0 
+
+
+
+*** Running on a LINUX System ***
+
+>>>>> Executing DetermineArraySize
+
+>>>>> Executing endPROG
+
+
+*** battingStats - Terminated Normally ***

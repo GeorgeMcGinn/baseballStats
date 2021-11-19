@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM</title>
+<style>
+td {
+  padding: 5px;
+}
+</style>
+</head>
+<body style="background-color:#404040; color:#f8f8f8">
+<center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
+&nbsp
+<p style="color:#f8f8f8;"><h4><u>TEAM INPUT PROCESSING</u></h4></p>
+<p>This form collects the Team, and optional fields of GameID and Games Played for processing both the
+batting and pitching modules. </p>
+	
+<p>The first thing you are presented is with a Team/Game Input Box. This box is used whenever
+you need to select a team. Other fields include a game id and number of games.</p>
+
+<center><img src="images/baseballStats - Team Input Box.png" style="width:60%"></center>
+
+<p><b><u>Team Input Fields</u></b></p>
+		
+<p>There are 3 fields (as shown above) that are used to create the SQL SELECT statements:</p>
+<table style="width:90%">
+  <tr>
+    <td vwidth=20% align="top" style="text-align: right"><b>Team Name:</b></td>
+    <td>Selects the team that you want to process.</td>
+  </tr>
+  <tr>
+    <td width=20% valign="top" style="text-align: right"><b>Game ID:</b></td>
+    <td>This allows you to provide a game number/identifier for use when updating a boxscore. It is optional.</td>
+  </tr>
+  <tr>
+    <td width=20% valign="top" style="text-align: right"><b>Games Played:</b></td>
+    <td>This field, used for updating purposes, allows you to enter more than one game of stats. This is optional and defaults to 1.</td>
+  </tr>
+</table>
+&nbsp
+<center><img src="images/baseballStats - Team Input Box1.png" style="width:60%"></center>
+
+<p>If Team Name is missing, The program will re-display the form again and clear all fields. If you provide a team name that does not
+	exist in the SQL Table, you will recieve an empty boxscore display for either the hitting or pitching statistics. This is done on purpose 
+	as this may be the first time you are adding a team. It is up to you to make sure the team name is correct, for once updated,
+	in this release, there is only one way to change it in the SQL Table - using mySQL Workbench to manually change your table values. A future
+	release will give you individual record editing/deleting abilities. For now, become familiar with either "MySQL Workbench" or "dbeaver-ce" 
+	(Community Edition), both are free packages and available for Linux, Mac OSX and Windows operating systems.</p>
+&nbsp
+&nbsp
+&nbsp
+<center>
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
+<a href="https://www.georgemcginn.com">Baseball/Softball Statisical System</a> by 
+<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
+<a href="http://creativecommons.org/licenses/by-nc/4.0/">CC BY-NC 4.0</a>
+	<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/cc-icon.svg">
+	<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-icon.svg">
+	<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/nc-icon.svg"> 
+</center>
+&nbsp
+&nbsp
+<p></p>
+<time itemprop="dateModified" datetime="October 11, 2021 02:13:47."><small>Last update on October 11, 2021 02:13:47 (UTC/GMT +5 hours)</small></time>
+</body>
+</html>
