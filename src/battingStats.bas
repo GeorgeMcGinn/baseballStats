@@ -1,4 +1,4 @@
-REM $TITLE: battingStats.bas Version 0.12  08/09/2021 - Last Update: 10/14/2021
+REM $TITLE: battingStats.bas Version 0.12  08/09/2021 - Last Update: 11/19/2021
 _TITLE "battingStats.bas"
 ' battingStats.bas    Version 1.0  08/09/2021
 '-------------------------------------------------------------------------------------
@@ -44,6 +44,7 @@ _TITLE "battingStats.bas"
 ' 10/13/21 v0.21 GJM - Added the HELP system and fixed a logic flow error where the
 '                      incorrect screens were being displayed when [CANCEL] was pressed.
 ' 10/14/21 v0.22 GJM - For some reason the Report code was missing. Added it back in.
+' 11/19/21 v0.23 GJM - Cosmetic changes made to display GUI's.
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -224,7 +225,7 @@ SubmitMenu:
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Offensive Stats Update" + CHR$(34) + " \" + CHR$(10)
+	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Batting Stats Update" + CHR$(34) + " \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --editable --multiple --print-column=ALL \" + CHR$(10)
 	PUT #f3%, , tmpLine$
@@ -277,7 +278,7 @@ SubmitMenu:
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
               " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
-              " --filename=" + "help/battingDisplayStats.html" + " 2> /dev/null"
+              " --filename=" + "help/battingUpdateStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu
     END IF
@@ -390,7 +391,7 @@ submitMenu:
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Offensive Stats" + CHR$(34) + " \" + CHR$(10)
+	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Batting Stats" + CHR$(34) + " \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --width=1350 --height=500 --checklist \" + CHR$(10)
 	PUT #f3%, , tmpLine$

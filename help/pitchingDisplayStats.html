@@ -1,26 +1,26 @@
 <!--
-       PROGRAM: battingDisplayStats.html
+       PROGRAM: pitchingDisplayStats.html
         AUTHOR: George McGinn
                 <gjmcginn@icloud.com>
 
-  DATE WRITTEN: 10/10/2021
+  DATE WRITTEN: 11/20/2021
        VERSION: 1.0
        PROJECT: Baseball/Softball Statistics System
 
-   DESCRIPTION: HELP File for displaying and updating batting statistics.
+   DESCRIPTION: HELP File for displaying and updating pitching statistics.
 
  Written by George McGinn
  Copyright (C)2021 by George McGinn - All Rights Reserved.
- Version 1.0 - Created 10/10/2021
+ Version 1.0 - Created 08/09/2021
 
 
  CHANGE LOG
 -------------------------------------------------------------------------------------
- 10/10/21 v1.00 GJM - New Program.
+ 11/20/21 v1.00 GJM - New Program.
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
- battingDisplayStats.html by George McGinn is licensed under a Creative Commons
+ pitchingDisplayStats.html by George McGinn is licensed under a Creative Commons
  Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
 
  Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
@@ -52,29 +52,30 @@ td {
 
 <center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
 &nbsp
-<p style="color:#f8f8f8;"><h4><u>BATTING STATS PROCESSING - UPDATE HITTING</u></h4>
-<p>This processes the hitting statistics for a selected team as well as allowing updates to and
-adding new players to the batting SQL Table. </p>
+&nbsp
+<p style="color:#f8f8f8;"><h4><u>PITCHING STATS PROCESSING</u></h4>
+<p>This processes the pitching statistics for a selected team as well as allowing updates to and
+adding new players to the pitching SQL Table. </p>
 	
 <p>This program is can be either executed from the main menu, or can run as a stand-a-lone program. Some
 of the functions will slightly change, but all the main processing will be the same, regardless of how
 the module is started. </p>
 
-<p>After you input data into the Team/Game Input Box. you will get a current display of hitting stats for each player, 
+<p>After you input data into the Team/Game Input Box. you will get a current display of pitching stats for each player, 
 like below:</p>
 
-<br><br>
-<center><img src="images/baseballStats - Hitting Stats1.png" style="width:100%"></center>
-<p><b><u>Displaying the Hitting Boxscores</u></b>
-<p>Once you enter a team name and click the [OK] button, you will see a screen similar to the one above.
+&nbsp
+&nbsp
+<center><img src="images/baseballStats - Pitching Display1.png" style="width:100%"></center>
+<p><b><u>Displaying the Pitching Boxscores</u></b>
+<p>Once you enter a team name and click the [OK] button, you will see a screen similar to the one below.
 The application tracks a variety of baseball/softball stats, which are first displayed for you. From here
 you may send the results to the printer, or update them.</p>
 
-<p>This has been done on purpose, as you will need to set up your environment ahead of time. When
-you first install mySQL, it should ask you to set up your userids and passwords other than root.</p> 
-
+&nbsp
+&nbsp
 <p><b><u>The Buttons - And What They Do</u></b>
-<p>There are four buttons, along with the "x" in the upper right-hand corner of the screen. Here are the
+<p>There are five buttons, along with the "x" in the upper right-hand corner of the screen. Here are the
 actions they perform:</p>
 
 
@@ -97,7 +98,7 @@ actions they perform:</p>
   </tr>
   <tr>
     <td width=15% valign="top" style="text-align: right"><b>[QUIT]</b></td>
-    <td>Cancels out of hitting stats and either returns to main menu or ends if stand-a-lone.</td>
+    <td>Cancels out of pitching stats and either returns to main menu or ends if stand-a-lone.</td>
   </tr>
   <tr>
     <td width=15% valign="top" style="text-align: right"><b>[x]</b></td>
@@ -107,8 +108,8 @@ actions they perform:</p>
 
 &nbsp	
 	
-<center><img src="images/baseballStats - Hitting Update1.png" style="width:100%"></center>
-<p><b><u>Updating Hitting Stats</u></b>
+<center><img src="images/baseballStats - Pitching Display2.png" style="width:100%"></center>
+<p><b><u>Updating Pitching Stats</u></b>
 <p>You have a boxscore from a game you need to update. From the screen above, you can add new data to both
 existing players and new players that have yet to play a game. </p>
 
@@ -116,44 +117,43 @@ existing players and new players that have yet to play a game. </p>
 stats for. For players not in the current display, you will be able to add them once you click the [Update]
 button.</p>
 	
-<center><img src="images/baseballStats - Hitting Update2.png" style="width:100%"></center>
+<center><img src="images/baseballStats - Pitching Display3.png" style="width:100%"></center>
 <p>The next screen (shown above) is the one you use to add game stats to both existing and new players. For
 each player you checked off in the screen prior, a record has already been added to the Stats Update screen.
-You will also noticed that GAMEID has been pre-filled with "ALE-09" as was provided in the Team/Game input
+You will also noticed that GAMEID has been pre-filled with "ALE-10" as was provided in the Team/Game input
 box, as well as a "1" you also provided in the GP column.</p>
 	
 <p>You will also notice that the very first column there is a lowercase "u". This is important, as you will later
 see that two things must be done in order to apply any update. That "u" must be present, and all records to update
 must be selected. More on that.	</p>
 
-<center><img src="images/baseballStats - Hitting Update3.png" style="width:100%"></center>
-<p>Next, enter the values you need to update. As you can see above, I have started to enter data for LeMahieu. To enter
+<center><img src="images/baseballStats - Pitching Update1.png" style="width:100%"></center>
+<p>Next, enter the values you need to update. As you can see above, I have entered data for Workman. To enter
 data, click on the column and you will be able to input to it. You only have to enter data that you have. All fields
 are initialized as ZEROES. Do this for all data you have.</p>
 	
 <p>Also, say you made a mistake and put in the wrong GameID. On this screen you can also change it. In the image above,
-GameID was changed to ALE-10. Same can be done with with GP. If you decide that you do not wish to update a player, 
+GameID was entered as ALE-10. You can go into this field and edit it to the value you want it to be.
+Same can be done with with GP. If you decide that you do not wish to update a player, 
 say you selected him/her by error, you can remove the "u" next to the name.</p>
 
-<center><img src="images/baseballStats - Hitting Update4.png" style="width:100%"></center>
-<p>In the above, you can see that I have added a player, and decided to remove the "u" from the players I
-do not wish to update. In order for Zenity to pass the changes to the application, you must select them by
-using the standard keyboard-mouse selection technique [SHIFT] + Left-click on the mouse to select a range, or [CTRL]
-and left mouse-click to select/unselect individual records.</p>
+<center><img src="images/baseballStats - Pitching Update2.png" style="width:100%"></center>
+<p>In the above, you can see that I have added a player, J. Bagofdounuts. In order for Zenity to pass the changes to the 
+application, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
+the mouse to select a range, or [CTRL] and left mouse-click to select/unselect individual records.</p>
 
 <p>To update a record, remember, you must have both the "u" in the "S" column (S=Select, u for Update), and the record must be 
 selected (highlighted in Orange as the above shows). To finalize all updates, click the [COMMIT] button to process all updates
 selected.</p>
 
-<p>In the example above, there are several types of updates. First, Doe, J has a GAMEID of "ALE-10", and a games played (GP) of 3.
-In this case, even though I have assigned a gameid, I am updating 3 games worth of stats for J Doe. For each game played, GP is
-equal to 1. Since I am updating J Doe with 3 games worth of data, I must make this field 3. Another way to update this player is
-to enter each game separate. The application allows you to enter multiple, individual game records for the same player.</p>
-	
-<p>Also, the only updates that will be done above is for LeMahieu, Encarnacion, Hicks and Doe. All have both a "u" and are highlighted.
-Both must be done in order for the update to take. Even though Torres has a "u" in the S column, he isn't selected. Zenity will
-not pass this record to the application. Judge and Urshela are highlighted, and will be passed to the application by Zenity.
-However, the application will check to see if they have the "u" set. If not, the application will ignore those records.</p>
+<p>As in the Hitting Update, I can add multiple games pitched data to a player, or enter each game individually on the same
+update panel. You can even update data for the same GAMEID. The system will merge these records when it is time to display
+the pitching boxscores.</p>
+
+<p>Also, the only updates that will be done above is for Workman and Bagofdounuts. All have both a "u" and are highlighted.
+Both must be done in order for the update to take. Zenity will not pass this record to the application.
+However, if a record is selected without a "u" in the S Column, the application will check to see if the "u" is set. 
+If not, the application will ignore the record.</p>
 &nbsp
 &nbsp
 &nbsp	
@@ -168,6 +168,6 @@ However, the application will check to see if they have the "u" set. If not, the
 &nbsp
 &nbsp
 <p></p>
-<time itemprop="dateModified" datetime="November 19, 2021 18:34:25."><small>Last update on November 19, 2021 18:34:25 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="November 20, 2021 11:06:31."><small>Last update on November 20, 2021 11:06:31 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>

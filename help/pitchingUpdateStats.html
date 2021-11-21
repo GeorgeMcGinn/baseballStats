@@ -1,0 +1,132 @@
+<!--
+       PROGRAM: pitchingUpdateStats.html
+        AUTHOR: George McGinn
+                <gjmcginn@icloud.com>
+
+  DATE WRITTEN: 11/20/2021
+       VERSION: 1.0
+       PROJECT: Baseball/Softball Statistics System
+
+   DESCRIPTION: HELP File for updating pitching statistics.
+
+ Written by George McGinn
+ Copyright (C)2021 by George McGinn - All Rights Reserved.
+ Version 1.0 - Created 08/09/2021
+
+
+ CHANGE LOG
+-------------------------------------------------------------------------------------
+ 11/20/21 v1.00 GJM - New Program.
+-------------------------------------------------------------------------------------
+  Copyright (C)2021 by George McGinn.  All Rights Reserved.
+
+ pitchingUpdateStats.html by George McGinn is licensed under a Creative Commons
+ Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
+
+ Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+
+-------------------------------------------------------------------------------------
+ PROGRAM NOTES
+ -------------
+
+
+-------------------------------------------------------------------------------------
+   
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+	<title>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<style>
+td {
+  padding: 3px;
+}
+</style>	
+</head>
+
+<body style="background-color:#404040; color:#f8f8f8">
+
+<center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
+&nbsp
+&nbsp
+<p style="color:#f8f8f8;"><h4><u>PITCHING STATS PROCESSING</u></h4>
+<p>This processes the pitching statistics for a selected team as well as allowing updates to and
+adding new players to the pitching SQL Table. </p>
+	
+<p>This program is can be either executed from the main menu, or can run as a stand-a-lone program. Some
+of the functions will slightly change, but all the main processing will be the same, regardless of how
+the module is started. </p>
+
+<p>After you input data into the Team/Game Input Box. you will get a current display of pitching stats for each player, 
+like below:</p>
+
+&nbsp
+&nbsp
+
+<center><img src="images/baseballStats - Pitching Display2.png" style="width:100%"></center>
+<p><b><u>Updating Pitching Stats</u></b>
+<p>You have a boxscore from a game you need to update. From the screen above, you can add new data to both
+existing players and new players that have yet to play a game. </p>
+
+<p>For existing players, place a check mark (as shown above) next to each player you wish to add new game
+stats for. For players not in the current display, you will be able to add them once you click the [Update]
+button.</p>
+	
+<center><img src="images/baseballStats - Pitching Display3.png" style="width:100%"></center>
+<p>The next screen (shown above) is the one you use to add game stats to both existing and new players. For
+each player you checked off in the screen prior, a record has already been added to the Stats Update screen.
+You will also noticed that GAMEID has been pre-filled with "ALE-10" as was provided in the Team/Game input
+box, as well as a "1" you also provided in the GP column.</p>
+	
+<p>You will also notice that the very first column there is a lowercase "u". This is important, as you will later
+see that two things must be done in order to apply any update. That "u" must be present, and all records to update
+must be selected. More on that.	</p>
+
+<center><img src="images/baseballStats - Pitching Update1.png" style="width:100%"></center>
+<p>Next, enter the values you need to update. As you can see above, I have entered data for Workman. To enter
+data, click on the column and you will be able to input to it. You only have to enter data that you have. All fields
+are initialized as ZEROES. Do this for all data you have.</p>
+	
+<p>Also, say you made a mistake and put in the wrong GameID. On this screen you can also change it. In the image above,
+GameID was entered as ALE-10. You can go into this field and edit it to the value you want it to be.
+Same can be done with with GP. If you decide that you do not wish to update a player, 
+say you selected him/her by error, you can remove the "u" next to the name.</p>
+
+<center><img src="images/baseballStats - Pitching Update2.png" style="width:100%"></center>
+<p>In the above, you can see that I have added a player, J. Bagofdounuts. In order for Zenity to pass the changes to the 
+application, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
+the mouse to select a range, or [CTRL] and left mouse-click to select/unselect individual records.</p>
+
+<p>To update a record, remember, you must have both the "u" in the "S" column (S=Select, u for Update), and the record must be 
+selected (highlighted in Orange as the above shows). To finalize all updates, click the [COMMIT] button to process all updates
+selected.</p>
+
+<p>As in the Hitting Update, I can add multiple games pitched data to a player, or enter each game individually on the same
+update panel. You can even update data for the same GAMEID. The system will merge these records when it is time to display
+the pitching boxscores.</p>
+
+<p>Also, the only updates that will be done above is for Workman and Bagofdounuts. All have both a "u" and are highlighted.
+Both must be done in order for the update to take. Zenity will not pass this record to the application.
+However, if a record is selected without a "u" in the S Column, the application will check to see if the "u" is set. 
+If not, the application will ignore the record.</p>
+&nbsp
+&nbsp
+&nbsp	
+<center>
+<p></p>
+<p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
+<a href="https://github.com/GeorgeMcGinn">Baseball/Softball Statisical System</a> by 
+<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
+<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> 
+   <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-nc-nd.png">
+<br/>Permissions beyond the scope of this license may be available at <a xmlns:cc="http://creativecommons.org/ns#" href="https://www.georgemcginn.com" rel="cc:morePermissions">https://www.georgemcginn.com</a>.
+&nbsp
+&nbsp
+<p></p>
+<time itemprop="dateModified" datetime="November 20, 2021 11:06:31."><small>Last update on November 20, 2021 11:06:31 (UTC/GMT +5 hours)</small></time>
+</body>
+</html>

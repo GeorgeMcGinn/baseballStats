@@ -8,9 +8,401 @@ Number of ARGS:  0
 
 *** Running on a LINUX System ***
 
->>>>> Executing DetermineArraySize
+>>>>> Executing SUB LoadConfigFile
+
+
+*** variable innings =  9 
+
+>>>>> Executing ProcessSQLFile
+
+>>>>> Executing CreateSQLView
+
+USE baseballTDB;
+CREATE OR REPLACE VIEW temppitchingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(wins) AS 'W',
+SUM(loses) AS 'L',
+SUM(saves) AS 'SV',
+SUM(games) AS 'GP',
+SUM(saveopportunities) AS 'SVO',
+SUM(gamesstarted) AS 'GS',
+SUM(completedgames) AS 'GC',
+SUM(outspitched) AS 'IP',
+SUM(totalbattersfaced) AS 'TBF',
+SUM(hits) AS 'H',
+SUM(walks) AS 'BB',
+SUM(strikeouts) AS 'K',
+SUM(runsallowed) AS 'RA',
+SUM(earnedruns) AS 'ER',
+SUM(homeruns) AS 'HR',
+SUM(hitbypitch) AS 'HBP',
+SUM(sacrificeflies) AS 'SF'
+FROM pitching 
+WHERE teamName='Yankees' 
+GROUP BY playerName; 
+CREATE OR REPLACE VIEW YankeespitchingStatsView AS 
+SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
+FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', 
+FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
+FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
+FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP' 
+FROM temppitchingStatsView 
+GROUP BY PLAYER; 
+SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';
+
+
+
+cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW temppitchingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(wins) AS 'W', SUM(loses) AS 'L', SUM(saves) AS 'SV', SUM(games) AS 'GP', SUM(saveopportunities) AS 'SVO', SUM(gamesstarted) AS 'GS', SUM(completedgames) AS 'GC', SUM(outspitched) AS 'IP', SUM(totalbattersfaced) AS 'TBF', SUM(hits) AS 'H', SUM(walks) AS 'BB', SUM(strikeouts) AS 'K', SUM(runsallowed) AS 'RA', SUM(earnedruns) AS 'ER', SUM(homeruns) AS 'HR', SUM(hitbypitch) AS 'HBP', SUM(sacrificeflies) AS 'SF' FROM pitching  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeespitchingStatsView AS  SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF, FORMAT(((ER*(3*9))/IP), 2) AS 'ERA',  FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG, FORMAT(((H+BB)/IP), 3) AS 'WHIP', FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP', FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP'  FROM temppitchingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file'; "
+
+stdout = 
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+>>>>> Executing FUNCTION sql_rows()
+
+Team Selected = Yankees
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM pitching WHERE teamName='Yankees'"
+stdout = 6
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of rows to process:  6 
+
+>>>>> Executing FUNCTION sql_columns()
+
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeespitchingStatsView'"
+
+stdout = 23
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of Columns:  23 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = 
+stderr = 
+result =  0 
+
+>>>>> Executing CheckProcessUpdates
+
+List of Players to Update
+
+
+>>>>> Executing FUNCTION sql_update()
+
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+
+stdout = 
+stderr = 
+result =  1 
+
+>>>>> Executing CreateSQLView
+
+USE baseballTDB;
+CREATE OR REPLACE VIEW temppitchingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(wins) AS 'W',
+SUM(loses) AS 'L',
+SUM(saves) AS 'SV',
+SUM(games) AS 'GP',
+SUM(saveopportunities) AS 'SVO',
+SUM(gamesstarted) AS 'GS',
+SUM(completedgames) AS 'GC',
+SUM(outspitched) AS 'IP',
+SUM(totalbattersfaced) AS 'TBF',
+SUM(hits) AS 'H',
+SUM(walks) AS 'BB',
+SUM(strikeouts) AS 'K',
+SUM(runsallowed) AS 'RA',
+SUM(earnedruns) AS 'ER',
+SUM(homeruns) AS 'HR',
+SUM(hitbypitch) AS 'HBP',
+SUM(sacrificeflies) AS 'SF'
+FROM pitching 
+WHERE teamName='Yankees' 
+GROUP BY playerName; 
+CREATE OR REPLACE VIEW YankeespitchingStatsView AS 
+SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
+FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', 
+FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
+FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
+FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP' 
+FROM temppitchingStatsView 
+GROUP BY PLAYER; 
+SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';
+
+
+
+cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW temppitchingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(wins) AS 'W', SUM(loses) AS 'L', SUM(saves) AS 'SV', SUM(games) AS 'GP', SUM(saveopportunities) AS 'SVO', SUM(gamesstarted) AS 'GS', SUM(completedgames) AS 'GC', SUM(outspitched) AS 'IP', SUM(totalbattersfaced) AS 'TBF', SUM(hits) AS 'H', SUM(walks) AS 'BB', SUM(strikeouts) AS 'K', SUM(runsallowed) AS 'RA', SUM(earnedruns) AS 'ER', SUM(homeruns) AS 'HR', SUM(hitbypitch) AS 'HBP', SUM(sacrificeflies) AS 'SF' FROM pitching  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeespitchingStatsView AS  SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF, FORMAT(((ER*(3*9))/IP), 2) AS 'ERA',  FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG, FORMAT(((H+BB)/IP), 3) AS 'WHIP', FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP', FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP'  FROM temppitchingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file'; "
+
+stdout = 
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+>>>>> Executing FUNCTION sql_rows()
+
+Team Selected = Yankees
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM pitching WHERE teamName='Yankees'"
+stdout = 6
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of rows to process:  6 
+
+>>>>> Executing FUNCTION sql_columns()
+
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeespitchingStatsView'"
+
+stdout = 23
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of Columns:  23 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = Tanaka, M
+
+stderr = 
+result =  0 
+
+>>>>> Executing CheckProcessUpdates
+
+List of Players to Update
+Tanaka, M
+
+>>>>> Executing FUNCTION sql_update()
+
+
+stdout = HELP
+
+stderr = 
+result =  1 
+
+
+stdout = QUIT
+
+stderr = 
+result =  1 
+
+>>>>> Executing CreateSQLView
+
+USE baseballTDB;
+CREATE OR REPLACE VIEW temppitchingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(wins) AS 'W',
+SUM(loses) AS 'L',
+SUM(saves) AS 'SV',
+SUM(games) AS 'GP',
+SUM(saveopportunities) AS 'SVO',
+SUM(gamesstarted) AS 'GS',
+SUM(completedgames) AS 'GC',
+SUM(outspitched) AS 'IP',
+SUM(totalbattersfaced) AS 'TBF',
+SUM(hits) AS 'H',
+SUM(walks) AS 'BB',
+SUM(strikeouts) AS 'K',
+SUM(runsallowed) AS 'RA',
+SUM(earnedruns) AS 'ER',
+SUM(homeruns) AS 'HR',
+SUM(hitbypitch) AS 'HBP',
+SUM(sacrificeflies) AS 'SF'
+FROM pitching 
+WHERE teamName='Yankees' 
+GROUP BY playerName; 
+CREATE OR REPLACE VIEW YankeespitchingStatsView AS 
+SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
+FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', 
+FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
+FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
+FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP' 
+FROM temppitchingStatsView 
+GROUP BY PLAYER; 
+SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';
+
+
+
+cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW temppitchingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(wins) AS 'W', SUM(loses) AS 'L', SUM(saves) AS 'SV', SUM(games) AS 'GP', SUM(saveopportunities) AS 'SVO', SUM(gamesstarted) AS 'GS', SUM(completedgames) AS 'GC', SUM(outspitched) AS 'IP', SUM(totalbattersfaced) AS 'TBF', SUM(hits) AS 'H', SUM(walks) AS 'BB', SUM(strikeouts) AS 'K', SUM(runsallowed) AS 'RA', SUM(earnedruns) AS 'ER', SUM(homeruns) AS 'HR', SUM(hitbypitch) AS 'HBP', SUM(sacrificeflies) AS 'SF' FROM pitching  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeespitchingStatsView AS  SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF, FORMAT(((ER*(3*9))/IP), 2) AS 'ERA',  FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG, FORMAT(((H+BB)/IP), 3) AS 'WHIP', FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP', FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP'  FROM temppitchingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file'; "
+
+stdout = 
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+>>>>> Executing FUNCTION sql_rows()
+
+Team Selected = Yankees
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM pitching WHERE teamName='Yankees'"
+stdout = 6
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of rows to process:  6 
+
+>>>>> Executing FUNCTION sql_columns()
+
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeespitchingStatsView'"
+
+stdout = 23
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of Columns:  23 
+
+Pitching: Yankees
+
+Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
+Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   0.667   0.182   6.52  
+Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.286   0.125   3.49  
+Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   0.524   0.217   4.87  
+Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   0.563   0.150   3.88  
+Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   1.333   0.500   2.96  
+Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.259   0.130   2.29  
+
+stdout = QUIT
+
+stderr = 
+result =  1 
 
 >>>>> Executing endPROG
 
 
-*** battingStats - Terminated Normally ***
+*** pitchingStats - Terminated Normally ***

@@ -1,4 +1,4 @@
-REM $TITLE: pitchingStats.bas Version 0.0  09/22/2021 - Last Update: 10/15/2021
+REM $TITLE: pitchingStats.bas Version 0.0  09/22/2021 - Last Update: 11/20/2021
 _TITLE "pitchingStats.bas"
 ' pitchingStats.bas    Version 1.0  09/22/2021
 '-------------------------------------------------------------------------------------
@@ -46,6 +46,9 @@ _TITLE "pitchingStats.bas"
 '                      in SQL tables to display correctly. SQL now calculates ERA.
 '					   Added the logic to convert innings pitched into total outs for
 '                      SQL updates.
+' 11/19/21 v0.21 GJM - Cosmetic changes made to display GUI's.
+' 11/20/21 v0.21 GJM - Added the HELP system for this module. Also added the missing
+'                      logic to process button clicks when doing updates.
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -213,6 +216,9 @@ FUNCTION sql_update (nbrUpdates)
 '
     PRINT #flog%, ">>>>> Executing FUNCTION sql_update()"
     PRINT #flog%, ""
+
+SubmitMenu:
+
     IF _FILEEXISTS("updatepitchingstats.sh") THEN KILL "updatepitchingstats.sh"
 	f3% = FREEFILE
 	cmd = ""
@@ -225,13 +231,13 @@ FUNCTION sql_update (nbrUpdates)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Offensive Stats Update" + CHR$(34) + " \" + CHR$(10)
+	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Pitching Stats Update" + CHR$(34) + " \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --editable --multiple --print-column=ALL \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --width=1350 --height=700 \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = 	"      --ok-label=Commit --extra-button=QUIT \" + CHR$(10)
+	tmpLine$ = 	"      --ok-label=Commit --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
 	PUT #f3%, , tmpLine$	
 	tmpLine$ = " --column=" + CHR$(34) + "S" + CHR$(34) + " --column=" + CHR$(34) + "PLAYER" + CHR$(34) + _ 
 	           " --column=" + CHR$(34) + "GAMEID" + CHR$(34) + " --column=" + CHR$(34) + "GP" + CHR$(34) + _ 
@@ -271,6 +277,26 @@ FUNCTION sql_update (nbrUpdates)
 	PRINT #flog%, "stderr = "; stderr
 	PRINT #flog%, "result = "; result
 	PRINT #flog%, ""
+
+' *** Save menu selection and/or button pressed   
+    lenstr = LEN(stdout): stdout = LEFT$(stdout, lenstr - 1) 
+	stdmenu = LTRIM$(stdout)
+	stdbutton = stdout
+
+' *** If X, Cancel or QUIT buttons are pressed, end program
+	IF result = 1 AND stdbutton = "" THEN EXIT FUNCTION
+	IF result = 1 AND stdbutton = "QUIT" THEN EXIT FUNCTION
+
+' *** If HELP button pressed, display the HELP Screen	
+    IF result = 1 AND stdbutton = "HELP" THEN
+        cmd = "zenity --text-info " + _
+              " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
+              " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --filename=" + "help/pitchingUpdateStats.html" + " 2> /dev/null"
+        SHELL (cmd)
+        GOTO SubmitMenu
+    END IF
+
         
 ' *** Loop through stdout, create SQL insert and execute them.
 ' *** Most teams have 25 or less players. REDIM set for 20 records for each
@@ -380,11 +406,11 @@ submitMenu:
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Offensive Stats" + CHR$(34) + " \" + CHR$(10)
+	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Pitching Stats" + CHR$(34) + " \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --width=1350 --height=500 --checklist \" + CHR$(10)
 	PUT #f3%, , tmpLine$
-	tmpLine$ = 	"      --ok-label=Update --extra-button=Report --extra-button=QUIT \" + CHR$(10)
+	tmpLine$ = 	"      --ok-label=Update --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = " --column=" + CHR$(34) + "S" + CHR$(34) + " --column=" + CHR$(34) + "PLAYER" + CHR$(34) + _ 
 			   " --column=" + CHR$(34) + "W" + CHR$(34) + " --column=" + CHR$(34) + "L" + CHR$(34) + _
@@ -459,7 +485,7 @@ submitMenu:
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
               " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
-              " --filename=" + "help/battingDisplayStats.html" + " 2> /dev/null"
+              " --filename=" + "help/pitchingDisplayStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu
     END IF
