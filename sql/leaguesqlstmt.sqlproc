@@ -1,4 +1,4 @@
-85
+86
 USE <SQLDB>; 
 
 CREATE OR REPLACE VIEW tempteambattingStatsView AS 
@@ -30,9 +30,10 @@ FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP',
 FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
 FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
 FROM tempteambattingStatsView 
-GROUP BY TEAM; 
+GROUP BY TEAM
+ORDER BY OPS DESC; 
 
-SELECT * FROM teambattingView INTO OUTFILE '/var/lib/mysql-files/teambattingstats.file'; 
+SELECT * FROM teambattingView INTO OUTFILE '<SQLOUTDIR>teambattingstats.file'; 
 
 CREATE OR REPLACE VIEW tempteampitchingStatsView AS 
 SELECT teamName AS 'TEAM', 
@@ -59,14 +60,14 @@ CREATE OR REPLACE VIEW teampitchingView AS
 SELECT TEAM, W, L, SV, SVO, GP, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
 FORMAT(((ER*(3*<INNINGS>))/IP), 2) AS 'ERA', 
 FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
-FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP',
 FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
-FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+3.214), 2) AS 'FIP' 
+FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP' 
 FROM tempteampitchingStatsView 
 GROUP BY TEAM 
 ORDER BY W DESC, L ASC;  
 
-SELECT * FROM teampitchingView INTO OUTFILE '/var/lib/mysql-files/teampitchingstats.file'; 
+SELECT * FROM teampitchingView INTO OUTFILE '<SQLOUTDIR>teampitchingstats.file'; 
 
 CREATE OR REPLACE VIEW leagueView AS 
 SELECT teampitchingView.TEAM, 
@@ -83,4 +84,4 @@ FROM teampitchingView, teambattingView
 WHERE teampitchingView.TEAM = teambattingView.TEAM 
 ORDER BY WPCT DESC;	
 
-SELECT * FROM leagueView INTO OUTFILE '/var/lib/mysql-files/leaguestats.file';
+SELECT * FROM leagueView INTO OUTFILE '<SQLOUTDIR>leaguestats.file';

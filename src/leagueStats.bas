@@ -1,4 +1,4 @@
-REM $TITLE: leagueStats.bas Version 0.12  09/28/2021 - Last Update: 10/15/2021
+REM $TITLE: leagueStats.bas Version 0.12  09/28/2021 - Last Update: 11/21/2021
 _TITLE "leagueStats.bas"
 ' leagueStats.bas    Version 1.0  09/28/2021
 '-------------------------------------------------------------------------------------
@@ -39,6 +39,7 @@ _TITLE "leagueStats.bas"
 '                      tested it (Note: all programs recompiled and tested).
 ' 10/15/21 v0.16 GJM - Corrected the ERA and IP logic to convert outs pitched now stored
 '                      in SQL tables to display correctly. SQL now calculates ERA.
+' 11/21/21 v0.17 GJM - Add the output mySQL directory to the config.ini file
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -189,17 +190,17 @@ SUB CreateSQLViews
     PRINT #flog%, ""
     
 ' *** Delete the league/team stats file from mysql-files
-    leaguefile$ = "/var/lib/mysql-files/leaguestats.file"
+    leaguefile$ = mysql_outputdir$ + "leaguestats.file"
     IF _FILEEXISTS(leaguefile$) THEN
         cmd = "echo y | rm " + leaguefile$
         SHELL (cmd)
     END IF
-    battingfile$ = "/var/lib/mysql-files/teambattingstats.file"
+    battingfile$ = mysql_outputdir$ + "teambattingstats.file"
     IF _FILEEXISTS(battingfile$) THEN
         cmd = "echo y | rm " + battingfile$
         SHELL (cmd)
     END IF
-    pitchingfile$ = "/var/lib/mysql-files/teampitchingstats.file"
+    pitchingfile$ = mysql_outputdir$ + "teampitchingstats.file"
     IF _FILEEXISTS(pitchingfile$) THEN
         cmd = "echo y | rm " + pitchingfile$
         SHELL (cmd)

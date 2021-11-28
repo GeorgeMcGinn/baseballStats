@@ -17,6 +17,7 @@
  CHANGE LOG
 -------------------------------------------------------------------------------------
  11/20/21 v1.00 GJM - New Program.
+ 11/20/21 v0.01 GJM - Added legend table describing the meaning of the columns displayed
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
@@ -61,17 +62,24 @@ adding new players to the pitching SQL Table. </p>
 of the functions will slightly change, but all the main processing will be the same, regardless of how
 the module is started. </p>
 
-<p>After you input data into the Team/Game Input Box. you will get a current display of pitching stats for each player, 
-like below:</p>
+<p>At the bottom of this HELP display is a legend showing what each column in the boxscore means, and in 
+some cases, how it's calculated.</p>
 
-&nbsp
-&nbsp
-<center><img src="images/baseballStats - Pitching Display1.png" style="width:100%"></center>
+<center><img src="images/baseballStats - Pitching Display1.png" style="width:90%"></center>
 <p><b><u>Displaying the Pitching Boxscores</u></b>
-<p>Once you enter a team name and click the [OK] button, you will see a screen similar to the one below.
+<p>Once you enter a team name and click the [OK] button, you will see a screen similar to the one above.
 The application tracks a variety of baseball/softball stats, which are first displayed for you. From here
 you may send the results to the printer, or update them.</p>
 
+&nbsp;	
+	
+<center><img src="images/baseballStats - Pitching Display2.png" style="width:90%"></center>
+<p>If you are entering data for a new team, you would enter the team name in the Team Input screen. Let's say
+we want to add the Astros to our database. After entering Astros in the team name of the Team Input screen, you
+will get a display like the one above. Since there is no data for the Astros, a blank screen appears. If you
+click the [Update] button, you will be taken to the update screen where you can add the stats for the new
+team, and they will be added to the database tables. Once that happens, whenever you input Astros, it will display
+all the data you've entered.</p>
 &nbsp
 &nbsp
 <p><b><u>The Buttons - And What They Do</u></b>
@@ -106,9 +114,7 @@ actions they perform:</p>
   </tr>
 </table>
 
-&nbsp	
-	
-<center><img src="images/baseballStats - Pitching Display2.png" style="width:100%"></center>
+&nbsp;
 <p><b><u>Updating Pitching Stats</u></b>
 <p>You have a boxscore from a game you need to update. From the screen above, you can add new data to both
 existing players and new players that have yet to play a game. </p>
@@ -117,7 +123,7 @@ existing players and new players that have yet to play a game. </p>
 stats for. For players not in the current display, you will be able to add them once you click the [Update]
 button.</p>
 	
-<center><img src="images/baseballStats - Pitching Display3.png" style="width:100%"></center>
+<center><img src="images/baseballStats - Pitching Display3.png" style="width:90%"></center>
 <p>The next screen (shown above) is the one you use to add game stats to both existing and new players. For
 each player you checked off in the screen prior, a record has already been added to the Stats Update screen.
 You will also noticed that GAMEID has been pre-filled with "ALE-10" as was provided in the Team/Game input
@@ -127,7 +133,7 @@ box, as well as a "1" you also provided in the GP column.</p>
 see that two things must be done in order to apply any update. That "u" must be present, and all records to update
 must be selected. More on that.	</p>
 
-<center><img src="images/baseballStats - Pitching Update1.png" style="width:100%"></center>
+<center><img src="images/baseballStats - Pitching Update1.png" style="width:90%"></center>
 <p>Next, enter the values you need to update. As you can see above, I have entered data for Workman. To enter
 data, click on the column and you will be able to input to it. You only have to enter data that you have. All fields
 are initialized as ZEROES. Do this for all data you have.</p>
@@ -137,30 +143,142 @@ GameID was entered as ALE-10. You can go into this field and edit it to the valu
 Same can be done with with GP. If you decide that you do not wish to update a player, 
 say you selected him/her by error, you can remove the "u" next to the name.</p>
 
-<center><img src="images/baseballStats - Pitching Update2.png" style="width:100%"></center>
-<p>In the above, you can see that I have added a player, J. Bagofdounuts. In order for Zenity to pass the changes to the 
-application, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
+<center><img src="images/baseballStats - Pitching Update2.png" style="width:90%"></center>
+<p>In the above, you can see that I have added a new pitcher, Cashner, A. Workman was a relief pitcher, and I needed to add a
+new starting pitcher that hadn't been added yet. So I updated Workman with his relief efforts for game ALE-10, and
+added the new pitcher with his starting effort.</p>
+
+<p>In order to update these values to the pitching table, Zenity needs to pass the changes to the application. 
+First, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
 the mouse to select a range, or [CTRL] and left mouse-click to select/unselect individual records.</p>
+
+<p><i>NOTE: Zenity is the GUI that this application uses to process all menus, displays, and updates. Zenity is the new
+incarnation of gdialog. Both are GNOME GUI systems.</i></p>
 
 <p>To update a record, remember, you must have both the "u" in the "S" column (S=Select, u for Update), and the record must be 
 selected (highlighted in Orange as the above shows). To finalize all updates, click the [COMMIT] button to process all updates
 selected.</p>
 
-<p>As in the Hitting Update, I can add multiple games pitched data to a player, or enter each game individually on the same
-update panel. You can even update data for the same GAMEID. The system will merge these records when it is time to display
-the pitching boxscores.</p>
+<p>You can add multiple games pitched data for any number of players, or enter each game individually on the same update screen. 
+You can even update data for the same GAMEID. The system will merge these records when it is time to display the pitching boxscores.</p>
 
-<p>Also, the only updates that will be done above is for Workman and Bagofdounuts. All have both a "u" and are highlighted.
-Both must be done in order for the update to take. Zenity will not pass this record to the application.
-However, if a record is selected without a "u" in the S Column, the application will check to see if the "u" is set. 
-If not, the application will ignore the record.</p>
+<p>Also, the only updates that will be done above is for Workman and Cashner. All have both a "u" and are highlighted.
+Both must be done in order for the update to take. Zenity will not pass this record to the application. However, if a record 
+is selected without a "u" in the S Column, the application will check to see if the "u" is set. If not, the application will 
+ignore the record.</p>
+
+<p>The reason that you need a "u" in the S-Column is that in a future release, this screen will also allow you to edit and delete
+records. For now, update is the only option available.</p>
+
 &nbsp
 &nbsp
+<p><b><u>Legend: Statistics Column Definitions</u></b>
+
+<p>The following details what each column means, and in some cases, how they are calculated:</p>
+&nbsp
+&nbsp
+<table style="width:95% border:0px">
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>W (Wins)</b></td>
+    <td>Number of Wins.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>L (Losses)</b></td>
+    <td>Number of Losses.</td>
+  </tr>  
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SV (Saves)</b></td>
+    <td>Number of Saves.</td>
+  </tr>  
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SVO (Save Opportunities)</b></td>
+    <td>Number of save opportunities.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>GP (Games Pitched)</b></td>
+    <td>Number of games in which the pitcher appeared.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>GS (Games Started)</b></td>
+    <td>Number of games the pitcher started.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>CG (Complete Games)</b></td>
+    <td>Number of starts in which the pitcher recorded every out of an official game.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>IP (Innings Pitched)</b></td>
+    <td>Number of total innings pitched (.1 represents 1/3 of an inning, .2 represents 2/3 of an inning).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>TBF (Total Batters Faced)</b></td>
+    <td>The number of batters a pitcher has faced, akin to plate appearances.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>H (Hits Allowed)</b></td>
+    <td>Number of hits allowed by the pitcher.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>BB (Walks)</b></td>
+    <td>Number of walks (Base On Balls) allowed by the pitcher (Both intentional & un-intentional).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>K (Strikeouts)</b></td>
+    <td>Number of strikeouts.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>RA (Runs Allowed)</b></td>
+    <td>Number of runs allowed by the pitcher, both earned and unearned (unearned includes runners from another pitcher who scores).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>ER (Earned Runs Allowed)</b></td>
+    <td>Number of earned runs allowed by the pitcher, determined by the official scorer.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HR (Homeruns)</b></td>
+    <td>Number of homeruns allowed.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HBP (Hit By Pitch)</b></td>
+    <td>Number of hit batters.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SF (SAC Flies)</b></td>
+    <td>Number of sacrifice flies given that scored a run.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>ERA (Earned Run Average)</b></td>
+    <td>The average number of earned runs a pitcher allows per 9 innings. ((ER*9)/IP)</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>OPP-AVG (Batting Average Against)</b></td>
+    <td>Rate of hits allowed per at bat, calculated as H/AB. (AB=TBF-(BB+HBP+SF))</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>WHIP (Walks+Hits per IP)</b></td>
+    <td>The average number of baserunners a pitcher has allowed per inning pitched. ((H+BB)/IP)</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>BABIP (Batting Avg on Balls in Play)</b></td>
+    <td>The rate at which the pitcher allows a hit when the ball is put in play, calculated as (H-HR)/(AB-K-HR+SF).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>FIP (Fielding Independent Pitching)</b></td>
+    <td>A statistic that tells you what the ERA of a pitcher would look like over some time, were that pitcher to experience league average results in balls in play and league average timings.
+        Calculated as: (13*HR)+(3*(BB+HBP))-(2*K))/IP+cFIP (cFIP=3.214)</td>
+  </tr>    
+</table>
+<p></p>
+<p><i>NOTE: For FIP, I use 3.214 as the FIP Constant (cFIP), which represents MLB's 2019 FIP constant. Since the team data being used
+   by this example is from 2019, this is the appropriate value. If you want to calculate the current or your league's FIP Constant:
+   cFIP = league ERA-((13*league HR)+(3 *(league BB+league HBP))-(2*league K))/league IP.</i></p>
 &nbsp	
+&nbsp	
+
 <center>
 <p></p>
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn">Baseball/Softball Statisical System</a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> 
    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-nc-nd.png">
@@ -168,6 +286,6 @@ If not, the application will ignore the record.</p>
 &nbsp
 &nbsp
 <p></p>
-<time itemprop="dateModified" datetime="November 20, 2021 11:06:31."><small>Last update on November 20, 2021 11:06:31 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="November 27, 2021 23:02:44."><small>Last update on November 27, 2021 23:02:44 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>

@@ -47,6 +47,13 @@
         sqlStmt(x) = TokenReplace$(qString$, Token$, mysql_pitchingTable$)
     NEXT x
     
+' *** Replace the token <SQLOUTDIR> with SQL Output Directory inputted from Config File
+	Token$ = "<SQLOUTDIR>"
+    FOR x = 1 TO nbrLines
+        qString$ = sqlStmt(x)
+        sqlStmt(x) = TokenReplace$(qString$, Token$, mysql_outputdir$)
+    NEXT x
+
 ' *** Replace the token <TEAMNAME> with teamName inputted from console input
 	Token$ = "<TEAMNAME>"
     FOR x = 1 TO nbrLines

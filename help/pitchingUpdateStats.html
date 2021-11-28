@@ -96,30 +96,143 @@ GameID was entered as ALE-10. You can go into this field and edit it to the valu
 Same can be done with with GP. If you decide that you do not wish to update a player, 
 say you selected him/her by error, you can remove the "u" next to the name.</p>
 
-<center><img src="images/baseballStats - Pitching Update2.png" style="width:100%"></center>
-<p>In the above, you can see that I have added a player, J. Bagofdounuts. In order for Zenity to pass the changes to the 
-application, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
+<center><img src="images/baseballStats - Pitching Update2.png" style="width:90%"></center>
+<p>In the above, you can see that I have added a new pitcher, Cashner, A. Workman was a relief pitcher, and I needed to add a
+new starting pitcher that hadn't been added yet. So I updated Workman with his relief efforts for game ALE-10, and
+added the new pitcher with his starting effort.</p>
+
+<p>In order to update these values to the pitching table, Zenity needs to pass the changes to the application. 
+First, you must select them by using the standard keyboard-mouse selection technique [SHIFT] + Left-click on 
 the mouse to select a range, or [CTRL] and left mouse-click to select/unselect individual records.</p>
+
+<p><i>NOTE: Zenity is the GUI that this application uses to process all menus, displays, and updates. Zenity is the new
+incarnation of gdialog. Both are GNOME GUI systems.</i></p>
 
 <p>To update a record, remember, you must have both the "u" in the "S" column (S=Select, u for Update), and the record must be 
 selected (highlighted in Orange as the above shows). To finalize all updates, click the [COMMIT] button to process all updates
 selected.</p>
 
-<p>As in the Hitting Update, I can add multiple games pitched data to a player, or enter each game individually on the same
-update panel. You can even update data for the same GAMEID. The system will merge these records when it is time to display
-the pitching boxscores.</p>
+<p>You can add multiple games pitched data for any number of players, or enter each game individually on the same update screen. 
+You can even update data for the same GAMEID. The system will merge these records when it is time to display the pitching boxscores.</p>
 
-<p>Also, the only updates that will be done above is for Workman and Bagofdounuts. All have both a "u" and are highlighted.
-Both must be done in order for the update to take. Zenity will not pass this record to the application.
-However, if a record is selected without a "u" in the S Column, the application will check to see if the "u" is set. 
-If not, the application will ignore the record.</p>
+<p>Also, the only updates that will be done above is for Workman and Cashner. All have both a "u" and are highlighted.
+Both must be done in order for the update to take. Zenity will not pass this record to the application. However, if a record 
+is selected without a "u" in the S Column, the application will check to see if the "u" is set. If not, the application will 
+ignore the record.</p>
+
+<p>The reason that you need a "u" in the S-Column is that in a future release, this screen will also allow you to edit and delete
+records. For now, update is the only option available.</p>
+
+
 &nbsp
 &nbsp
+<p><b><u>Legend: Statistics Column Definitions</u></b>
+
+<p>The following details what each column means, and in some cases, how they are calculated:</p>
+&nbsp
+&nbsp
+<table style="width:95% border:0px">
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>W (Wins)</b></td>
+    <td>Number of Wins.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>L (Losses)</b></td>
+    <td>Number of Losses.</td>
+  </tr>  
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SV (Saves)</b></td>
+    <td>Number of Saves.</td>
+  </tr>  
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SVO (Save Opportunities)</b></td>
+    <td>Number of save opportunities.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>GP (Games Pitched)</b></td>
+    <td>Number of games in which the pitcher appeared.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>GS (Games Started)</b></td>
+    <td>Number of games the pitcher started.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>CG (Complete Games)</b></td>
+    <td>Number of starts in which the pitcher recorded every out of an official game.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>IP (Innings Pitched)</b></td>
+    <td>Number of total innings pitched (.1 represents 1/3 of an inning, .2 represents 2/3 of an inning).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>TBF (Total Batters Faced)</b></td>
+    <td>The number of batters a pitcher has faced, akin to plate appearances.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>H (Hits Allowed)</b></td>
+    <td>Number of hits allowed by the pitcher.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>BB (Walks)</b></td>
+    <td>Number of walks (Base On Balls) allowed by the pitcher (Both intentional & un-intentional).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>K (Strikeouts)</b></td>
+    <td>Number of strikeouts.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>RA (Runs Allowed)</b></td>
+    <td>Number of runs allowed by the pitcher, both earned and unearned (unearned includes runners from another pitcher who scores).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>ER (Earned Runs Allowed)</b></td>
+    <td>Number of earned runs allowed by the pitcher, determined by the official scorer.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HR (Homeruns)</b></td>
+    <td>Number of homeruns allowed.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HBP (Hit By Pitch)</b></td>
+    <td>Number of hit batters.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SF (SAC Flies)</b></td>
+    <td>Number of sacrifice flies given that scored a run.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>ERA (Earned Run Average)</b></td>
+    <td>The average number of earned runs a pitcher allows per 9 innings. ((ER*9)/IP)</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>OPP-AVG (Batting Average Against)</b></td>
+    <td>Rate of hits allowed per at bat, calculated as H/AB. (AB=TBF-(BB+HBP+SF))</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>WHIP (Walks+Hits per IP)</b></td>
+    <td>The average number of baserunners a pitcher has allowed per inning pitched. ((H+BB)/IP)</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>BABIP (Batting Avg on Balls in Play)</b></td>
+    <td>The rate at which the pitcher allows a hit when the ball is put in play, calculated as (H-HR)/(AB-K-HR+SF).</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>FIP (Fielding Independent Pitching)</b></td>
+    <td>A statistic that tells you what the ERA of a pitcher would look like over some time, were that pitcher to experience league average results in balls in play and league average timings.
+        Calculated as: (13*HR)+(3*(BB+HBP))-(2*K))/IP+cFIP (cFIP=3.214)</td>
+  </tr>    
+</table>
+<p></p>
+<p><i>NOTE: For FIP, I use 3.214 as the FIP Constant (cFIP), which represents MLB's 2019 FIP constant. Since the team data being used
+   by this example is from 2019, this is the appropriate value. If you want to calculate the current or your league's FIP Constant:
+   cFIP = league ERA-((13*league HR)+(3 *(league BB+league HBP))-(2*league K))/league IP.</i></p>
 &nbsp	
+&nbsp	
+
 <center>
 <p></p>
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn">Baseball/Softball Statisical System</a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> 
    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-nc-nd.png">
@@ -127,6 +240,6 @@ If not, the application will ignore the record.</p>
 &nbsp
 &nbsp
 <p></p>
-<time itemprop="dateModified" datetime="November 20, 2021 11:06:31."><small>Last update on November 20, 2021 11:06:31 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="November 27, 2021 23:02:44."><small>Last update on November 27, 2021 23:02:44 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>

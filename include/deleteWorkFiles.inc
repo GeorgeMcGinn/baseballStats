@@ -11,28 +11,28 @@
 		IF _FILEEXISTS(ReportFile$) THEN KILL ReportFile$
 		ReportFile$ = teamName + "pitchingstats.prn"	
 		IF _FILEEXISTS(ReportFile$) THEN KILL ReportFile$
-		battingfile$ = "/var/lib/mysql-files/" + teamName + "-battingstats.file"
+		battingfile$ = mysql_outputdir$ + teamName + "-battingstats.file"
 		IF _FILEEXISTS(battingfile$) THEN
 			cmd = "echo y | rm " + battingfile$
 			SHELL (cmd)
 		END IF
-		pitchingfile$ = "/var/lib/mysql-files/" + teamName + "-pitchingstats.file"
+		pitchingfile$ = mysql_outputdir$ + teamName + "-pitchingstats.file"
 		IF _FILEEXISTS(pitchingfile$) THEN
 			cmd = "echo y | rm " + pitchingfile$
 			SHELL (cmd)
 		END IF
 	END IF
-    leaguefile$ = "/var/lib/mysql-files/leaguestats.file"
+    leaguefile$ = mysql_outputdir$ + "leaguestats.file"
     IF _FILEEXISTS(leaguefile$) THEN
         cmd = "echo y | rm " + leaguefile$
         SHELL (cmd)
     END IF
-    battingfile$ = "/var/lib/mysql-files/teambattingstats.file"
+    battingfile$ = mysql_outputdir$ + "teambattingstats.file"
     IF _FILEEXISTS(battingfile$) THEN
         cmd = "echo y | rm " + battingfile$
         SHELL (cmd)
     END IF
-    pitchingfile$ = "/var/lib/mysql-files/teampitchingstats.file"
+    pitchingfile$ = mysql_outputdir$ + "teampitchingstats.file"
     IF _FILEEXISTS(pitchingfile$) THEN
         cmd = "echo y | rm " + pitchingfile$
         SHELL (cmd)

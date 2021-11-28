@@ -1,4 +1,4 @@
-REM $TITLE: battingStats.bas Version 0.12  08/09/2021 - Last Update: 11/19/2021
+REM $TITLE: battingStats.bas Version 0.12  08/09/2021 - Last Update: 11/21/2021
 _TITLE "battingStats.bas"
 ' battingStats.bas    Version 1.0  08/09/2021
 '-------------------------------------------------------------------------------------
@@ -45,6 +45,8 @@ _TITLE "battingStats.bas"
 '                      incorrect screens were being displayed when [CANCEL] was pressed.
 ' 10/14/21 v0.22 GJM - For some reason the Report code was missing. Added it back in.
 ' 11/19/21 v0.23 GJM - Cosmetic changes made to display GUI's.
+' 11/21/21 v0.24 GJM - Add the output mySQL directory to the config.ini file
+'                      and standardized the size of the HELP screen
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -115,7 +117,7 @@ DetermineArraySize:
 
 '$INCLUDE: 'include/baseballMainForm.inc'
 	IF stdbutton = "QUIT" THEN GOTO endPROG
-	IF teamName = "" THEN GOTO ProcessTeamForm
+''	IF teamName = "" THEN GOTO ProcessTeamForm
 
 ProcessSQLFile:
 	PRINT #flog%, ">>>>> Executing ProcessSQLFile"
@@ -277,7 +279,7 @@ SubmitMenu:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/battingUpdateStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu
@@ -347,7 +349,7 @@ SUB CreateSQLViews
 
 ' *** Delete the <TEAM> battingstats file from mysql-files
 ' *** Cannot use KILL here as this file expects a "y" response to delete
-    battingfile$ = "/var/lib/mysql-files/" + teamName + "-battingstats.file"
+    battingfile$ = mysql_outputdir$ + teamName + "-battingstats.file"
     IF _FILEEXISTS(battingfile$) THEN
         cmd = "echo y | rm " + battingfile$
         SHELL (cmd)
@@ -455,7 +457,7 @@ submitMenu:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/battingDisplayStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu

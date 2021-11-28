@@ -1,4 +1,4 @@
-REM $TITLE: baseballStats.bas Version 1.0  09/20/2021 - Last Update: 10/11/2021
+REM $TITLE: baseballStats.bas Version 1.0  09/20/2021 - Last Update: 11/21/2021
 _TITLE "baseballStats.bas"
 ' baseballStats.bas    Version 1.0  09/20/21
 '-------------------------------------------------------------------------------
@@ -36,6 +36,8 @@ _TITLE "baseballStats.bas"
 ' 10/05/21 v0.18 GJM - Added ProgramName$ that is determined in initialization.
 ' 10/06/21 v0.19 GJM - Updated program to new directory structure & file names.
 ' 10/11/21 v0.20 GJM - Added number of innings to config file processing.
+' 11/21/21 v0.21 GJM - Add the output mySQL directory to the config.ini file
+'                      and standardized the size of the HELP screen
 '-------------------------------------------------------------------------------
 '  Copyright ©2021 by George McGinn.  All Rights Reserved.
 '
@@ -46,7 +48,9 @@ _TITLE "baseballStats.bas"
 '
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES
-'
+' --------------
+' 11/21 - Verify that the proper ARGS are being passed. The SQL Output Directory
+'         must be in ARG6, or ARG7 for the calls that already use ARG6.
 '
 '-------------------------------------------------------------------------------
 
@@ -117,7 +121,7 @@ submitMenu:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=850 --height=800 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/baseballStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu
@@ -210,6 +214,9 @@ endPROG:
 
 END SUB
 
+'*** 11/21 (GJM)- Verify that the proper ARGS are being passed. The SQL Output Directory
+'***              must be in ARG6, or ARG7 for the calls that already use ARG6.
+
 
 SUB CallBatting
 ' ** Call the Batting Stats program with ARGs
@@ -225,14 +232,15 @@ SUB CallBatting
     PRINT #flog%, "Config ARG3: "; ARG3$
     PRINT #flog%, "Config ARG4: "; ARG4$
     PRINT #flog%, "Config ARG5: "; ARG5$
-'    PRINT #flog%, "Config ARG6: "; ARG6$
+    PRINT #flog%, "Config ARG6: "; ARG6$
+    PRINT #flog%, "Config ARG7: "; ARG7$
     PRINT #flog%, ""
 
 ' *** CALL the hittingStats module, passing ARGS
     PRINT #flog%, ">>>>> Calling: battingStats"
     PRINT #flog%, ""
     CLOSE #flog%
-    SHELL ("./battingStats TEAMNAME:" + teamName + " GAMEID:" + gameID + " GAMES:" + gamesPlayed + " " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$)
+    SHELL ("./battingStats TEAMNAME:" + teamName + " GAMEID:" + gameID + " GAMES:" + gamesPlayed + " " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$ + " " + ARG6$)
     OPEN "logs/baseballstats.log" FOR APPEND AS #flog%
     
 END SUB
@@ -253,13 +261,14 @@ SUB CallPitching
     PRINT #flog%, "Config ARG4: "; ARG4$
     PRINT #flog%, "Config ARG5: "; ARG5$
     PRINT #flog%, "Config ARG6: "; ARG6$
+    PRINT #flog%, "Config ARG7: "; ARG7$
     PRINT #flog%, ""
     
 ' *** CALL the pitchingStats module, passing ARGS
     PRINT #flog%, ">>>>> Calling: pitchingStats"
     PRINT #flog%, ""
     CLOSE #flog%
-    SHELL ("./pitchingStats TEAMNAME:" + teamName + " GAMEID:" + gameID + " GAMES:" + gamesPlayed + " " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$ + " " + ARG6$)
+    SHELL ("./pitchingStats TEAMNAME:" + teamName + " GAMEID:" + gameID + " GAMES:" + gamesPlayed + " " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$ + " " + ARG6$ + " " + ARG7$)
     OPEN "logs/baseballstats.log" FOR APPEND AS #flog%
 
 END SUB
@@ -278,9 +287,10 @@ SUB CallLeagueTeam
     PRINT #flog%, "Config ARG4: "; ARG4$
     PRINT #flog%, "Config ARG5: "; ARG5$
     PRINT #flog%, "Config ARG6: "; ARG6$
+    PRINT #flog%, "Config ARG7: "; ARG7$
     PRINT #flog%, ""
     CLOSE #flog%
-    SHELL ("./leagueStats " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$ + " " + ARG6$)
+    SHELL ("./leagueStats " + ARG1$ + " " + ARG2$ + " " + ARG3$ + " " + ARG4$ + " " + ARG5$ + " " + ARG6$ + " " + ARG7$)
     OPEN "logs/baseballstats.log" FOR APPEND AS #flog%
     
 END SUB
@@ -319,12 +329,15 @@ SUB InstallTables
 				IF LEFT$(qString$, 2) <> "/*" THEN
 					retcode = StrSplit$(qString$, Delim$)
 					idx = idx + 1
-					IF Query(1) = "SQLDB" THEN mySQLDB$ = Query(2)
-					IF Query(1) = "SQLUSER" THEN mysql_userid$ = Query(2)
-					IF Query(1) = "SQLPWD" THEN mysql_password$ = Query(2)
-					IF Query(1) = "SQLBATTBL" THEN mysql_battingTable$ = Query(2)
-					IF Query(1) = "SQLPITCHTBL" THEN mysql_pitchingTable$ = Query(2)
-					IF Query(1) = "INNINGS" THEN nbr_innings$ = Query(2)
+					SELECT CASE Query(1)
+						   CASE "SQLDB": mysqlDB$ = Query(2)
+                           CASE "SQLUSER": mysql_userid$ = Query(2)
+                           CASE "SQLPWD": mysql_password$ = Query(2)
+                           CASE "SQLBATTBL": mysql_battingTable$ = Query(2)
+                           CASE "SQLPITCHTBL": mysql_pitchingTable$ = Query(2)
+                           CASE "MSQLOUTDIR": mysql_outputdir$ = Query(2)
+                           CASE "INNINGS": nbr_innings$ = Query(2)
+                    END SELECT
 				END IF
 			END IF
 		LOOP
@@ -355,6 +368,7 @@ SUB ResetSystem
 	mysql_password$ = "*** PLEASE UPDATE ***"
 	mysql_battingTable$ = "*** PLEASE UPDATE ***"
 	mysql_pitchingTable$ = "*** PLEASE UPDATE ***"
+	mysql_outputdir$ = "/var/lib/mysql-files/"
 	nbr_innings$ = "*** PLEASE UPDATE ***"
 
 	IF _FILEEXISTS(ConfigFile$) THEN KILL ConfigFile$
