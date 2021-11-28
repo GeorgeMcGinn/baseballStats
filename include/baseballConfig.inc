@@ -41,9 +41,13 @@ SUB LoadConfigFile:
 						mysql_pitchingTable$ = Query(2)
 						ARG5$ = qString$
 					END IF
+					IF Query(1) = "SQLOUTDIR" THEN 
+						mysql_outputdir$ = Query(2)
+						ARG6$ = qString$
+					END IF
 					IF Query(1) = "INNINGS" THEN 
 						nbr_innings$ = Query(2)
-						ARG6$ = qString$
+						ARG7$ = qString$
 					END IF
 				END IF
 			END IF

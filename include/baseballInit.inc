@@ -9,14 +9,14 @@ TRUE = -1: FALSE = 0
 '
 DIM SHARED AS STRING Query(100), sqlStmt(100)
 DIM SHARED AS STRING Answer(1000, 1000)
-DIM SHARED mysqlCMD$, mysqlTable$, mysqlView$, mysqlDB$, mysql_userid$, mysql_password$
+DIM SHARED mysqlCMD$, mysqlTable$, mysqlView$, mysqlDB$, mysql_userid$, mysql_password$, mysql_outputdir$
 DIM SHARED qString$, battingfile$, pitchingfile$, leaguefile$, ReportFile$, ConfigFile$
 DIM SHARED mysql_battingTable$, mysql_pitchingTable$
 DIM SHARED AS INTEGER result, cntargs, PrintReport, setLeague
 DIM SHARED AS STRING retcode, OStype
 DIM SHARED flog%
 DIM SHARED AS INTEGER lenstr, nbrRows, nbrCols, nbrLines, nbrUpdates
-DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ProgramName$
+DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ARG7$, ProgramName$
 
 '----------------------------------------------------
 ' *** Variables for Baseball Stats
@@ -122,6 +122,7 @@ mysql_userid$ = "*** PLEASE UPDATE ***"
 mysql_password$ = "*** PLEASE UPDATE ***"
 mysql_battingTable$ = "*** PLEASE UPDATE ***"
 mysql_pitchingTable$ = "*** PLEASE UPDATE ***"
+mysql_outputdir$ = "/var/lib/mysql-files/"    
 nbr_innings$ = "*** PLEASE UPDATE ***"
 
 ' *** Populate ProgramName$

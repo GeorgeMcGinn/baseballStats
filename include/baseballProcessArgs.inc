@@ -60,6 +60,8 @@ IF cntargs > 0 THEN
 					mysql_battingTable$ = Answer(x, 2)
 			   CASE "SQLPITCHTBL" 
 					mysql_pitchingTable$ = Answer(x, 2)
+			   CASE "SQLOUTDIR" 
+					mysql_outputdir$ = Answer(x, 2)
 			   CASE "INNINGS" 
 					nbr_innings$ = Answer(x, 2)
 		END SELECT

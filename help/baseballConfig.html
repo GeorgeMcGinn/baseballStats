@@ -53,14 +53,14 @@ td {
 &nbsp
 <p style="color:#f8f8f8;"><h4><u>CONFIG FILE PROCESSING</u></h4>
 <p>The config file (config.ini) is responsible for processing. This is where the mySQL
-	database, userid, password, and table names are stored so the rest of the system processes
-	data correctly. 
+	database, userid, password, table names, output directory and other values are stored 
+	so the rest of the system processes	data correctly. 
 
-<p>This process is used to in updating, creating new SQL regions, and to create the database
+<p>This process is used in updating, creating new SQL regions, and to create the database
 	and tables in an existing mySQL environment. Regardless, your userid and password must
 	already exist before you can change and use them.</p>
 
-<center><img src="images/baseballStats - Config File.png" style="width:75%"></center>
+<center><img src="images/baseballStats - Config File.png" style="width:60%"></center>
 
 <p><b><u>CONFIG FILE: Required Fields</u></b>
 		
@@ -89,6 +89,14 @@ They are:<br>
     <td>All pitching statistics are stored here.</td>
   </tr>
   <tr>
+    <td width=26% valign="top" style="text-align: right"><b>SQL OUTPUT DIRECTORY:</b></td>
+    <td>This is the location that mySQL stores ASCII/Text files it either creates or reads as
+        input. The program defaults it to mySQL's default value (/var/lib/mysql-files/).
+        Unless you changed this location within mySQL, you can leave this value as-is. 
+        <br><b>*** NOTE: Please read the mySQL documentation, as access (privileges) may 
+        not be set properly for you to use it. See how to set "--secure-file-priv option" *** </b></td>
+  </tr>
+  <tr>
     <td width=26% valign="top" style="text-align: right"><b>INNINGS:</b></td>
     <td>The length of a normal games. baseball is usually 9, softball is 7, Little League are 6 or 7 innings.</td>
   </tr></table>	
@@ -99,12 +107,13 @@ They are:<br>
 
 <p><b><u>CONFIG FILE: Update</u></b>
 <p>If this is not the first time that you are running this application, the screen you get is an
-	UPDATE screen (as shown by the button labelled "UPDATE". If you put something in the input box
-	next to any or all of the labels, the application will change these values. The application will
-	not verify that the values you put in are valid until you try to display or update any table.</p>
+	UPDATE screen (as shown by the button labeled [UPDATE]. If you put something in the input box
+	next to any or all of the labels, the application will change these values in config.ini only. 
+	The application will not verify that the values you put in are valid until you try to display or 
+	update any table.</p>
 
 <p>This has been done on purpose, as you will need to set up your environment ahead of time. When
-	you first install mySQL, it should ask you to set up your userids and passwords other than root. </p>
+	you first install mySQL, it will ask you to set up your userids and passwords other than root. </p>
 
 <p>So for the UPDATE function, it is up to each user to make sure that they have created their userid, 
 	password, database and tables ahead of time, using the provided SQL file, before running update. 
@@ -112,7 +121,7 @@ They are:<br>
 	Region. In both those cases, The application will set up the database and tables for you. 
 	Your userid and password must already exist, or those processes will fail.</p>
 
-<center><img src="images/baseballStats - Install.png" style="width:75%"></center>
+<center><img src="images/baseballStats - Install.png" style="width:60%"></center>
 
 <p><b><u>CONFIG FILE: Install/Create New Region</u></b>
 <p>If you want to create a new table(s) or a new database, this is the option you will choose. The screen
@@ -120,41 +129,48 @@ They are:<br>
 	The values defaulted are "*** PLEASE UPDATE ***" for each field, as it assumes you will be setting up a
 	new environment.</p>
 	
-<center><img src="images/baseballStats - Warning1.png" style="width:50%"></center>
-<p>When selecting this option, it will erase the current config.ini file and overlay it with default values
+<center><img src="images/baseballStats - Warning1.png" style="width:40%"></center>
+<p>When selecting this option, it will erase the current config.ini file (if it exists) and overlay it with default values
 	of "*** PLEASE UPDATE ***". The box above will appear asking you if you are sure you wish to continue. 
-	Clicking the [NO] button will abort the process. [YES] will go ahead and re-initalize the config.ini file
-	for you to provide new values. This not only resets the config.ini file, but will execute a SQL procedure
-	file to create new database and tables if they do not exist.</p>
+	Clicking the [NO] button will abort the process. [YES] will go ahead and re-initialize the config.ini file
+	for you to provide new values. ALL OLD VALUES WILL BE LOST! This not only resets the config.ini file, 
+	but will execute a SQL procedure file to create new database and tables if they do not exist. It is strongly 
+	suggested that if you are processing for different leagues with different values (like innings), write 
+	down/remember the old values so you can go back to it when needed. A future release may address this issue.</p>
 
-<center><img src="images/baseballStats - Update Values.png" style="width:75%"></center>
+<center><img src="images/baseballStats - Update Values.png" style="width:60%"></center>
 <p>The above shows all fields filled in, and the button [CREATE] is your option. This means that you are
 	creating a brand new environment, and the application will create a new database, if it does not exist,
 	but will delete any table with the names provided, if they exist, and create empty tables.</p>
 
 <p>If you set, say the database to one already established, and provide new table names, the application
-	will just create new tables, and not recreate your database. The SQL does a "CREATE DATABASE IF NOT EXISTS"
+    will just create new tables, and not recreate your database. The SQL does a "CREATE DATABASE IF NOT EXISTS"
 	so it will not erase any data that you have. Same goes for the table names. For example, if you just want
 	to create a new pitching table, the INSTALL feature will do just that. It will leave your database and
 	batting table alone.</p>
 	
+<p>Notice I did not change the SQL OUTPUT DIRECTORY. That is because mySQL defaults it to "/var/lib/mysql-files/".
+    So again, unless you changed this location within mySQL, you can leave this value as-is.</p>
+	
 <p>Below are a before and after showing an update to the DATABASE and INNINGS fields. The others are not changed. 
 Neither the DATABASE nor the INNINGS fields are verified, and the changes will be applied to the Config File.</p>
 	
-<center><img src="images/baseballStats - Update Value1.png" style="width:75%"></center>
+<center><img src="images/baseballStats - Update Value1.png" style="width:60%"></center>
 <br><br>
-<center><img src="images/baseballStats - Update Value2.png" style="width:75%"></center>
+<center><img src="images/baseballStats - Update Value2.png" style="width:60%"></center>
 	
-<p><strong>Remember, if you are creating a new database and/or tables, you must run "Create New Region" to actually
-	execute the SQL creates. If you just change the names of your database and/or tables in the "Update"
-	function, all that does is change your config.ini file. The database and/or tables must already exist, or
-	the application will not work.</strong></p>
+<p><strong>Remember, if the button says [CREATE], then you are creating a new database and/or tables. To create
+    a new database or tables, you must run "Create New Region" to actually execute the SQL creates. If the screen
+    shows the [UPDATE] button, then you are only updating the config.ini file, and you are just changing the names 
+    of your database and/or tables. The database and/or tables must already exist, or the application will not work.
+    There is no verification process to ensure this.</strong></p>
 &nbsp
 &nbsp
 &nbsp
+<center>
 <p></p>
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn">Baseball/Softball Statisical System</a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> 
 	<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-nc-nd.png">
@@ -163,6 +179,6 @@ Neither the DATABASE nor the INNINGS fields are verified, and the changes will b
 &nbsp
 &nbsp
 <p></p>
-<time itemprop="dateModified" datetime="October 11, 2021 09:29:21."><small>Last update on October 11, 2021 09:29:21 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="November 24, 2021 16:38:51."><small>Last update on November 24, 2021 16:38:51 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>

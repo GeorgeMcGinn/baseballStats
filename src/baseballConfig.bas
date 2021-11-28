@@ -1,4 +1,4 @@
-REM $TITLE: baseballConfig.bas Version 1.0  09/30/2021 - Last Update: 10/11/2021
+REM $TITLE: baseballConfig.bas Version 1.0  09/30/2021 - Last Update: 11/21/2021
 _TITLE "baseballConfig.bas"
 ' baseballConfig.bas    Version 1.0  09/30/21
 '-------------------------------------------------------------------------------
@@ -26,6 +26,8 @@ _TITLE "baseballConfig.bas"
 ' 10/05/21 v0.13 GJM - Added ProgramName$ that is determined in initialization.
 ' 10/06/21 v0.14 GJM - Updated program to new directory structure & file names
 ' 10/11/21 v0.15 GJM - Added number of innings to config file
+' 11/21/21 v0.16 GJM - Add the output mySQL directory to the config.ini file
+'                      and standardized the size of the HELP screen
 '-------------------------------------------------------------------------------
 '  Copyright ©2021 by George McGinn.  All Rights Reserved.
 '
@@ -86,21 +88,24 @@ QB64Main:
                 IF LEFT$(qString$, 2) <> "/*" THEN
                     retcode = StrSplit$(qString$, Delim$)
                     idx = idx + 1
-                    IF Query(1) = "SQLDB" THEN mysqlDB$ = Query(2)
-                    IF Query(1) = "SQLUSER" THEN mysql_userid$ = Query(2)
-                    IF Query(1) = "SQLPWD" THEN mysql_password$ = Query(2)
-                    IF Query(1) = "SQLBATTBL" THEN mysql_battingTable$ = Query(2)
-                    IF Query(1) = "SQLPITCHTBL" THEN mysql_pitchingTable$ = Query(2)
-                    IF Query(1) = "INNINGS" THEN nbr_innings$ = Query(2)
+					SELECT CASE Query(1)
+						   CASE "SQLDB": mysqlDB$ = Query(2)
+                           CASE "SQLUSER": mysql_userid$ = Query(2)
+                           CASE "SQLPWD": mysql_password$ = Query(2)
+                           CASE "SQLBATTBL": mysql_battingTable$ = Query(2)
+                           CASE "SQLPITCHTBL": mysql_pitchingTable$ = Query(2)
+                           CASE "MSQLOUTDIR": mysql_outputdir$ = Query(2)
+                           CASE "INNINGS": nbr_innings$ = Query(2)
+                    END SELECT
                 END IF
             END IF
         LOOP
         CLOSE #f1%
     ELSE
-		nbrUpdates = 6
+		nbrUpdates = 7
         OPEN ConfigFile$ FOR OUTPUT AS #f1%
         PRINT #f1%, "/* Baseball/Softball Config File"
-        PRINT #f1%, "6"
+        PRINT #f1%, "7"
         qString$ = "SQLDB=" + mysqlDB$
         PRINT #f1%, qString$
         qString$ = "SQLUSER=" + mysql_userid$
@@ -110,6 +115,8 @@ QB64Main:
         qString$ = "SQLBATTBL=" + mysql_battingTable$
         PRINT #f1%, qString$
         qString$ = "SQLPITCHTBL=" + mysql_pitchingTable$
+        PRINT #f1%, qString$
+        qString$ = "SQLOUTDIR=" + mysql_outputdir$
         PRINT #f1%, qString$
         qString$ = "INNINGS=" + nbr_innings$
         PRINT #f1%, qString$
@@ -131,6 +138,7 @@ DisplayForm:
               " --add-entry=" + CHR$(34) + "SQL PASSWORD (" + mysql_password$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL BATTING TABLE (" + mysql_battingTable$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL PITCHING TABLE (" + mysql_pitchingTable$ + ")" + CHR$(34) + _
+              " --add-entry=" + CHR$(34) + "SQL OUTPUT DIRECTORY (" + mysql_outputdir$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "NBR INNINGS (" + nbr_innings$ + ")" + CHR$(34) + _
               " --width=500 --height=200 --ok-label=CREATE --extra-button=HELP --extra-button=QUIT"
     ELSE
@@ -141,6 +149,7 @@ DisplayForm:
               " --add-entry=" + CHR$(34) + "SQL PASSWORD (" + mysql_password$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL BATTING TABLE (" + mysql_battingTable$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL PITCHING TABLE (" + mysql_pitchingTable$ + ")" + CHR$(34) + _
+              " --add-entry=" + CHR$(34) + "SQL OUTPUT DIRECTORY (" + mysql_outputdir$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "NBR INNINGS (" + nbr_innings$ + ")" + CHR$(34) + _
               " --width=500 --height=200 --ok-label=UPDATE --extra-button=HELP --extra-button=QUIT"
     END IF
@@ -166,7 +175,7 @@ DisplayForm:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=900 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/baseballConfig.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO DisplayForm
@@ -190,6 +199,8 @@ DisplayForm:
                 CASE 5
                     mysql_pitchingTable$ = Query(ix1)
                 CASE 6
+                    mysql_outputdir$ = Query(ix1)
+                CASE 7
                     nbr_innings$ = Query(ix1)
             END SELECT
 			updates = updates + 1
@@ -216,6 +227,8 @@ DisplayForm:
         qString$ = "SQLBATTBL=" + mysql_battingTable$
         PRINT #f1%, qString$: PRINT #flog%, qString$
         qString$ = "SQLPITCHTBL=" + mysql_pitchingTable$
+        PRINT #f1%, qString$: PRINT #flog%, qString$
+        qString$ = "SQLOUTDIR=" + mysql_outputdir$
         PRINT #f1%, qString$: PRINT #flog%, qString$
         qString$ = "INNINGS=" + nbr_innings$
         PRINT #f1%, qString$: PRINT #flog%, qString$

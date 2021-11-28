@@ -1,4 +1,4 @@
-REM $TITLE: pitchingStats.bas Version 0.0  09/22/2021 - Last Update: 11/20/2021
+REM $TITLE: pitchingStats.bas Version 0.0  09/22/2021 - Last Update: 11/21/2021
 _TITLE "pitchingStats.bas"
 ' pitchingStats.bas    Version 1.0  09/22/2021
 '-------------------------------------------------------------------------------------
@@ -47,8 +47,10 @@ _TITLE "pitchingStats.bas"
 '					   Added the logic to convert innings pitched into total outs for
 '                      SQL updates.
 ' 11/19/21 v0.21 GJM - Cosmetic changes made to display GUI's.
-' 11/20/21 v0.21 GJM - Added the HELP system for this module. Also added the missing
+' 11/20/21 v0.22 GJM - Added the HELP system for this module. Also added the missing
 '                      logic to process button clicks when doing updates.
+' 11/21/21 v0.23 GJM - Add the output mySQL directory to the config.ini file
+'                      and standardized the size of the HELP screen
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -291,7 +293,7 @@ SubmitMenu:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/pitchingUpdateStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu
@@ -359,7 +361,7 @@ SUB CreateSQLViews
     PRINT #flog%, ""
 
 ' *** Delete the <TEAM> pitchingstats file from mysql-files
-    pitchingfile$ = "/var/lib/mysql-files/" + teamName + "-pitchingstats.file"
+    pitchingfile$ = mysql_outputdir$ + teamName + "-pitchingstats.file"
     IF _FILEEXISTS(pitchingfile$) THEN
         cmd = "echo y | rm " + pitchingfile$
         SHELL (cmd)
@@ -484,7 +486,7 @@ submitMenu:
     IF result = 1 AND stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
-              " --width=850 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
               " --filename=" + "help/pitchingDisplayStats.html" + " 2> /dev/null"
         SHELL (cmd)
         GOTO SubmitMenu

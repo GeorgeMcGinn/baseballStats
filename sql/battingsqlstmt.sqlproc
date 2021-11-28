@@ -33,4 +33,4 @@ FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
 FROM tempbattingStatsView 
 GROUP BY PLAYER; 
 
-SELECT * FROM <TEAMNAME>battingStatsView INTO OUTFILE '/var/lib/mysql-files/<TEAMNAME>-battingstats.file';
+SELECT * FROM <TEAMNAME>battingStatsView INTO OUTFILE '<SQLOUTDIR><TEAMNAME>-battingstats.file';

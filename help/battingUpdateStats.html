@@ -7,7 +7,7 @@
        VERSION: 1.0
        PROJECT: Baseball/Softball Statistics System
 
-   DESCRIPTION: HELP File for updating pitching statistics.
+   DESCRIPTION: HELP File for updating hitting statistics.
 
  Written by George McGinn
  Copyright (C)2021 by George McGinn - All Rights Reserved.
@@ -16,7 +16,8 @@
 
  CHANGE LOG
 -------------------------------------------------------------------------------------
- 10/10/21 v1.00 GJM - New Program.
+ 10/10/2021 v1.00 GJM - New Program.
+ 11/27/2021 v0.01 GJM - Added legend table describing the meaning of the columns displayed
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
@@ -52,68 +53,221 @@ td {
 
 <center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
 &nbsp
-<p style="color:#f8f8f8;"><h4><u>BATTING STATS UPDATE PROCESSING</u></h4>
+<p style="color:#f8f8f8;"><h4><u>BATTING STATS PROCESSING - HITTING UPDATE</u></h4>
 <p>This processes the updates to the hitting statistics for a selected team as well as allowing to add
 new players to the batting SQL Table. </p>
 	
 <p>This program is can be either executed from the main menu, or can run as a stand-a-lone program. Some
 of the functions will slightly change, but all the main processing will be the same, regardless of how
 the module is started. </p>
+
+<p>At the bottom of this HELP display is a legend showing what each column in the boxscore means, and in 
+some cases, how it's calculated.</p>
+
 &nbsp
 &nbsp
+<p>&nbsp;</p>
+<center><img src="images/baseballStats - Hitting Update1.png" style="width:90%"></center>
 <p><b><u>Updating Hitting Stats</u></b>
-<p></p>
+<p>You have a boxscore from a game you need to update. From the screen above, you can add new data to both
+existing players and new players that have yet to play a game. </p>
 
-<center><img src="images/baseballStats - Hitting Update1.png" style="width:100%"></center>
-<p>To refresh, you are presented with a boxscore from the team you want to update. From the screen above, 
-you select the players you want to add data to. When you click the [Update] button, you will be presented
-with the update screen. </p>
+<p>For existing players, place a check mark (as shown above) next to each player you wish to add new game
+stats for. For players not in the current display, you will be able to add them once you click the [Update]
+button.</p>
 
-<center><img src="images/baseballStats - Hitting Update2.png" style="width:100%"></center>
-<p>Here is where you will add game stats to both existing and new players. For
-each player you checked off in the screen prior, a record has already been added to the Stats Update screen.
-You will also noticed that GAMEID has been pre-filled with "ALE-09" as was provided in the Team/Game input
-box, as well as a "1" you also provided in the GP column.</p>
+<p>&nbsp;</p>
+<p><b><u>The Buttons - And What They Do</u></b>
+<p>There are five buttons, along with the "x" in the upper right-hand corner of the screen. Here are the
+actions they perform:</p>
+
+
+<table style="width:90% border:0px">
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[Cancel]</b></td>
+    <td>Resets boxscore display and re-displays it.</td>
+  </tr>
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[Update]</b></td>
+    <td>Takes all records checked (if any) and displays the update screen.</td>
+  </tr>
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[Report]</b></td>
+    <td>Formats the boxscores displayed and prints it on the default printer.</td>
+  </tr>
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[HELP]</b></td>
+    <td>Displays this screen.</td>
+  </tr>
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[QUIT]</b></td>
+    <td>Cancels out of hitting stats and either returns to main menu or ends if stand-a-lone.</td>
+  </tr>
+  <tr>
+    <td width=15% valign="top" style="text-align: right"><b>[x]</b></td>
+    <td>This works the same as the [QUIT] button.</td>
+  </tr>
+</table>
+
+&nbsp	
+<p>&nbsp;</p>	
+<center><img src="images/baseballStats - Hitting Update2.png" style="width:90%"></center>
+<p>The next screen (shown above) is displayed when you select the [Update] button, and is the one you will use to add 
+game stats for both existing and new players. For each player you checked off in the screen prior, a record has 
+already been placed on the Stats Update screen. You will also noticed that GAMEID has been filled with "ALE-10" 
+as was provided in the Team/Game input box, as well as a "1" also provided in the GP column. If you did not provide
+a GAMEID or a Games Played value in the Team Input Box, then GAMEID will be blank, and GP will have a "1" in it.</p>
 	
 <p>You will also notice that the very first column there is a lowercase "u". This is important, as you will later
 see that two things must be done in order to apply any update. That "u" must be present, and all records to update
-must be selected. More on that.	</p>
+must be selected.</p>
 
-<center><img src="images/baseballStats - Hitting Update3.png" style="width:100%"></center>
+<center><img src="images/baseballStats - Hitting Update3.png" style="width:90%"></center>
 <p>Next, enter the values you need to update. As you can see above, I have started to enter data for LeMahieu. To enter
-data, click on the column and you will be able to input to it. You only have to enter data that you have. All fields
+data, click on the column and you will be able to input into it. You only have to enter data that you have. All fields
 are initialized as ZEROES. Do this for all data you have.</p>
 	
-<p>Also, say you made a mistake and put in the wrong GameID. On this screen you can also change it. In the image above,
-GameID was changed to ALE-10. Same can be done with with GP. If you decide that you do not wish to update a player, 
-say you selected him/her by error, you can remove the "u" next to the name.</p>
+<p>Also, say you made a mistake and put in the wrong GameID. On this screen you can also change it. Same can be done with 
+with GP. If you decide that you do not wish to update a player, say you selected him/her by error, you can remove the "u" 
+next to the name.</p>
 
-<center><img src="images/baseballStats - Hitting Update4.png" style="width:100%"></center>
-<p>In the above, you can see that I have added a player, and decided to remove the "u" from the players I
-do not wish to update. In order for Zenity to pass the changes to the application, you must select them by
+<p>You can also add multiple game records for the same player. In the example above (and highlighted on orange) I added
+another set of game stats for DJ LeMahieu for gameID "ALE-11". Not only can you add new players that did not appear in the
+boxscore display screen, but you add multiple records for the same player. The application, when applying the updates,
+treats each update as a separate transaction.</p>
+
+<center><img src="images/baseballStats - Hitting Update4.png" style="width:90%"></center>
+<p>In the above, you can see that I have added a player (it can be a new player or existing one), and decided to remove the "u" 
+from the players I do not wish to update. In order for Zenity to pass the changes to the application, you must select them by
 using the standard keyboard-mouse selection technique [SHIFT] + Left-click on the mouse to select a range, or [CTRL]
-and left mouse-click to select/unselect individual records.</p>
+and left mouse-click to select/un-select individual records.</p>
+
+<p><i>NOTE: Zenity is the GUI that this application uses to process all menus, displays, and updates. Zenity is the new
+incarnation of gdialog. Both are GNOME GUI systems.</i></p>
 
 <p>To update a record, remember, you must have both the "u" in the "S" column (S=Select, u for Update), and the record must be 
-selected (highlighted in Orange as the above shows). To finalize all updates, click the [COMMIT] button to process all updates
-selected.</p>
+selected (highlighted in Orange as the above shows). To finalize all updates, click the [Commit] button to process all updates
+selected. To cancel all the updates before they are applied, either click on the [Cancel] or [QUIT] buttons (click on the [X] does
+the same thing).</p>
 
-<p>In the example above, there are several types of updates. First, Doe, J has a GAMEID of "ALE-10", and a games played (GP) of 3.
-In this case, even though I have assigned a gameid, I am updating 3 games worth of stats for J Doe. For each game played, GP is
-equal to 1. Since I am updating J Doe with 3 games worth of data, I must make this field 3. Another way to update this player is
-to enter each game separate. The application allows you to enter multiple, individual game records for the same player.</p>
+<p>In the example above, there are several types of updates. First, LeMahieu has a second record with GAMEID of "ALE-11".
+If I had to, I could have combined both games into one record, and changed GP from a 1 to a 2. You have the flexibility to update
+multiple players with multiple game data. The only limit currently is that you can only do 25 updates at once. A future release will
+remove this restriction. It was originally put into place because MLB has a 25-man roster restriction, which means each game
+can have no more than 25 players playing in one game. However, since the requirements changed to potentially allow multiple records
+per player, you may have more than 25 updates if you are behind in your updates. For now, you can do multiple updates.</p>
 	
-<p>Also, the only updates that will be done above is for LeMahieu, Encarnacion, Hicks and Doe. All have both a "u" and are highlighted.
-Both must be done in order for the update to take. Even though Torres has a "u" in the S column, he isn't selected. Zenity will
-not pass this record to the application. Judge and Urshela are highlighted, and will be passed to the application by Zenity.
-However, the application will check to see if they have the "u" set. If not, the application will ignore those records.</p>
+<p>In the above update screen, the only updates that will be done above is for LeMahieu, Judge, Urshela, and Torres. All have both a "u" 
+and are highlighted. Both must be done in order for the update to take. Even though Hicks has a "u" in the S column, he isn't selected. 
+Zenity will not pass this record to the application. Encarnacion is highlighted, and will be passed to the application by Zenity.
+However, the application will check to see if "u" set. If not, the application will ignore that record and any record without a "u".</p>
+
+<p>The reason that you need a "u" in the S-Column is that in a future release, this screen will also allow you to edit and delete
+records. For now, update is the only option available.</p>
 &nbsp
 &nbsp
+<p><b><u>Legend: Statistics Column Definitions</u></b>
+
+<p>The following details what each column means, and in some cases, how they are calculated:</p>
+&nbsp
+&nbsp
+<table style="width:95% border:0px">
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>GMSP (Games Played)</b></td>
+    <td>Number of games in which the player has appeared.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>AB (At Bats)</b></td>
+    <td>Number of trips to the plate in which the batter does not walk, get hit by a pitch, sacrifice (fly or bunt), or reach on interference.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>R (Runs Scored)</b></td>
+    <td>Number of runs scored.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>H (Hits)</b></td>
+    <td>Number of hits.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>RBI (Runs Batted In)</b></td>
+    <td>Number of times a run scores as a result of a batter’s plate appearance, not counting situations in which an error caused the run to score or the batter hit into a double play.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>2B (Doubles)</b></td>
+    <td>Number of doubles.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>3B (Triples)</b></td>
+    <td>Number of triples.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HR (Home Runs)</b></td>
+    <td>Number of home runs</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>BB (Base on Balls or Walks)</b></td>
+    <td>Total number of base-on-balls/walks (includes intentional walks).</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>K (Strikeouts)</b></td>
+    <td>Number of strikeouts.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>HBP (Hit By Pitches)</b></td>
+    <td>Number of times the batter reached base after being hit by a pitch.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>(Sacrifice: Flies & Bunts)</b></td>
+    <td>Any bunt in which there was a runner on base and less than two outs in which the batter was put out and at least one runner advanced or the number of times a batter’s fly out allowed a runner to tag up and score.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SB (Stolen Bases)</b></td>
+    <td>Number of successful stolen bases.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>ASB (Attempted Stolen Bases)</b></td>
+    <td>Total number of times player tried to steal a base (successful or not).</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>PO (Putouts)</b></td>
+    <td>Total number of outs performed in the field of play by any player other than the pitcher. This includes fly outs, tag outs, force outs, and all outs made by illegal plays. A putout goes into the record of the player most directly responsible for it occurring.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>AST (Assists)</b></td>
+    <td>Number of times when a player in a fielding position touches or throws a ball in play that results in a putout.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>E (Error)</b></td>
+    <td>Number of times when, in the official scorer's judgment, a fielder fails to convert an out on an average play, or if a fielder makes a poor play, allowing runners to advance on the bases or the hitter to reach a base safely.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>AVG (Batting Average)</b></td>
+    <td>Rate of hits per at bat, calculated as H/AB.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>SLG (Slugging Percentage)</b></td>
+    <td>Average number of total bases per at bat, calculated as Total Bases/AB [Total Bases = (H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4)]</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>OBP (On Base Percentage)</b></td>
+    <td>Rate at which the batter reaches base, calculated as (H+BB+HBP)/(AB+BB+HBP+SAC)</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>OPS (On Base Plus Slugging)</b></td>
+    <td>Combination of OBP and SLG, calculated as OBP+SLG.</td>
+  </tr>
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>FPCT (Fielding Percent)</b></td>
+    <td>A percentage or average of a defensive player's correct/errorless handling a batted or thrown ball, calculated as (putouts + assists) / (putouts + assists + errors)</td>
+  </tr>
+</table>
+<p></p>
 &nbsp	
+&nbsp		
 <center>
 <p></p>
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn">Baseball/Softball Statisical System</a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under 
 <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a> 
    <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="images/by-nc-nd.png">
@@ -121,6 +275,6 @@ However, the application will check to see if they have the "u" set. If not, the
 &nbsp
 &nbsp
 <p></p>
-<time itemprop="dateModified" datetime="November 19, 2021 23:16:45."><small>Last update on November 19, 2021 23:16:45 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="November 27, 2021 20:48:35."><small>Last update on November 27, 2021 20:48:35 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>

@@ -27,10 +27,10 @@ CREATE OR REPLACE VIEW <TEAMNAME>pitchingStatsView AS
 SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
 FORMAT(((ER*(3*<INNINGS>))/IP), 2) AS 'ERA', 
 FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
-FORMAT(((H+BB)/IP), 3) AS 'WHIP',
+FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP',
 FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
-FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/IP+2.6283), 2) AS 'FIP' 
+FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP' 
 FROM temppitchingStatsView 
 GROUP BY PLAYER; 
 
-SELECT * FROM <TEAMNAME>pitchingStatsView INTO OUTFILE '/var/lib/mysql-files/<TEAMNAME>-pitchingstats.file';
+SELECT * FROM <TEAMNAME>pitchingStatsView INTO OUTFILE '<SQLOUTDIR><TEAMNAME>-pitchingstats.file';

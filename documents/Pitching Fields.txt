@@ -2,20 +2,33 @@ Standard (Stats Kept Per Game)
 -------------------------------------------------------------------------------------------------------
 W (Wins): Number of wins.
 L (Losses): Number of losses.
-G (Games): Number of games in which the pitcher appeared.
+SV (Saves): Number of saves.
+SVO (Save Opportunities) Number of save opportunities.
+GP (Games Pitched): Number of games in which the pitcher appeared.
 GS (Games Started): Number of games the pitcher started.
 CG (Complete Games): Number of starts in which the pitcher recorded every out of an official game.
-SV (Saves): Number of saves.
 IP (Innings Pitched): Number of total innings pitched (.1 represents 1/3 of an inning, .2 represents 2/3 of an inning).
 TBF (Total Batters Faced): The number of batters a pitcher has faced, akin to plate appearances.
 H (Hits Allowed): Number of hits allowed by the pitcher.
-R (Runs Allowed): Number of runs allowed by the pitcher.
-ER (Earned Runs Allowed): Number of earned runs allowed by the pitcher, determined by the official scorer.
 BB (Walks): Number of walks allowed by the pitcher.
+K (Strikeouts): Number of strikeouts.
+RA (Runs Allowed): Number of runs allowed by the pitcher.
+ER (Earned Runs Allowed): Number of earned runs allowed by the pitcher, determined by the official scorer.
+HR (Homeruns): Number of homeruns allowed.
 HBP (Hit By Pitches): Number of hit batters.
+SF (SAC Flies): Number of sacrifice flies given that scored a run.
+ERA (Earned Run Average): The average number of earned runs a pitcher allows per 9 innings. ((ER*9)/IP)
+OPP-AVG (Batting Average Against): Rate of hits allowed per at bat, calculated as H/AB (AB=TBF-(BB+HBP)).
+WHIP (Walks Plus Hits per Inning Pitched): The average number of base runners allowed via hit or walk per inning.
+BABIP (Batting Average on Balls in Play): The rate at which the pitcher allows a hit when the ball is put in play, calculated as (H-HR)/(AB-K-HR+SF).
+FIP (Fielding Independent Pitching): An estimate of a pitcher’s ERA based on strikeouts, walks/HBP, and home runs allowed, assuming league average results on balls in play.
+
+
+
+
 WP (Wild Pitches): Number of wild pitches.
 BK (Balks): Number of balks.
-SO (Strikeouts): Number of strikeouts.
+
 
 Not In First Release (Note: Future updates may allow these fields to be optional based on a config file)
 --------------------------------------------------------------------------------------------------------

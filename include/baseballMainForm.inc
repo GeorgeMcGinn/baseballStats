@@ -19,7 +19,7 @@ ProcessTeamForm:
 		IF result = 1 AND stdbutton = "HELP" THEN
 			cmd = "zenity --text-info " + _
 			  	  " --title=" + CHR$(34) + "HELP/ABOUT: Baseball Stats" + CHR$(34) + _
-				  " --width=900 --height=800 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+				  " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
 			  	  " --filename=help/baseballTeamInput.html" + " 2> /dev/null"
 			SHELL (cmd)
 			GOTO ProcessTeamForm
@@ -27,7 +27,7 @@ ProcessTeamForm:
 		IF result <> 0 THEN
 			SHELL ("zenity --error --text=" + CHR$(34) + "(" + ProgramName$ + "): Main Form did not load. Program Terminated." + CHR$(34) + " --width=175 --height=100")
 			GOTO endPROG
-		END IF		
+		END IF
 ' *** Split out names of selected records into the Query array
 		REDIM Query(3)
 		Delim$ = "|"
@@ -40,5 +40,9 @@ ProcessTeamForm:
 			gamesPlayed = Query(3)
 		ELSE
 			gamesPlayed = "1"
-		END IF		
+		END IF	
+		IF teamName = "" THEN 
+			SHELL ("zenity --warning --text=" + CHR$(34) + "(" + ProgramName$ + "): Team Name Required - press OK to correct." + CHR$(34) + " --width=175 --height=100")		
+			GOTO ProcessTeamForm
+		END IF			
 	END IF
