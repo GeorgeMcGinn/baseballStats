@@ -18,7 +18,7 @@ The following directions should get you going quickly:
 1. Unzip the archive from GitHub to the baseballStats directory, or one of your choosing. All the sub-directories should not be changed, moved or deleted, except noted below.
 2. Move the 5 binary files from the *bin* directory to the main directory (baseballStats).
 3. Click on the program baseballStats. This is the main program that runs the application. If the binaries work in your version of Linux, and you have installed Zenity and have the MySQL server running, you should get a setup screen that looks like:
-(https://github.com/GeorgeMcGinn/baseballStats/tree/Master/.github/images/baseballStats%20-%20Insatall.png)
+![](https://github.com/GeorgeMcGinn/baseballStats/.github/images/baseballStats%20-%20Insatall.png)
 
 4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(*****PLEASE UPDATE*****)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
 ```bash 
