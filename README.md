@@ -1,6 +1,6 @@
 # Baseball/Softball Statistical System
 [![Licence CC NC-ND](https://img.shields.io/badge/License-CC%20NC--ND-green)](http://creativecommons.org/licenses/by-nc-nd/4.0/legalcode) ![Linux Only](https://img.shields.io/badge/Linux_Only-Any-critical) [![QB64](https://img.shields.io/badge/QB64-v2.0%2B-informational)](https://www.qb64.org/portal/)  [![MySQL](https://img.shields.io/badge/MySQL-v8.0%2B-critical)](https://dev.mysql.com/downloads/mysql/) ![Zenity](https://img.shields.io/badge/Zenity-v3.32%2B-critical) ![enscript](https://img.shields.io/badge/enscript-1.6%2B-informational)
-&nbsp;
+&nbsp;<br>
 This application tracks multiple team's pitching, hitting and defensive statistics. It is licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode). If you want to incorporate this into a commercial package or in some way sell it, please contact me at gbytes58@gmail.com.
 &nbsp;
 ## Requirements
@@ -20,7 +20,7 @@ The following directions should get you going quickly:
 3. Click on the program baseballStats. This is the main program that runs the application. If the binaries work in your version of Linux, and you have installed Zenity and have the MySQL server running, you should get a setup screen that looks like:
 ![baseballStats - Install.png](:/ea3a6a6fa3204cf0a8e8dcc9a1825de7)
 
-4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(***PLEASE UPDATE***)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
+4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(*****PLEASE UPDATE*****)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
 ```bash 
 sudo nano /etc/mysql/my.cnf
 ```
@@ -33,7 +33,9 @@ Then restart the mySQL server with:
 ```bash 
 service mysql restart
 ``` 
-(You may need to put sudo in front). &nbsp; &nbsp;
+(You may need to put sudo in front). 
+&nbsp; 
+&nbsp;
 ![baseballStats - Main Menu.png](:/9516af794c1c45d0bfbbc4e0da009b2a)
 
 5. If you get a setup screen and no messages about missing components in the  baseballstats.log file (located in the *logs* directory), and you created your SQL Region, you will get the main menu above. From here, you can now add baseball and sofrball data to your tables. 
