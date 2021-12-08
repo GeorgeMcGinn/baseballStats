@@ -1,3 +1,5 @@
+USE baseballTDB;
+
 DROP TABLE pitching;
 
 CREATE TABLE pitching (
@@ -11,7 +13,7 @@ CREATE TABLE pitching (
 	saveopportunities INT NOT NULL,
 	gamesstarted INT NOT NULL,
 	completedgames INT NOT NULL,
-	inningspitched DEC (4, 1) NOT NULL,
+	outspitched INT NOT NULL,
 	totalbattersfaced INT NOT NULL,
 	hits INT NOT NULL,
 	walks INT NOT NULL,

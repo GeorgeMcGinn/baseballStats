@@ -1,4 +1,4 @@
-REM $TITLE: pitchingStats.bas Version 0.0  09/22/2021 - Last Update: 11/21/2021
+REM $TITLE: pitchingStats.bas Version 0.24  09/22/2021 - Last Update: 12/07/2021
 _TITLE "pitchingStats.bas"
 ' pitchingStats.bas    Version 1.0  09/22/2021
 '-------------------------------------------------------------------------------------
@@ -51,13 +51,14 @@ _TITLE "pitchingStats.bas"
 '                      logic to process button clicks when doing updates.
 ' 11/21/21 v0.23 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
+' 12/07/21 v0.24 GJM - Updated CC licensing
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
 ' pitchingStats by George McGinn is licensed under a Creative Commons
-' Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
+' Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 '
-' Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+' Full License Link: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 '
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES

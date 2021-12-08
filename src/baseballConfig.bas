@@ -1,4 +1,4 @@
-REM $TITLE: baseballConfig.bas Version 1.0  09/30/2021 - Last Update: 11/21/2021
+REM $TITLE: baseballConfig.bas Version 0.17  09/30/2021 - Last Update: 12/07/2021
 _TITLE "baseballConfig.bas"
 ' baseballConfig.bas    Version 1.0  09/30/21
 '-------------------------------------------------------------------------------
@@ -28,13 +28,14 @@ _TITLE "baseballConfig.bas"
 ' 10/11/21 v0.15 GJM - Added number of innings to config file
 ' 11/21/21 v0.16 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
+' 12/07/21 v0.17 GJM - Updated CC licensing
 '-------------------------------------------------------------------------------
 '  Copyright ©2021 by George McGinn.  All Rights Reserved.
 '
-' baseballConfig.bas by George McGinn is licensed under a Creative Commons
-' Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
+' baseballConfig by George McGinn is licensed under a Creative Commons
+' Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 '
-' Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+' Full License Link: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 '
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES

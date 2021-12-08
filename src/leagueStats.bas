@@ -1,4 +1,4 @@
-REM $TITLE: leagueStats.bas Version 0.12  09/28/2021 - Last Update: 11/21/2021
+REM $TITLE: leagueStats.bas Version 0.18  09/28/2021 - Last Update: 12/07/2021
 _TITLE "leagueStats.bas"
 ' leagueStats.bas    Version 1.0  09/28/2021
 '-------------------------------------------------------------------------------------
@@ -40,13 +40,14 @@ _TITLE "leagueStats.bas"
 ' 10/15/21 v0.16 GJM - Corrected the ERA and IP logic to convert outs pitched now stored
 '                      in SQL tables to display correctly. SQL now calculates ERA.
 ' 11/21/21 v0.17 GJM - Add the output mySQL directory to the config.ini file
+' 12/07/21 v0.18 GJM - Added the HELP Screen to this module & updated CC licensing
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
 ' leagueStats by George McGinn is licensed under a Creative Commons
-' Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
+' Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 '
-' Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+' Full License Link: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 '
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES
@@ -124,24 +125,53 @@ ProcessSQLFile:
     CreateSQLViews
 
 ProcessResults:
+
+
+DisplayLeagueStandings:
 ' *** Show League Standings/Results
     DisplayLeagueResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF stdbutton = "HELP" THEN 
+		cmd = "zenity --text-info " + _
+              " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --filename=" + "help/baseballLeague.html" + " 2> /dev/null"
+        SHELL (cmd)
+        GOTO DisplayLeagueStandings
+    END IF
     IF stdbutton = "Report" THEN PrintLeagueStats
     IF stdbutton = "QUIT" THEN GOTO endPROG
-    
+
+DisplayLeagueBatting:    
 ' *** Show Team Batting Results
     DisplayTeamBattingResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF stdbutton = "HELP" THEN 
+		cmd = "zenity --text-info " + _
+              " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --filename=" + "help/baseballLeague.html" + " 2> /dev/null"
+        SHELL (cmd)
+        GOTO DisplayLeagueBatting
+    END IF
     IF stdbutton = "Report" THEN PrintTeamBattingStats
     IF stdbutton = "QUIT" THEN GOTO endPROG
-    
+
+DisplayLeaguePitching:    
 ' *** Show Team Pitching Results
     DisplayTeamPitchingResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF stdbutton = "HELP" THEN 
+		cmd = "zenity --text-info " + _
+              " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
+              " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
+              " --filename=" + "help/baseballLeague.html" + " 2> /dev/null"
+        SHELL (cmd)
+        GOTO DisplayLeaguePitching
+    END IF
     IF stdbutton = "Report" THEN PrintTeamPitchingStats
     IF stdbutton = "QUIT" THEN GOTO endPROG
     GOTO ProcessResults
@@ -231,10 +261,7 @@ SUB DisplayLeagueResults
     getleagueStatsFile
     
 ' *** Print the box scores from the SQL View File (Zenity or Terminal, Log File)
-    IF _FILEEXISTS("leaguestats.sh") THEN
-        cmd = "rm leaguestats.sh"
-        SHELL (cmd)
-    END IF
+    IF _FILEEXISTS("leaguestats.sh") THEN KILL "leaguestats.sh"
     f3% = FREEFILE
     cmd = ""
     OPEN "leaguestats.sh" FOR BINARY AS #f3%
@@ -249,7 +276,7 @@ SUB DisplayLeagueResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=530 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "      --extra-button=Report --extra-button=QUIT \" + CHR$(10)
+    tmpLine$ = "       --ok-label=NEXT --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
     PUT #f3%, , tmpLine$
     tmpLine$ = " --column=" + CHR$(34) + "TEAM" + CHR$(34) + _ 
                " --column=" + CHR$(34) + "W" + CHR$(34) + " --column=" + CHR$(34) + "L" + CHR$(34) + _
@@ -293,6 +320,7 @@ SUB DisplayLeagueResults
     PRINT #flog%, "result = "; result
     PRINT #flog%, ""
     
+    
 END SUB
 
 
@@ -309,14 +337,11 @@ SUB DisplayTeamBattingResults
     getBattingStatsFile
     
 ' *** Print the box scores from the SQL View File (Zenity or Terminal, Log File)
-    IF _FILEEXISTS("teambattingstats.sh") THEN
-        cmd = "rm teambattingstats.sh"
-        SHELL (cmd)
-    END IF
+    IF _FILEEXISTS("teambattingstats.sh") THEN KILL "teambattingstats.sh"
     f3% = FREEFILE
     cmd = ""
     OPEN "teambattingstats.sh" FOR BINARY AS #f3%
-    tmp1$ = "###  ": tmp2$ = "#.###  "
+    tmp1$ = "#,### ": tmp2$ = "#.###  "
     tmpLine$ = "#!/bin/sh" + CHR$(10)
     PUT #f3%, , tmpLine$
     tmpLine$ = " " + CHR$(10)
@@ -327,9 +352,9 @@ SUB DisplayTeamBattingResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=1250 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "      --extra-button=Report --extra-button=QUIT \" + CHR$(10)
+    tmpLine$ = "       --ok-label=NEXT --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "       --column=" + CHR$(34) + "TEAM" + CHR$(34) + " --column=" + CHR$(34) + "AB" + CHR$(34) + _
+    tmpLine$ = " --column=" + CHR$(34) + "TEAM" + CHR$(34) + " --column=" + CHR$(34) + "AB" + CHR$(34) + _
                " --column=" + CHR$(34) + "R" + CHR$(34) + " --column=" + CHR$(34) + "H" + CHR$(34) + _
                " --column=" + CHR$(34) + "RBI" + CHR$(34) + " --column=" + CHR$(34) + "2B" + CHR$(34) + _
                " --column=" + CHR$(34) + "3B" + CHR$(34) + " --column=" + CHR$(34) + "HR" + CHR$(34) + _
@@ -389,10 +414,7 @@ SUB DisplayTeamPitchingResults
     getpitchingStatsFile
     
 ' *** Print the box scores from the SQL View File (Zenity or Terminal, Log File)
-    IF _FILEEXISTS("teampitchingstats.sh") THEN
-        cmd = "rm teampitchingstats.sh"
-        SHELL (cmd)
-    END IF
+    IF _FILEEXISTS("teampitchingstats.sh") THEN KILL "teampitchingstats.sh"
     f3% = FREEFILE
     cmd = ""
     OPEN "teampitchingstats.sh" FOR BINARY AS #f3%
@@ -407,9 +429,9 @@ SUB DisplayTeamPitchingResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=1350 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "      --extra-button=Report --extra-button=QUIT \" + CHR$(10)
+    tmpLine$ = "       --ok-label=BACK --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "       --column=" + CHR$(34) + "TEAM" + CHR$(34) + _ 
+    tmpLine$ = " --column=" + CHR$(34) + "TEAM" + CHR$(34) + _ 
                " --column=" + CHR$(34) + "W" + CHR$(34) + " --column=" + CHR$(34) + "L" + CHR$(34) + _
                " --column=" + CHR$(34) + "SV" + CHR$(34) + " --column=" + CHR$(34) + "SVO" + CHR$(34) + _
                " --column=" + CHR$(34) + "GP" + CHR$(34) +  _
@@ -598,10 +620,7 @@ SUB PrintLeagueStats
     tmp1$ = "###  ": tmp2$ = "#.###  "
     IF PrintReport THEN
         ReportFile$ = "leaguestats.prn"
-        IF _FILEEXISTS(ReportFile$) THEN
-            cmd = "rm " + ReportFile$
-            SHELL (cmd)
-        END IF
+        IF _FILEEXISTS(ReportFile$) THEN KILL ReportFile$
         f4% = FREEFILE
         cmd = ""
         OPEN ReportFile$ FOR OUTPUT AS #f4%
@@ -679,10 +698,7 @@ SUB PrintTeamBattingStats
     tmp1$ = "###  ": tmp2$ = "#.###  "
     IF PrintReport THEN
         ReportFile$ = "teambattingstats.prn"
-        IF _FILEEXISTS(ReportFile$) THEN
-            cmd = "rm " + ReportFile$
-            SHELL (cmd)
-        END IF
+        IF _FILEEXISTS(ReportFile$) THEN KILL ReportFile$
         f4% = FREEFILE
         cmd = ""
         OPEN ReportFile$ FOR OUTPUT AS #f4%
@@ -751,10 +767,7 @@ SUB PrintTeamPitchingStats
     tmp1$ = "###  ": tmp2$ = "#.###  "
     IF PrintReport THEN
         ReportFile$ = "teampitchingstats.prn"
-        IF _FILEEXISTS(ReportFile$) THEN
-            cmd = "rm " + ReportFile$
-            SHELL (cmd)
-        END IF
+        IF _FILEEXISTS(ReportFile$) THEN KILL ReportFile$
         f4% = FREEFILE
         cmd = ""
         OPEN ReportFile$ FOR OUTPUT AS #f4%

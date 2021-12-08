@@ -7,12 +7,21 @@ FUNCTION SystemsCheck ()
     
     PRINT #flog%, "": PRINT #flog%, "*** Running on a LINUX System ***": PRINT #flog%, ""
 
+' *** If Zenity is not installed, set setupResult to FALSE
+	cmd = "dpkg -l 'zenity' | grep zenity"
+	result = pipecom(cmd, stdout, stderr)
+	IF MID$(stdout, 5, 6) <> "zenity" THEN
+		PRINT "***** Zenity is not installed. Please correct and rerun. Program Terminated. *****"
+		PRINT #flog%, "***** Zenity is not installed. Please correct and rerun. Program Terminated. *****"
+		setupResult = FALSE
+    END IF
+
 ' *** If the mysql-server is not installed, set setupResult to FALSE
     cmd = "dpkg -l 'mysql-server' | grep mysql-server"
     result = pipecom(cmd, stdout, stderr)
     IF MID$(stdout, 5, 12) <> "mysql-server" THEN
-        PRINT "***** mySQL must be installed and running. Please correct and rerun. Program Terminated. *****"
-        PRINT #flog%, "***** mySQL must be installed and running. Please correct and rerun. Program Terminated. *****"
+        PRINT "***** mySQL must be installed. Please correct and rerun. Program Terminated. *****"
+        PRINT #flog%, "***** mySQL must be installed. Please correct and rerun. Program Terminated. *****"
         setupResult = FALSE
     END IF
 
@@ -33,15 +42,6 @@ FUNCTION SystemsCheck ()
 		PRINT #flog%, "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
 		PrintReport = FALSE
 	END IF
-
-' *** If Zenity is not installed, set setupResult to FALSE
-	cmd = "dpkg -l 'zenity' | grep zenity"
-	result = pipecom(cmd, stdout, stderr)
-	IF MID$(stdout, 5, 6) <> "zenity" THEN
-		PRINT "***** Zenity is not installed. Program will use generic console/terminal for Input/Output. *****"
-		PRINT #flog%, "***** Zenity is not installed. Program will use generic console/terminal for Input/Output. *****"
-		setupResult = FALSE
-    END IF
 
     SystemsCheck = setupResult
 

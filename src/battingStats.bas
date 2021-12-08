@@ -1,4 +1,4 @@
-REM $TITLE: battingStats.bas Version 0.12  08/09/2021 - Last Update: 11/21/2021
+REM $TITLE: battingStats.bas Version 0.25  08/09/2021 - Last Update: 12/07/2021
 _TITLE "battingStats.bas"
 ' battingStats.bas    Version 1.0  08/09/2021
 '-------------------------------------------------------------------------------------
@@ -47,13 +47,14 @@ _TITLE "battingStats.bas"
 ' 11/19/21 v0.23 GJM - Cosmetic changes made to display GUI's.
 ' 11/21/21 v0.24 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
+' 12/07/21 v0.25 GJM - Updated CC licensing
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
 ' battingStats by George McGinn is licensed under a Creative Commons
-' Attribution-NonCommercial-NoDerivatives 4.0 International. (CC BY-NC-ND 4.0)
+' Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 '
-' Full License Link: https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode
+' Full License Link: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
 '
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES
