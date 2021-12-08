@@ -18,7 +18,7 @@ The following directions should get you going quickly:
 1. Unzip the archive from GitHub to the baseballStats directory, or one of your choosing. All the sub-directories should not be changed, moved or deleted, except noted below.
 2. Move the 5 binary files from the *bin* directory to the main directory (baseballStats).
 3. Click on the program baseballStats. This is the main program that runs the application. If the binaries work in your version of Linux, and you have installed Zenity and have the MySQL server running, you should get a setup screen that looks like:
-![](https://github.com/GeorgeMcGinn/baseballStats/.github/images/baseballStats%20-%20Insatall.png)
+![githubstrip](https://github.com/GeorgeMcGinn/baseballStats/blob/Master/.github/images/baseballStats%20-%20Main%20Menu.png?raw=true)
 
 4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(*****PLEASE UPDATE*****)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
 ```bash 
@@ -34,8 +34,10 @@ Then restart the mySQL server with:
 service mysql restart
 ``` 
 
-(You may need to put sudo in front). &nbsp; &nbsp;
-![baseballStats - Main Menu.png](:/_resources/)
+(You may need to put sudo in front). <br><br>
+&nbsp;
+&nbsp;
+![githubstrip](https://github.com/GeorgeMcGinn/baseballStats/blob/Master/.github/images/baseballStats%20-%20Install.png?raw=true)
 
 5. If you get a setup screen and no messages about missing components in the  baseballstats.log file (located in the *logs* directory), and you created your SQL Region, you will get the main menu above. From here, you can now add baseball and sofrball data to your tables. 
 6. The system has an extensive HELP file system, which you should familiarize yourself with.
@@ -89,18 +91,14 @@ Find QB64 on Discord: http://discord.qb64.org
 
 * * *
 
- <center>
-<p></p>
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
 <a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
-<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
- <br><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0</a>
- <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1">
- <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1">
- <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1">
- <img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1"><br/>
- Questions or permissions beyond the scope of this license may be available at <a href="mailto:gjmcginn@icloud.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
-</center>
+<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0 </a>  
+
+![githubstrip](https://github.com/GeorgeMcGinn/baseballStats/blob/Master/.github/images/CC%20BY-NC-SA.png?raw=true)
+
+<br>
+Questions or permissions beyond the scope of this license may be available at <a href="mailto:gjmcginn@icloud.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
 
 &nbsp;
 * * *
