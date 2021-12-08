@@ -1,6 +1,6 @@
 # Baseball/Softball Statistical System
 [![Licence CC NC-ND](https://img.shields.io/badge/License-CC%20NC--ND-green)](http://creativecommons.org/licenses/by-nc-nd/4.0/legalcode) ![Linux Only](https://img.shields.io/badge/Linux_Only-Any-critical) [![QB64](https://img.shields.io/badge/QB64-v2.0%2B-informational)](https://www.qb64.org/portal/)  [![MySQL](https://img.shields.io/badge/MySQL-v8.0%2B-critical)](https://dev.mysql.com/downloads/mysql/) ![Zenity](https://img.shields.io/badge/Zenity-v3.32%2B-critical) ![enscript](https://img.shields.io/badge/enscript-1.6%2B-informational)
-&nbsp;
+&nbsp;<br>
 This application tracks multiple team's pitching, hitting and defensive statistics. It is licensed under the [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International](https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode). If you want to incorporate this into a commercial package or in some way sell it, please contact me at gbytes58@gmail.com.
 &nbsp;
 ## Requirements
