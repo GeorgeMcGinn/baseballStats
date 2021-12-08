@@ -1,26 +1,26 @@
 <!--
-       PROGRAM: baseballTeamInput.html
+       PROGRAM: baseballLeague.html
         AUTHOR: George McGinn
                 <gjmcginn@icloud.com>
 
-  DATE WRITTEN: 10/10/2021
+  DATE WRITTEN: 12/07/2021
        VERSION: 1.0
        PROJECT: Baseball/Softball Statistics System
 
-   DESCRIPTION: HELP File for using the Team Input box.
+   DESCRIPTION: HELP File for using the League Stats function.
 
  Written by George McGinn
  Copyright (C)2021 by George McGinn - All Rights Reserved.
- Version 1.0 - Created 10/10/2021
+ Version 1.0 - Created 11/28/2021
 
 
  CHANGE LOG
 -------------------------------------------------------------------------------------
- 10/10/21 v1.00 GJM - New Program.
+ 12/07/2021 v1.00 GJM - New Program.
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
- baseballTeamInput.html by George McGinn is licensed under a Creative Commons
+ baseballLeague.html by George McGinn is licensed under a Creative Commons
  Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
 
  Full License Link: https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
@@ -51,47 +51,57 @@ td {
 <body style="background-color:#404040; color:#f8f8f8">
 <center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
 &nbsp;
-<p style="color:#f8f8f8;"><h4><u>TEAM INPUT PROCESSING</u></h4></p>
-<p>This form collects the Team Name, and optional fields of GameID and Games Played for processing both the
-batting and pitching modules.</p>
+<p style="color:#f8f8f8;"><h4><u>LEAGUE DISPLAYS</u></h4>
+<p>The League Display screens display league stats for each team. This accumulates existing
+team, hitting and pitching data and produces a League Standings, Hitting Stats and Pitching
+Stats per team.</p>
+
+<p>No updates are done. This is to show how all the teams are doing compared to each other.
+To advance from one display to another, click on the [NEXT] button. The [BACK] button appears
+on the last screen displayed, and will take you back to the League Standings display.
+To exit out of League Displays, click on [QUIT].</p>
+
+<p>The following shows each screen, and what it shows:</p>
+
+&nbsp;
+&nbsp;
+<p><b><u>League Standings Display</u></b>
+&nbsp;
+<center><img src="images/baseballStats - League1.png" style="width:60%"></center>
 	
-<p>The first thing you are presented is with a Team/Game Input Box. This box is used whenever
-you need to select a team. Other fields include a gameID and number of games.</p>
+<p>The screen above shows what the League Standings display looks like. The teams are ordered
+based on MLB's criteria of win percentage (WPCT) rather than Games Behind. </p>
 
-<center><img src="images/baseballStats - Team Input Box.png" style="width:60%"></center>
+<p>Games Behind is not always an accurate measure of the distance between two teams. It is the average 
+of the number of games a team trails the percentage leader in the win column and the number of games 
+that team trails the leader in the loss column. This is why win percentage (WPCT) is used by MLB and
+by this application. A future release may incorporate Games Behind, but it will be for display purposes
+only.</p>
 
-<p><b><u>Team Input Fields</u></b></p>
-		
-<p>There are 3 fields (as shown above) that are used to create the SQL SELECT statements:</p>
-<table style="width:90%">
-  <tr>
-    <td vwidth=20% align="top" style="text-align: right"><b>Team Name:</b></td>
-    <td>Selects the team that you want to process. <b>(Required)</b></td>
-  </tr>
-  <tr>
-    <td width=20% valign="top" style="text-align: right"><b>Game ID:</b></td>
-    <td>This field, used for updating purposes, allows you to provide a game 
-        number/identifier for use when updating a boxscore. <b>(Optional)</b></td>
-  </tr>
-  <tr>
-    <td width=20% valign="top" style="text-align: right"><b>Games Played:</b></td>
-    <td>This field, used for updating purposes, allows you to enter more than one 
-        game of stats. <b>(Optional - if not provided, value defaults to 1)</b></td>
-  </tr>
-</table>
+<p>For a more detailed explanation about Games Behind, you can read Milton Eisner's 
+<a href="http://research.sabr.org/journals/a-truer-measure-of-games-behind">"A Truer Measure of ‘Games Behind’"</a> 
+article.</p>
+	
 &nbsp;
 &nbsp;
-<p>If Team Name is missing, The program will display a warning message box (below) and re-display the form again, and clearing all values 
-   previously entered. </p>
-<center><img src="images/baseballStats - Team Name Missing.png" style="width:40%"></center>
-
-<p>If you provide a team name that does not exist in the SQL Table, you will recieve an empty boxscore display for either 
-   the hitting or pitching statistics. This is done on purpose as this may be the first time you are adding a team. It is up to you to make 
-   sure the team name is correct, for once updated, in this release, there is only one way to change it in the SQL Table - using mySQL Workbench 
-   to manually change your table values. A future release will give you individual record editing/deleting abilities. For now, become familiar 
-   with either "MySQL Workbench" or "dbeaver-ce" (Community Edition), both are free packages and available for Linux distro's.</p>
+<p><b><u>League Batting Display</u></b>
 &nbsp;
-<center><img src="images/baseballStats - Team Input Box1.png" style="width:60%"></center>
+<center><img src="images/baseballStats - League2.png" style="width:90%"></center>
+	
+<p>The screen above shows the totals for each team's offensive and defensive stats. The teams are listed
+based on their OPS. As with any display screen, if you want to rank the teams by batting average or another 
+stat, just click on that column.</p>
+
+&nbsp;
+&nbsp;
+<p><b><u>League Pitching Display</u></b>
+&nbsp;
+<center><img src="images/baseballStats - League3.png" style="width:90%"></center>
+	
+<p>The screen above shows the totals for each team's pitching stats. The teams are listed
+based on their Wins and Loss. As with any display screen, if you want to rank the teams, say by
+ERA or another stat, just click on that column.</p>
+
 &nbsp;
 &nbsp;
 &nbsp;
@@ -112,3 +122,5 @@ Questions or permissions beyond the scope of this license may be available at <a
 <time itemprop="dateModified" datetime="December 7, 2021 21:47:31."><small>Last update on December 7, 2021 21:47:31 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>
+
+
