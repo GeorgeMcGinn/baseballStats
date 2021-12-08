@@ -33,10 +33,9 @@ Then restart the mySQL server with:
 ```bash 
 service mysql restart
 ``` 
-(You may need to put sudo in front). 
-&nbsp; 
-&nbsp;
-![baseballStats - Main Menu.png](:/9516af794c1c45d0bfbbc4e0da009b2a)
+
+(You may need to put sudo in front). &nbsp; &nbsp;
+![baseballStats - Main Menu.png](:/_resources/)
 
 5. If you get a setup screen and no messages about missing components in the  baseballstats.log file (located in the *logs* directory), and you created your SQL Region, you will get the main menu above. From here, you can now add baseball and sofrball data to your tables. 
 6. The system has an extensive HELP file system, which you should familiarize yourself with.
