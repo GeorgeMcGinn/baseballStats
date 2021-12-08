@@ -20,7 +20,7 @@ The following directions should get you going quickly:
 3. Click on the program baseballStats. This is the main program that runs the application. If the binaries work in your version of Linux, and you have installed Zenity and have the MySQL server running, you should get a setup screen that looks like:
 ![baseballStats - Install.png](:/ea3a6a6fa3204cf0a8e8dcc9a1825de7)
 
-4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(***PLEASE UPDATE***)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
+4. This is the initial setup of the baseballStats system. This process will create the databases and tables that you put into the input boxes, along with your mySQL USERID and PASSWORD. Update everything that asks you to ``(*****PLEASE UPDATE*****)``. When you click [CREATE], the application will execute all the SQL statements required to setup your system. Notice that the SQL OUTPUT DIRECTORY is already populated with `/var/lib/mysql-files`. This is the default set up by mySQL, and does not have to be changed. Make sure that you have the correct privileges set up. If you get the error when running the application ***(ERROR 1290 (HY000): The MySQL server is running with the --secure-file-priv option so it cannot execute this statement)***, do the following:
 ```bash 
 sudo nano /etc/mysql/my.cnf
 ```
@@ -33,6 +33,7 @@ Then restart the mySQL server with:
 ```bash 
 service mysql restart
 ``` 
+
 (You may need to put sudo in front). &nbsp; &nbsp;
 ![baseballStats - Main Menu.png](:/_resources/)
 
