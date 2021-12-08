@@ -93,10 +93,7 @@ Find QB64 on Discord: http://discord.qb64.org
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
 <a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
-<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0 </a>  
-
-![githubstrip](https://github.com/GeorgeMcGinn/baseballStats/blob/Master/.github/images/CC%20BY-NC-SA.png?raw=true)
-
+<a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0</a>
 <br>
 Questions or permissions beyond the scope of this license may be available at <a href="mailto:gjmcginn@icloud.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
 
