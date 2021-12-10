@@ -1,32 +1,9 @@
 /*
--- Query: SELECT * FROM baseballDB.batting
--- Date: 2021-09-29 22:28
+-- Query: SELECT * FROM baseballTDB.batting
+-- Date: 2021-12-08 16:28
 */
 
 USE baseballTDB;
-
-CREATE TABLE batting (
-	teamName VARCHAR(50) NOT NULL,
-	gameID VARCHAR(10) NOT NULL,
-	games INT NOT NULL,
-	playerName VARCHAR(100) NOT NULL,
-	atbats INT NOT NULL,
-	runs INT NOT NULL,
-	hits INT NOT NULL,
-	rbis INT NOT NULL,
-	doubles INT NOT NULL,
-	triples INT NOT NULL,
-	homeruns INT NOT NULL,
-	walks INT NOT NULL,
-	strikeouts INT NOT NULL,
-	sacrifices INT NOT NULL,
-	stolenbases INT NOT NULL,
-	attstolenbases INT NOT NULL,
-	hitbypitch INT NOT NULL,
-	putouts INT NOT NULL,
-	assists INT NOT NULL,
-	errors INT NOT NULL
-	);
 
 INSERT INTO batting 
 VALUES ("Redsox","ALE-01",1,"Betts, M",4,2,1,1,0,0,1,1,0,0,0,0,0,1,0,0),
