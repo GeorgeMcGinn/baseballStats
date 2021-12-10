@@ -16,9 +16,9 @@ I have provided binaries compiled in Ubuntu 20.04 LTS, and all the source code i
 
 If you run your applications from a `bin` like directory, the only directories/sub-directories with their files you will need are:
 - Main directory (files only) and the following sub-directory with files:
-Help directory and all its sub-directories
-Logs directory
-SQL directory
+- Help directory and all its sub-directories
+- Logs directory
+- SQL directory
 
 The rest of the directories are either needed to complete the compiles (like `include`), or have a future use in documentation for the general public.
 
