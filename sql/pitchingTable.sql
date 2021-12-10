@@ -1,32 +1,9 @@
 /*
--- Query: SELECT * FROM baseballDB.pitching
--- Date: 2021-09-29 22:50
+-- Query: SELECT * FROM baseballTDB.pitching
+-- Date: 2021-12-08 16:28
 */
 
 USE baseballTDB;
-
-CREATE TABLE pitching (
-	teamName VARCHAR(50) NOT NULL,
-	gameID VARCHAR(10) NOT NULL,
-	games INT NOT NULL,
-	playerName VARCHAR(100) NOT NULL,
-	wins INT NOT NULL,
-	loses INT NOT NULL,
-	saves INT NOT NULL,
-	saveopportunities INT NOT NULL,
-	gamesstarted INT NOT NULL,
-	completedgames INT NOT NULL,
-	outspitched INT NOT NULL,
-	totalbattersfaced INT NOT NULL,
-	hits INT NOT NULL,
-	walks INT NOT NULL,
-	strikeouts INT NOT NULL,
-	runsallowed INT NOT NULL,
-	earnedruns INT NOT NULL,
-	homeruns INT NOT NULL,
-	hitbypitch INT NOT NULL,
-	sacrificeflies INT NOT NULL
-	);
 	
 INSERT INTO pitching 
 VALUES ("Redsox","ALE-01",1,"Sale, C",1,0,0,0,1,1,27,44,13,4,14,9,9,3,0,0),
