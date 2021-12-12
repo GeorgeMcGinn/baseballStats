@@ -15,7 +15,7 @@ For now, users of QB64 need to have any version of Linux, install Zenity, and in
 I have provided binaries compiled in Ubuntu 20.04 LTS, and all the source code is in the `src` directory. To compile for you version of Linux if the binaries do not work, move the source to the main directory of this extract, and compile all five programs. 
 
 If you run your applications from a `bin` like directory, the only directories/sub-directories with their files you will need are:
-- Main directory (files only) and the following sub-directory with files
+- Main directory (files only) and the following sub-directory with files:
 - Help directory and all its sub-directories
 - Logs directory
 - SQL directory
