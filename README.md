@@ -128,11 +128,15 @@ Find QB64 on Discord: http://discord.qb64.org
 <a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0</a>
 <br>
-
+<br>
+Ubuntu Fonts distributed with this application are licensed by the <a href="hhttps://ubuntu.com/legal/font-licence">Ubuntu font licence</a> or as available in the `UBUNTU FONT LICENSE Version 1.0.md` file included with this distribution.
+<br>
+<br>
 Questions or permissions beyond the scope of this license may be available at <a href="mailto:gbytes58@gmail.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
+<br>
 <br>
 
 * * *
 <br>
 
-***Last Update: 12/09/2021 18:48***
+***Last Update: 12/11/2021 21:08***

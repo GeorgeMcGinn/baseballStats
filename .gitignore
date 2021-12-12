@@ -6,9 +6,4 @@ baseballConfig
 leagueStats
 leagueDebug
 pipestderr
-config.old
-documents/Hitting Fields.txt
-documents/Pitching Fields.txt
-updatepitchingstats.sh
-pitchingstats.sh
 logs/baseballstats.log
