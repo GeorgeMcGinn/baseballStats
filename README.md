@@ -125,11 +125,20 @@ Find QB64 on Discord: http://discord.qb64.org
 <a name="Licensing"></a>
 # Licensing Information
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn/baseballStats">Baseball/Softball Statisical System</a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats"><b>Baseball/Softball Statisical System</b></a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0</a>
 <br>
 <br>
-Ubuntu Fonts distributed with this application are licensed by the <a href="hhttps://ubuntu.com/legal/font-licence">Ubuntu font licence</a> or as available in the `UBUNTU FONT LICENSE Version 1.0.md` file included with this distribution.
+<b>Ubuntu Fonts</b> distributed with this application are licensed by the <a href="https://ubuntu.com/legal/font-licence">Ubuntu font licence</a> or as available in the <code>Ubuntu Fonts License.md</code> file included with this distribution.
+<br>
+<br>
+Licenses for <b>QB64</b> can be found at their GitHub page: <a href="https://github.com/QB64Team/qb64/blob/development/licenses/COPYING.TXT">QB64 Licensing Information</a>
+<br>
+<br>
+<b>MySQL Community Edition 8.0</b> is licensed under the GNU General Public License Version 2.0, June 1991, and can be found at <a href="https://downloads.mysql.com/docs/licenses/mysqld-8.0-gpl-en.pdf">MySQL 8.0 Licensing Information User Manual</a>
+<br>
+<br>
+<b>Zenity</b> is licensed under the GNU Lesser General Public License v2.1, February 1999, and can be found at <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a>
 <br>
 <br>
 Questions or permissions beyond the scope of this license may be available at <a href="mailto:gbytes58@gmail.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
@@ -139,4 +148,4 @@ Questions or permissions beyond the scope of this license may be available at <a
 * * *
 <br>
 
-***Last Update: 12/11/2021 21:08***
+***Last Update: 12/11/2021 21:35***

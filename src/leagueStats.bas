@@ -1,5 +1,5 @@
-REM $TITLE: leagueStats.bas Version 0.18  09/28/2021 - Last Update: 12/07/2021
-_TITLE "leagueStats.bas"
+REM $TITLE: leagueStats.bas Version 0.19  09/28/2021 - Last Update: 12/11/2021
+_TITLE "League Statistics - Version 0.19  09/28/2021 - Last Update: 12/11/2021"
 ' leagueStats.bas    Version 1.0  09/28/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: leagueStats.bas
@@ -41,6 +41,9 @@ _TITLE "leagueStats.bas"
 '                      in SQL tables to display correctly. SQL now calculates ERA.
 ' 11/21/21 v0.17 GJM - Add the output mySQL directory to the config.ini file
 ' 12/07/21 v0.18 GJM - Added the HELP Screen to this module & updated CC licensing
+' 12/11/21 v0.19 GJM - Created a screen display when enscript isn't installed (This
+'                      is required if application is started from an ICON or directly
+'                      from Files or a File Manager).
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -61,8 +64,10 @@ _TITLE "leagueStats.bas"
 ' *** Preprocessing Section
 '
 '$DYNAMIC
-$CONSOLE:ONLY
+''$CONSOLE:ONLY
 OPTION BASE 1
+SCREEN _NEWIMAGE(1300, 600, 32)
+$SCREENHIDE
 
 DECLARE LIBRARY
     FUNCTION floor## (BYVAL num AS _FLOAT)
@@ -140,7 +145,7 @@ DisplayLeagueStandings:
         SHELL (cmd)
         GOTO DisplayLeagueStandings
     END IF
-    IF stdbutton = "Report" THEN PrintLeagueStats
+    IF stdbutton = "Report" THEN PrintLeagueStats: GOTO DisplayLeagueStandings
     IF stdbutton = "QUIT" THEN GOTO endPROG
 
 DisplayLeagueBatting:    
@@ -156,7 +161,7 @@ DisplayLeagueBatting:
         SHELL (cmd)
         GOTO DisplayLeagueBatting
     END IF
-    IF stdbutton = "Report" THEN PrintTeamBattingStats
+    IF stdbutton = "Report" THEN PrintTeamBattingStats: GOTO DisplayLeagueBatting
     IF stdbutton = "QUIT" THEN GOTO endPROG
 
 DisplayLeaguePitching:    
@@ -172,7 +177,7 @@ DisplayLeaguePitching:
         SHELL (cmd)
         GOTO DisplayLeaguePitching
     END IF
-    IF stdbutton = "Report" THEN PrintTeamPitchingStats
+    IF stdbutton = "Report" THEN PrintTeamPitchingStats: GOTO DisplayLeaguePitching
     IF stdbutton = "QUIT" THEN GOTO endPROG
     GOTO ProcessResults
 
@@ -650,17 +655,23 @@ SUB PrintLeagueStats
         cmd = "enscript -B " + ReportFile$
         SHELL (cmd)
     ELSE
-        CLS
-        PRINT "League Standings: "
-        PRINT ""
-        PRINT "Team              W    L    ERA   BAVG   SLUG   FPCT   WPCT"
-        PRINT "---------------- ---  ---  -----  -----  -----  -----  -----"
+		SCREEN _NEWIMAGE(600, 600, 32) 
+		f& = _LOADFONT(fontfile$, 17, style$)
+		_FONT f& 
+		CLS , BGColor
+		COLOR FGColor, BGColor
+		_TITLE "League Standings"
+		_SCREENSHOW
+		PRINT: PRINT "  League Standings"
+        PRINT: PRINT
+        PRINT "  Team              W    L    ERA   BAVG   SLUG   FPCT   WPCT"
+        PRINT "  ---------------- ---  ---  -----  -----  -----  -----  -----"
         FOR x = 1 TO nbrRows
             cols = 0
             teamName = Answer(x, 1)
-            PRINT USING "\               \"; teamName,
+            PRINT USING "  \               \"; teamName,
             FOR y = 2 TO nbrCols
-                nbr = VAL(Answer(x, cols))
+                nbr = VAL(Answer(x, y))
                 IF y < (LEAGUE.ERA - LEAGUE.BYPASS) THEN
                     PRINT USING tmp1$; nbr,
                 ELSE
@@ -673,6 +684,11 @@ SUB PrintLeagueStats
             NEXT y
             PRINT ""
         NEXT x
+		FOR x = 1 to (26 - nbrRows): PRINT: NEXT x
+		PRINT "  Press any key to continue ..."
+		SLEEP
+		CLS , BGColor
+		_SCREENHIDE
     END IF
 
 END SUB
@@ -723,14 +739,20 @@ SUB PrintTeamBattingStats
         cmd = "enscript -B -r -fCourier8 " + ReportFile$
         SHELL (cmd)
     ELSE
-        CLS
-        PRINT "Batting Stats by Team"
-        PRINT ""
-        PRINT "Team              AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT"
-        PRINT "---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----"
+		SCREEN _NEWIMAGE(1250, 600, 32) 
+		f& = _LOADFONT(fontfile$, 17, style$)
+		_FONT f& 
+		CLS , BGColor
+		COLOR FGColor, BGColor
+		_TITLE "League Standings - Batting/Fielding Statistics by Team"
+		_SCREENSHOW
+        PRINT: PRINT "  Batting/Fielding Stats by Team"
+        PRINT: PRINT
+        PRINT "  Team              AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT"
+        PRINT "  ---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----"
         FOR x = 1 TO nbrRows
             teamName = Answer(x, 1)
-            PRINT USING "\               \"; teamName,
+            PRINT USING "  \               \"; teamName,
             FOR y = 2 TO nbrCols
                 nbr = VAL(Answer(x, y))
                 IF y < 18 THEN
@@ -741,6 +763,11 @@ SUB PrintTeamBattingStats
             NEXT y
             PRINT ""
         NEXT x
+		FOR x = 1 to (26 - nbrRows): PRINT: NEXT x
+		PRINT "  Press any key to continue ..."
+		SLEEP
+		CLS , BGColor
+		_SCREENHIDE
     END IF
 
 
@@ -801,14 +828,20 @@ SUB PrintTeamPitchingStats
         cmd = "enscript -B -r -fCourier8 " + ReportFile$
         SHELL (cmd)
     ELSE
-        CLS
-        PRINT "Pitching Stats by Team "
-        PRINT ""
-        PRINT "Team              W    L    SV  SVO   GP   GC    IP   TBP   H    BB   K    RA   ER   HR  HBP   SF   ERA  OP-AVG   WHIP  BABIP   FIP "
-        PRINT "---------------- ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  ----- ------  -----  -----  -----"
+		SCREEN _NEWIMAGE(1250, 600, 32) 
+		f& = _LOADFONT(fontfile$, 17, style$)
+		_FONT f& 
+		CLS , BGColor
+		COLOR FGColor, BGColor
+		_TITLE "League Standings - Pitching Statistics by Team"
+		_SCREENSHOW
+        PRINT: PRINT "  Pitching Stats by Team "
+        PRINT: PRINT
+        PRINT "  Team              W    L    SV  SVO   GP   GC    IP   TBP   H    BB   K    RA   ER   HR  HBP   SF   ERA  OP-AVG   WHIP  BABIP   FIP "
+        PRINT "  ---------------- ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  ----- ------  -----  -----  -----"
         FOR x = 1 TO nbrRows
             teamName = Answer(x, 1)
-            PRINT USING "\               \"; teamName,
+            PRINT USING "  \               \"; teamName,
             FOR y = 2 TO nbrCols
                 nbr = VAL(Answer(x, y))
                 IF nbr < 0 THEN nbr = 0.000: (Answer(x, y)) = "0.00"
@@ -828,6 +861,11 @@ SUB PrintTeamPitchingStats
             NEXT y
             PRINT ""
         NEXT x
+		FOR x = 1 to (26 - nbrRows): PRINT: NEXT x
+		PRINT "  Press any key to continue ..."
+		SLEEP
+		CLS , BGColor
+		_SCREENHIDE
     END IF
 
 END SUB

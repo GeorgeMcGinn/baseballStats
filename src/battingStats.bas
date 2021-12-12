@@ -1,5 +1,5 @@
-REM $TITLE: battingStats.bas Version 0.25  08/09/2021 - Last Update: 12/07/2021
-_TITLE "battingStats.bas"
+REM $TITLE: battingStats.bas Version 0.26  08/09/2021 - Last Update: 12/10/2021
+_TITLE "Batting/Fielding Statistics Version 0.26  08/09/2021 - Last Update: 12/10/2021"
 ' battingStats.bas    Version 1.0  08/09/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: battingStats.bas
@@ -48,6 +48,9 @@ _TITLE "battingStats.bas"
 ' 11/21/21 v0.24 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
 ' 12/07/21 v0.25 GJM - Updated CC licensing
+' 12/10/21 v0.26 GJM - Created a screen display when enscript isn't installed (This
+'                      is required if application is started from an ICON or directly
+'                      from Files or a File Manager).
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -67,7 +70,9 @@ _TITLE "battingStats.bas"
 ' *** Preprocessing Section
 '
 '$DYNAMIC
-$CONSOLE:ONLY
+''$CONSOLE:OFF
+SCREEN _NEWIMAGE(1300, 600, 32)
+$SCREENHIDE
 OPTION BASE 1
 
 ON ERROR GOTO ehandler
@@ -564,13 +569,17 @@ SUB PrintStats
 		cmd = "enscript -B -r -fCourier8 " + ReportFile$
 		SHELL (cmd)
 	ELSE
-		PRINT "Batting: " + teamName
-		PRINT
-		PRINT "Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT"
-		PRINT "---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----"
+		CLS , BGColor
+		COLOR FGColor, BGColor
+		_TITLE teamName + " Batting/Fielding Statistics"
+		_SCREENSHOW
+		PRINT: PRINT "  Batting: " + teamName
+		PRINT: PRINT
+		PRINT "  Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT"
+		PRINT "  ---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----"
 		FOR x = 1 TO nbrRows
 			playerName = Answer(x, 1)
-			PRINT USING "\               \"; playerName,
+			PRINT USING "  \               \"; playerName,
 			FOR y = 2 TO nbrCols
 				nbr = VAL(Answer(x, y))
 				IF y < 19 THEN
@@ -581,6 +590,11 @@ SUB PrintStats
 			NEXT y
 			PRINT
 		NEXT x	
+		FOR x = 1 to (26 - nbrRows): PRINT: NEXT x
+		PRINT "  Press any key to continue ..."
+		SLEEP
+		CLS , BGColor
+		_SCREENHIDE
 	END IF
 
 END SUB

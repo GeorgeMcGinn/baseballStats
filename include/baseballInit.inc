@@ -16,7 +16,7 @@ DIM SHARED AS INTEGER result, cntargs, PrintReport, setLeague
 DIM SHARED AS STRING retcode, OStype
 DIM SHARED flog%
 DIM SHARED AS INTEGER lenstr, nbrRows, nbrCols, nbrLines, nbrUpdates
-DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ARG7$, ProgramName$
+DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ARG7$, ProgramName$, fontfile$, style$
 
 '----------------------------------------------------
 ' *** Variables for Baseball Stats
@@ -30,7 +30,6 @@ DIM SHARED nbr_innings$
 '
 DIM SHARED AS STRING cmd, stdout, stderr, stdbutton, stdmenu
 
-
 '----------------------------------------------------
 ' *** Setup NUMERIC Check Table
 '
@@ -43,6 +42,12 @@ NEXT I
 ' *** Initialize GLOBAL Variables
 '
 nbrRows = 0: nbrCols = 0
+
+'-----------------------------------------------------
+' *** Define Foreground & Background Color Values
+'
+CONST BGColor~& = 4282400832  ' *** HEX$(FFF8F8F8)
+CONST FGColor~& = 4293980400  ' *** HEX$(FF404040)
 
 '----------------------------------------------------
 ' *** DEFINE GLOBAL CONSTANT PITCHING HEADER POINTERS
@@ -127,6 +132,12 @@ nbr_innings$ = "*** PLEASE UPDATE ***"
 
 ' *** Populate ProgramName$
 ProgramName$ = MID$(COMMAND$(0), _INSTRREV(COMMAND$(0), "/") + 1)
+
+' *** Font/Screen Setup
+fontfile$ = "fonts/UbuntuMono-B.ttf" 'TTF file in Windows
+style$ = "monospace" 'font style is not case sensitive
+f& = _LOADFONT(fontfile$, 17, style$)
+_FONT f& 
 
 
 

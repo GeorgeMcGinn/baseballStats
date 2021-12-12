@@ -11,7 +11,7 @@ FUNCTION SystemsCheck ()
 	cmd = "dpkg -l 'zenity' | grep zenity"
 	result = pipecom(cmd, stdout, stderr)
 	IF MID$(stdout, 5, 6) <> "zenity" THEN
-		PRINT "***** Zenity is not installed. Please correct and rerun. Program Terminated. *****"
+''		PRINT "***** Zenity is not installed. Please correct and rerun. Program Terminated. *****"
 		PRINT #flog%, "***** Zenity is not installed. Please correct and rerun. Program Terminated. *****"
 		setupResult = FALSE
     END IF
@@ -20,7 +20,7 @@ FUNCTION SystemsCheck ()
     cmd = "dpkg -l 'mysql-server' | grep mysql-server"
     result = pipecom(cmd, stdout, stderr)
     IF MID$(stdout, 5, 12) <> "mysql-server" THEN
-        PRINT "***** mySQL must be installed. Please correct and rerun. Program Terminated. *****"
+''        PRINT "***** mySQL must be installed. Please correct and rerun. Program Terminated. *****"
         PRINT #flog%, "***** mySQL must be installed. Please correct and rerun. Program Terminated. *****"
         setupResult = FALSE
     END IF
@@ -29,7 +29,7 @@ FUNCTION SystemsCheck ()
 	cmd = "mysql --version"
 	result = pipecom(cmd, stdout, stderr)
 	IF LEFT$(stdout, 5) <> "mysql" THEN
-		PRINT "***** mySQL must be running. Please correct and rerun. Program Terminated. *****"
+''		PRINT "***** mySQL must be running. Please correct and rerun. Program Terminated. *****"
         PRINT #flog%, "***** mySQL must be running. Please correct and rerun. Program Terminated. *****"
         setupResult = FALSE
     END IF
@@ -38,7 +38,7 @@ FUNCTION SystemsCheck ()
 	cmd = "dpkg -l 'enscript' | grep enscript"
 	result = pipecom(cmd, stdout, stderr)
 	IF MID$(stdout, 5, 8) <> "enscript" THEN
-		PRINT "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
+''		PRINT "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
 		PRINT #flog%, "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
 		PrintReport = FALSE
 	END IF
