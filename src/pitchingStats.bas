@@ -1,5 +1,5 @@
-REM $TITLE: pitchingStats.bas Version 0.24  09/22/2021 - Last Update: 12/07/2021
-_TITLE "pitchingStats.bas"
+REM $TITLE: pitchingStats.bas Version 0.25  09/22/2021 - Last Update: 12/10/2021
+_TITLE "Pitching Statistics Version 0.25  09/22/2021 - Last Update: 12/10/2021"
 ' pitchingStats.bas    Version 1.0  09/22/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: pitchingStats.bas
@@ -52,6 +52,9 @@ _TITLE "pitchingStats.bas"
 ' 11/21/21 v0.23 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
 ' 12/07/21 v0.24 GJM - Updated CC licensing
+' 12/10/21 v0.25 GJM - Created a screen display when enscript isn't installed (This
+'                      is required if application is started from an ICON or directly
+'                      from Files or a File Manager).
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -72,8 +75,10 @@ _TITLE "pitchingStats.bas"
 ' *** Preprocessing Section
 '
 '$DYNAMIC
-$CONSOLE:ONLY
+''$CONSOLE:ONLY
 OPTION BASE 1
+SCREEN _NEWIMAGE(1300, 600, 32)
+$SCREENHIDE
 
 DECLARE LIBRARY
     FUNCTION floor## (BYVAL num AS _FLOAT)
@@ -599,13 +604,17 @@ SUB PrintStats
 		cmd = "enscript -B -r -fCourier8 " + ReportFile$
 		SHELL (cmd)
 	ELSE
-		PRINT "Pitching: " + teamName
+		CLS , BGColor
+		COLOR FGColor, BGColor
+		_TITLE teamName + " Pitching Statistics"
+		_SCREENSHOW
+		PRINT: PRINT "  Pitching: " + teamName
 		PRINT
-		PRINT "Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG    WHIP  BABIP  FIP "
-		PRINT "---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----  -----  ----- -----"
+		PRINT "  Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG    WHIP  BABIP  FIP "
+		PRINT "  ---------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----  -----  ----- -----"
 		FOR x = 1 TO nbrRows
 			playerName = Answer(x, 1)
-			PRINT USING "\               \"; playerName,
+			PRINT USING "  \               \"; playerName,
 			FOR y = 2 TO nbrCols
 				nbr = VAL(Answer(x, y))
 				IF nbr < 0 THEN nbr = 0.000
@@ -625,6 +634,11 @@ SUB PrintStats
 			NEXT y
 			PRINT ""
 		NEXT x	
+		FOR x = 1 to (26 - nbrRows): PRINT: NEXT x
+		PRINT "  Press any key to continue ..."
+		SLEEP
+		CLS , BGColor
+		_SCREENHIDE
 	END IF
 
 END SUB
