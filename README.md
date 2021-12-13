@@ -1,30 +1,32 @@
 # Baseball/Softball Statistical System
-[![Licence CC NC-SA](https://img.shields.io/badge/License-CC%20NC--SA-green)](http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) ![Linux Only](https://img.shields.io/badge/Linux_Only-Any-critical) [![QB64](https://img.shields.io/badge/QB64-v2.0%2B-informational)](https://www.qb64.org/portal/)  [![MySQL](https://img.shields.io/badge/MySQL-v8.0%2B-critical)](https://dev.mysql.com/downloads/mysql/) ![Zenity](https://img.shields.io/badge/Zenity-v3.32%2B-critical) ![enscript](https://img.shields.io/badge/enscript-1.6%2B-informational)
+[![Licence CC NC-SA](https://img.shields.io/badge/License-CC%20NC--SA-green)](http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode) ![](https://img.shields.io/badge/Linux_Only-Any-critical) [![QB64](https://img.shields.io/badge/QB64-v2.0%2B-informational)](https://www.qb64.org/portal/)  [![MySQL](https://img.shields.io/badge/MySQL-v8.0%2B-critical)](https://dev.mysql.com/downloads/mysql/) ![Zenity](https://img.shields.io/badge/Zenity-v3.32%2B-critical) ![](https://img.shields.io/badge/enscript-1.6%2B-informational)
 <br>
 This application tracks multiple team's pitching, hitting and defensive statistics. It is licensed under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode). If you want to incorporate this into a commercial package or in some way sell it, check out the [Licensing](#Licensing) section below.
 &nbsp;
 # Pre-release Version for QB64 Users
-This is a Linux-only application, and currently this GitHub does not have the automatic installation script for the general public. Plus the Readme below is still a work in progress. When the official release is ready, there will be a release done here in GitHub.
+This is a Linux-only application, and currently this GitHub does not have the automatic installation script for the general public and this Readme is still a work in progress. When the official release is ready, there will be a release done here in GitHub.
 
-This is a working system as it is right now. It will record and produce baseball or softball offensive, defensive and pitching statistics and reports for players and for multiple teams. Since I am still working on more advanced features (like left vs right hitters/pitchers) and differentiate seasons and divisions within a league. This can be used if you manage/coach one or more youth baseball teams, run a single baseball/softball league, or play a game like Strat-o-Matic Baseball. 
+This is a working system as it is right now. It will record and produce baseball or softball offensive, defensive and pitching statistics and reports for players and for multiple teams. Since I am still working on more advanced features (like left vs right for batters and pitchers) and to differentiate seasons and divisions within a league. This can be used if you manage/coach one or more youth baseball teams, run a single baseball/softball league, or play a game like Strat-o-Matic Baseball. 
 
-If you wish to track multiple seasons, the only way with this pre-release is to either create a new database with new tables, or create new tables within your database. When the official v1 release comes out, this will all be built in.
+If you wish to track multiple seasons, the only way to do this with this pre-release is to either create a new database with new tables, or create new tables within your database. When the official v1 release comes out, this will all be built in.
 
-For now, users of QB64 need to have any version of Linux, install Zenity, and install and run the mySQL server. If you want formatted reports on your printer, make sure you have `enscript` installed. If not, then all reports will be displayed in the terminal.
+For now, users of QB64 need to have any version of Linux, install Zenity, and install and run the MySQL server. If you want formatted reports on your printer, make sure you have `enscript` installed. If not, then all reports will be displayed in a generated screen.
 
-I have provided binaries compiled in Ubuntu 20.04 LTS, and all the source code is in the `src` directory. To compile for you version of Linux if the binaries do not work, move the source to the main directory of this extract, and compile all five programs. 
+you will need to compile the five program located in the `src` directory. To compile for you version of Linux, copy the source code to the main directory of this extract, and compile all five programs (the `include` directory is needed as a sub-directory to do compiles. 
 
-If you run your applications from a `bin` like directory, the only directories/sub-directories with their files you will need are:
-- Main directory (files only) and the following sub-directory with files:
+If you run your applications from a `bin` or `application` like directory, the only directories/sub-directories with their files you will need are:
+- Main directory (files only minus source code) and the following sub-directory with files
 - Help directory and all its sub-directories
 - Logs directory
 - SQL directory
 
 The rest of the directories are either needed to complete the compiles (like `include`), or have a future use in documentation for the general public.
 
-I also have two SQL files (in the `sql` directory) called `pitchingTable.sql` and `battingTable.sql` that will load test data to your SQL tables so you can test the functionality of the system. You can execute these in either MySQL Workbench (or dbeaver-ce) or from the mysql terminal session. I will eventually include this as an option in the main menu, but for now they have to be manually run. Make sure you change the name of the database and tables to the ones you created.
+I also have two SQL files (in the `sql` directory) called `pitchingTable.sql` and `battingTable.sql` that will load test data to your SQL tables so you can test the functionality of the system. You can execute these in either MySQL Workbench (or dbeaver-ce) or from the `mysql` terminal session. I will eventually include this as an option in the main menu, but for now they have to be manually run. Make sure you change the name of the database and tables to the ones you created.
 
-***NOTE:** I know some of you use MariaDB or SQLite3. If you can, please share with me the changes you made to get it to work with these and any others you may be using, as I can incorporate that in the setup install and in the configuration file of this application. Send me a message at the email above (setup just for this project) or post it on the QB64 forum. The reason I ask is because I cannot install MariaDB or SQLite3 without it breaking my package manager (It took me more than 2 days to fix the issue when I tried to install MariaDB). If you do run a different DB other than mySQL, you will need to change the `include/baseballFunctions.inc` file, as the `SystemsCheck ()` function does a check to make sure all the required software is installed and if needs to be running, is running, otherwise the application will not run. Here it checks specifically for MySQL Server (both installed and running). There is also an independent check to make sure you are running on Linux as well in each of the modules.*
+***NOTE:** I know some of you use MariaDB or SQLite3 (and possibly other relational database packages). If you can, please share with me any changes you made to get it to work with these and any others you may be using, as I can incorporate that in the setup install and in the configuration file of this application. Send me a message at the email above (setup just for this project) or post it on the QB64 forum. The reason I ask is because I cannot install MariaDB or SQLite3 without it breaking my package manager (It took me more than 2 days to fix the issue when I tried to install MariaDB). If you do run a different relational DB other than mySQL, you will need to change the `include/baseballFunctions.inc` file, as the `SystemsCheck ()` function does a check to make sure all the required software is installed and if needs to be running, is running, otherwise the application will not run. Here it checks specifically for MySQL Server (both installed and running). There is also an independent check to make sure you are running on Linux as well in each of the modules.*
+
+The following will replace the above text o the public can download, install and use this system.
 &nbsp;
 # Requirements and Installation Instructions
 <br>
@@ -65,7 +67,7 @@ service mysql restart
 &nbsp;
 ![githubstrip](https://github.com/GeorgeMcGinn/baseballStats/blob/Master/.github/images/baseballStats%20-%20Install.png?raw=true)
 
-5. If you get a setup screen and no messages about missing components in the  baseballstats.log file (located in the *logs* directory), and you created your SQL Region, you will get the main menu above. From here, you can now add baseball and sofrball data to your tables. 
+5. If you get a setup screen and no messages about missing components in the  baseballstats.log file (located in the *logs* directory), and you created your SQL Region, you will get the main menu above. From here, you can now add baseball and softball data to your tables. 
 6. The system has an extensive HELP file system, which you should familiarize yourself with.
 &nbsp;
 &nbsp;
@@ -125,8 +127,11 @@ Find QB64 on Discord: http://discord.qb64.org
 <a name="Licensing"></a>
 # Licensing Information
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"></p>
-<a href="https://github.com/GeorgeMcGinn/baseballStats"><b>Baseball/Softball Statisical System</b></a> by 
+<a href="https://github.com/GeorgeMcGinn/baseballStats"><b>Baseball/Softball  Statistical System</b></a> by 
 <a href="https://www.linkedin.com/in/georgemcginn/">George McGinn</a> is licensed under <br>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode">CC BY-NC-SA 4.0</a>
+<br>
+<br>
+<b>Icons & Images</b> used in this application were downloaded from <a href="https://wallpapercave.com/w/wp3206832">Wallpaper Cave</a>, an online community that shares images and <a href="https://www.vecteezy.com/">Vecteezy</a>.
 <br>
 <br>
 <b>Ubuntu Fonts</b> distributed with this application are licensed by the <a href="https://ubuntu.com/legal/font-licence">Ubuntu font licence</a> or as available in the <code>Ubuntu Fonts License.md</code> file included with this distribution.
@@ -148,4 +153,4 @@ Questions or permissions beyond the scope of this license may be available at <a
 * * *
 <br>
 
-***Last Update: 12/11/2021 21:35***
+***Last Update: 12/13/2021 17:53***
