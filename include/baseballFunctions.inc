@@ -41,6 +41,8 @@ FUNCTION SystemsCheck ()
 ''		PRINT "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
 		PRINT #flog%, "***** enscript is not installed. Program needs this to print out reports. Program set to display reports. *****"
 		PrintReport = FALSE
+	ELSE
+		PrintReport = TRUE
 	END IF
 
     SystemsCheck = setupResult
