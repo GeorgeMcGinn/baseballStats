@@ -85,7 +85,7 @@ ON ERROR GOTO ehandler
 ' *** Initialize Section
 '
 '$INCLUDE: 'include/baseballInit.inc'
-PrintReport = FALSE     ' *** Set to TRUE to print to printer, FALSE for testing (display output)
+'PrintReport = FALSE     ' *** Set to FALSE for testing (display output)
 setLeague = FALSE
 
 '----------------------------------------------------------------------------
@@ -97,14 +97,16 @@ setLeague = FALSE
 '----------------------------------------------------
 ' *** If started from this program, do systems checks
 '
+IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
+IF OStype <> "LINUX" THEN
+	PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
+	GOTO endPROG
+END IF
+
+result = SystemsCheck
+IF result = FALSE THEN GOTO endPROG
+
 IF cntargs = 0 THEN
-	IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
-	IF OStype <> "LINUX" THEN
-		PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
-		GOTO endPROG
-	END IF
-	result = SystemsCheck
-	IF result = FALSE THEN GOTO endPROG
 	DisplayAbout
     LoadConfigFile
 END IF
