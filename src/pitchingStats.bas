@@ -1,5 +1,5 @@
-REM $TITLE: pitchingStats.bas Version 0.25  09/22/2021 - Last Update: 12/10/2021
-_TITLE "Pitching Statistics Version 0.25  09/22/2021 - Last Update: 12/10/2021"
+REM $TITLE: pitchingStats.bas Version 0.26  09/22/2021 - Last Update: 12/14/2021
+_TITLE "Pitching Statistics Version 0.26  09/22/2021 - Last Update: 12/14/2021"
 ' pitchingStats.bas    Version 1.0  09/22/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: pitchingStats.bas
@@ -55,6 +55,10 @@ _TITLE "Pitching Statistics Version 0.25  09/22/2021 - Last Update: 12/10/2021"
 ' 12/10/21 v0.25 GJM - Created a screen display when enscript isn't installed (This
 '                      is required if application is started from an ICON or directly
 '                      from Files or a File Manager).
+' 12/14/21 v0.26 GJM - Modified the text displayed in the display and update screens
+'                      so that the intent is clearer. Added the ABOUT button 
+'                      (As this module can run stand-a-lone). Fixed logic for 
+'                      stand-a-lone execution.
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -98,19 +102,26 @@ setLeague = FALSE
 '----------------------------------------------------
 ' *** Determine/set OSType
 '
-IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
-IF OStype <> "LINUX" THEN
-    PRINT #flog%, "*** ERROR (" + ProgramName$ + "): Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
-    GOTO endPROG
-END IF
+
 
 '----------------------------------------------------------------------------
 ' *** Process args passed to program (if found) - Split out Value Pairs 
 '
 '$INCLUDE: 'include/baseballProcessArgs.inc'
+
+
+'----------------------------------------------------
+' *** If started from this program, do systems checks
+'
 IF cntargs = 0 THEN
-    result = SystemsCheck
-    IF result = FALSE THEN GOTO endPROG
+	IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
+	IF OStype <> "LINUX" THEN
+		PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
+		GOTO endPROG
+	END IF
+	result = SystemsCheck
+	IF result = FALSE THEN GOTO endPROG
+	DisplayAbout
     LoadConfigFile
 END IF
 innings = VAL(nbr_innings$)
@@ -240,6 +251,8 @@ SubmitMenu:
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Pitching Stats Update" + CHR$(34) + " \" + CHR$(10)
+	PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Update all fields needed, then select all records to update:" + CHR$(34) +  "\" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --editable --multiple --print-column=ALL \" + CHR$(10)
 	PUT #f3%, , tmpLine$
@@ -415,6 +428,8 @@ submitMenu:
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Pitching Stats" + CHR$(34) + " \" + CHR$(10)
+	PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Check all players you wish to update below:" + CHR$(34) +  "\" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --width=1350 --height=500 --checklist \" + CHR$(10)
 	PUT #f3%, , tmpLine$
@@ -713,6 +728,9 @@ FUNCTION convertOUTS (ip)
 END FUNCTION 
 
 
+'$INCLUDE: 'include/baseballAboutDisplay.inc'
+
+'$INCLUDE: 'include/baseballDisplayHelpMenu.inc'
 
 '$INCLUDE: 'include/baseballConfig.inc'
 

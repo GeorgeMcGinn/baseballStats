@@ -1,5 +1,5 @@
-REM $TITLE: leagueStats.bas Version 0.19  09/28/2021 - Last Update: 12/11/2021
-_TITLE "League Statistics - Version 0.19  09/28/2021 - Last Update: 12/11/2021"
+REM $TITLE: leagueStats.bas Version 0.20  09/28/2021 - Last Update: 12/14/2021
+_TITLE "League Display Statistics - Version 0.20  09/28/2021 - Last Update: 12/14/2021"
 ' leagueStats.bas    Version 1.0  09/28/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: leagueStats.bas
@@ -44,6 +44,10 @@ _TITLE "League Statistics - Version 0.19  09/28/2021 - Last Update: 12/11/2021"
 ' 12/11/21 v0.19 GJM - Created a screen display when enscript isn't installed (This
 '                      is required if application is started from an ICON or directly
 '                      from Files or a File Manager).
+' 12/14/21 v0.20 GJM - Modified the text displayed in the display and update screens
+'                      so that the intent is clearer. Added the ABOUT button 
+'                      (As this module can run stand-a-lone). Fixed logic for 
+'                      stand-a-lone execution.
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -87,11 +91,7 @@ setLeague = TRUE
 '----------------------------------------------------
 ' *** Determine/set OSType
 '
-IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
-IF OStype <> "LINUX" THEN
-    PRINT #flog%, "*** ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
-    GOTO endPROG
-END IF
+
 
 
 '----------------------------------------------------------------------------
@@ -100,9 +100,18 @@ END IF
 
 '$INCLUDE: 'include/baseballProcessArgs.inc'
 
+'----------------------------------------------------
+' *** If started from this program, do systems checks
+'
 IF cntargs = 0 THEN
+	IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
+	IF OStype <> "LINUX" THEN
+		PRINT #flog%, "*** ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
+		GOTO endPROG
+	END IF
     result = SystemsCheck
     IF result = FALSE THEN GOTO endPROG
+    DisplayAbout
     LoadConfigFile
 END IF
 innings = VAL(nbr_innings$)
@@ -137,6 +146,7 @@ DisplayLeagueStandings:
     DisplayLeagueResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF result = 1 AND stdbutton = "" THEN GOTO endPROG
     IF stdbutton = "HELP" THEN 
 		cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
@@ -145,7 +155,8 @@ DisplayLeagueStandings:
         SHELL (cmd)
         GOTO DisplayLeagueStandings
     END IF
-    IF stdbutton = "Report" THEN PrintLeagueStats: GOTO DisplayLeagueStandings
+    IF stdbutton = "Report" THEN PrintLeagueStats: GOTO DisplayLeagueStandings	
+    IF stdbutton = "ABOUT" THEN DisplayAbout: GOTO DisplayLeagueStandings
     IF stdbutton = "QUIT" THEN GOTO endPROG
 
 DisplayLeagueBatting:    
@@ -153,6 +164,7 @@ DisplayLeagueBatting:
     DisplayTeamBattingResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF result = 1 AND stdbutton = "" THEN GOTO endPROG
     IF stdbutton = "HELP" THEN 
 		cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
@@ -162,6 +174,7 @@ DisplayLeagueBatting:
         GOTO DisplayLeagueBatting
     END IF
     IF stdbutton = "Report" THEN PrintTeamBattingStats: GOTO DisplayLeagueBatting
+    IF stdbutton = "ABOUT" THEN DisplayAbout: GOTO DisplayLeagueBatting
     IF stdbutton = "QUIT" THEN GOTO endPROG
 
 DisplayLeaguePitching:    
@@ -169,6 +182,7 @@ DisplayLeaguePitching:
     DisplayTeamPitchingResults
     lenstr = LEN(stdout)
     stdbutton = LEFT$(stdout, lenstr - 1)
+    IF result = 1 AND stdbutton = "" THEN GOTO endPROG
     IF stdbutton = "HELP" THEN 
 		cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
@@ -178,6 +192,7 @@ DisplayLeaguePitching:
         GOTO DisplayLeaguePitching
     END IF
     IF stdbutton = "Report" THEN PrintTeamPitchingStats: GOTO DisplayLeaguePitching
+    IF stdbutton = "ABOUT" THEN DisplayAbout: GOTO DisplayLeaguePitching
     IF stdbutton = "QUIT" THEN GOTO endPROG
     GOTO ProcessResults
 
@@ -205,7 +220,7 @@ endPROG:
 
 
 ehandler:
-    '$INCLUDE: 'include/baseballErrhandler.inc'
+'$INCLUDE: 'include/baseballErrhandler.inc'
 
 
 '--------------------------------------------------------------------------------------
@@ -247,7 +262,7 @@ SUB CreateSQLViews
 ' *** lines, then any loop will hold the actual number of elements in the array.
     sqlstmtfile$ = "sql/leaguesqlstmt.sqlproc"
 
-    '$INCLUDE: 'include/baseballSQLstmt.inc'
+'$INCLUDE: 'include/baseballSQLstmt.inc'
 
 
 END SUB
@@ -279,9 +294,11 @@ SUB DisplayLeagueResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --title=" + CHR$(34) + "League Standings" + CHR$(34) + " \" + CHR$(10)
     PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Teams Ranked by Win Percentage (WPCT)" + CHR$(34) +  "\" + CHR$(10)
+	PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=530 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
-    tmpLine$ = "       --ok-label=NEXT --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
+    tmpLine$ = "       --ok-label=NEXT --extra-button=Report --extra-button=HELP --extra-button=ABOUT --extra-button=QUIT \" + CHR$(10)
     PUT #f3%, , tmpLine$
     tmpLine$ = " --column=" + CHR$(34) + "TEAM" + CHR$(34) + _ 
                " --column=" + CHR$(34) + "W" + CHR$(34) + " --column=" + CHR$(34) + "L" + CHR$(34) + _
@@ -355,6 +372,8 @@ SUB DisplayTeamBattingResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --title=" + CHR$(34) + "Team Batting Stats" + CHR$(34) + " \" + CHR$(10)
     PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Teams Ranked by Onbase Plus Slugging (OPS)" + CHR$(34) +  "\" + CHR$(10)
+	PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=1250 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --ok-label=NEXT --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
@@ -432,6 +451,8 @@ SUB DisplayTeamPitchingResults
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --title=" + CHR$(34) + "Team Pitching Stats" + CHR$(34) + " \" + CHR$(10)
     PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Teams Ranked by Wins, Losses (W, L)" + CHR$(34) +  "\" + CHR$(10)
+	PUT #f3%, , tmpLine$
     tmpLine$ = "       --width=1350 --height=500 \" + CHR$(10)
     PUT #f3%, , tmpLine$
     tmpLine$ = "       --ok-label=BACK --extra-button=Report --extra-button=HELP --extra-button=QUIT \" + CHR$(10)
@@ -887,6 +908,9 @@ FUNCTION adjustIP (outs)
     
 END FUNCTION
 
+'$INCLUDE: 'include/baseballAboutDisplay.inc'
+
+'$INCLUDE: 'include/baseballDisplayHelpMenu.inc'
 
 '$INCLUDE: 'include/baseballConfig.inc'
 

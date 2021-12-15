@@ -16,8 +16,9 @@
 
  CHANGE LOG
 -------------------------------------------------------------------------------------
- 11/20/21 v1.00 GJM - New Program.
- 11/20/21 v0.01 GJM - Added legend table describing the meaning of the columns displayed
+ 11/20/2021 v1.00 GJM - New Program.
+ 11/20/2021 v0.10 GJM - Added legend table describing the meaning of the columns displayed
+ 12/14/2021 v0.11 GJM - Added CSS Style to auto-detect desktop Light/Standard/Dark themes
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
@@ -43,18 +44,32 @@
 	<title>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM</title>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
 <style>
-td {
-  padding: 3px;
-}
-</style>	
+	
+	@font-face { font-family: Ubuntu; src: url('Ubuntu-R.ttf'); }
+    @media (prefers-color-scheme: dark) {
+        body {
+            color: #f8f8f8;
+            background-color: #404040;
+        }
+    }
+
+	td {
+		padding: 3px;
+		}
+
+	body {
+		font-family: 'Ubuntu', Fallback, sans-serif;
+		}
+		
+</style>		
 </head>
 
-<body style="background-color:#404040; color:#f8f8f8">
+<body>
 
 <center><h3><u>ABOUT BASEBALL/SOFTBALL STATISTICS SYSTEM - v1.0</u></h3></center>
 &nbsp
 &nbsp
-<p style="color:#f8f8f8;"><h4><u>PITCHING STATS PROCESSING</u></h4>
+<p><h4><u>PITCHING STATS PROCESSING</u></h4>
 <p>This processes the pitching statistics for a selected team as well as allowing updates to and
 adding new players to the pitching SQL Table. </p>
 	
@@ -289,6 +304,6 @@ Questions or permissions beyond the scope of this license may be available at <a
 &nbsp;
 &nbsp;
 <p></p>
-<time itemprop="dateModified" datetime="December 7, 2021 21:47:31."><small>Last update on December 7, 2021 21:47:31 (UTC/GMT +5 hours)</small></time>
+<time itemprop="dateModified" datetime="December 14, 2021 16:07:11."><small>Last update on December 14, 2021 16:07:11 (UTC/GMT +5 hours)</small></time>
 </body>
 </html>
