@@ -1,0 +1,17 @@
+<style>	
+	@font-face { font-family: Ubuntu; src: url('Ubuntu-R.ttf'); }
+    @media (prefers-color-scheme: dark) {
+        body {
+            color: #f8f8f8;
+            background-color: #404040;
+        }
+    }
+
+	td {
+		padding: 3px;
+		}
+
+	body {
+		font-family: 'Ubuntu', Fallback, sans-serif;
+		}	
+</style>	

@@ -10,11 +10,15 @@ This is a working system as it is right now. It will record and produce baseball
 
 If you wish to track multiple seasons, the only way to do this with this pre-release is to either create a new database with new tables, or create new tables within your database. When the official v1 release comes out, this will all be built in.
 
-Also built into the HELP and ABOUT boxes is CSS to automatically detect and switch between Light, Dark and Standard desktop themes. The dark themes are based on what Ubuntu produces, so if you have a different color scheme, you will need to change the `<style>` background and foreground colors to yours in the HTML files located in the `help` directory.
+Also built into the HELP and ABOUT boxes is CSS to automatically detect and switch between Light, Dark and Standard desktop themes. The dark themes are based on what Ubuntu produces. 
+
+However, if you use a desktop template, a different Linux distro, or changed the colors of your Dark Theme, then in the `/help` directory is a file `baseballStyle.css`, where you can change the colors of both the background and foreground for your Dark Theme. The rest will change according to your system.
 
 For now, users of QB64 need to have any version of Linux, install Zenity, and install and run the MySQL server. If you want formatted reports on your printer, make sure you have `enscript` installed. If not, then all reports will be displayed in a generated screen.
 
-you will need to compile the five program located in the `src` directory. To compile for you version of Linux, copy the source code to the main directory of this extract, and compile all five programs (the `include` directory is needed as a sub-directory to do compiles. 
+The binaries in the `bin` directory were compiled in Ubuntu 20.04 LTS. You can first copy these into your project directory and see if they will run. To start, you need to run baseballStats binary to let it setup your system and create/allocate your database, tables, and configuration file.
+
+If the binaries do not work, you will need to compile the five program located in the `src` directory. To compile for you version of Linux, copy the source code to the main project directory of this extract, and compile all five programs (the `include` directory is needed as a sub-directory to do compiles. You can do these compiles from either the QB64 IDE or externally from the terminal, so long as your teminal session is in the project's main directory.
 
 If you run your applications from a `bin` or `application` like directory, the only directories/sub-directories with their files you will need are:
 - Main directory (files only minus source code) and the following sub-directory with files
@@ -28,7 +32,7 @@ I also have two SQL files (in the `sql` directory) called `pitchingTable.sql` an
 
 ***NOTE:** I know some of you use MariaDB or SQLite3 (and possibly other relational database packages). If you can, please share with me any changes you made to get it to work with these and any others you may be using, as I can incorporate that in the setup install and in the configuration file of this application. Send me a message at the email above (setup just for this project) or post it on the QB64 forum. The reason I ask is because I cannot install MariaDB or SQLite3 without it breaking my package manager (It took me more than 2 days to fix the issue when I tried to install MariaDB). If you do run a different relational DB other than mySQL, you will need to change the `include/baseballFunctions.inc` file, as the `SystemsCheck ()` function does a check to make sure all the required software is installed and if needs to be running, is running, otherwise the application will not run. Here it checks specifically for MySQL Server (both installed and running). There is also an independent check to make sure you are running on Linux as well in each of the modules.*
 
-The following will replace the above text o the public can download, install and use this system.
+The following will replace the above text so the public can download, install and use this system.
 &nbsp;
 # Requirements and Installation Instructions
 <br>
@@ -114,6 +118,11 @@ I have included what a typical log file looks like in this release.
 
 Once you run through the set up process, you can run the application from its main program, `baseballStats`, or any of the other programs, such as the `battingStats` if you just want to work on batting statistics, `pitchingStats` for pitching records, `leagueStats` to just look at your league statistics, or the `baseballConfig` to update your configuration file.
 
+This application will work with Linux's Dark, Light and Regular themes with one exception that I know of from the pre-release. I've set the Dark Theme to that of Ubuntu's 20.04. 
+
+However, if you use a desktop template or changed the colors of your Dark Theme, then in the `/help` directory is a file `baseballStyle.css`, where you can change the colors of both the background and foreground for your Dark Theme. The rest will change according to your system.
+
+
 
 <a name="InstallQB64"></a>
 # Installing QB64 and Compiling the Source Code
@@ -196,4 +205,4 @@ Questions or permissions beyond the scope of this license may be available at <a
 * * *
 <br>
 
-***Last Update: 12/14/2021 23:15***
+<b><i><small>Last Update: 12/15/2021 13:10</small></i></b>
