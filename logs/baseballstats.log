@@ -6,589 +6,17 @@
 
 *** Running on a LINUX System ***
 
->>>>> Executing SUB LoadConfigFile
+>>>>> Calling: baseballConfig
 
-ARGS to pass to battingStats
-TeamName: Yankees
-GameID: ALE-10
-GamesPlayed: 1
-Config ARG1: SQLDB=baseballTDB
-Config ARG2: SQLUSER=gjmcginn
-Config ARG3: SQLPWD=mysql
-Config ARG4: SQLBATTBL=batting
-Config ARG5: SQLPITCHTBL=pitching
-Config ARG6: SQLOUTDIR=/var/lib/mysql-files/
-Config ARG7: INNINGS=9
+>>>>> Executing DisplayForm
 
->>>>> Calling: battingStats
+Result  =  1 
+stdout  = QUIT
+stderr  = 
 
-Number of ARGS:  9 
-(battingStats) ARGS Passed: TEAMNAME:Yankees
-(battingStats) ARGS Passed: GAMEID:ALE-10
-(battingStats) ARGS Passed: GAMES:1
-(battingStats) ARGS Passed: SQLDB=baseballTDB
-(battingStats) ARGS Passed: SQLUSER=gjmcginn
-(battingStats) ARGS Passed: SQLPWD=mysql
-(battingStats) ARGS Passed: SQLBATTBL=batting
-(battingStats) ARGS Passed: SQLPITCHTBL=pitching
-(battingStats) ARGS Passed: SQLOUTDIR=/var/lib/mysql-files/
+>>>>> Executing (baseballConfig) endPROG
 
-TOKEN: TEAMNAME
-VALUE: Yankees
-TOKEN: GAMEID
-VALUE: ALE-10
-TOKEN: GAMES
-VALUE: 1
-TOKEN: SQLDB
-VALUE: baseballTDB
-TOKEN: SQLUSER
-VALUE: gjmcginn
-TOKEN: SQLPWD
-VALUE: mysql
-TOKEN: SQLBATTBL
-VALUE: batting
-TOKEN: SQLPITCHTBL
-VALUE: pitching
-TOKEN: SQLOUTDIR
-VALUE: /var/lib/mysql-files/
-
->>>>> Executing DetermineArraySize
-
->>>>> Executing ProcessSQLFile
-
->>>>> Executing CreateSQLView
-
-USE baseballTDB;
-CREATE OR REPLACE VIEW tempbattingStatsView AS 
-SELECT  playerName AS 'PLAYER', 
-SUM(games) AS 'GMSP',  
-SUM(atbats) AS 'AB',  
-SUM(runs) AS 'R',  
-SUM(hits) AS 'H',  
-SUM(rbis) AS 'RBI',  
-SUM(doubles) AS '2B', 
-SUM(triples) AS '3B', 
-SUM(homeruns) AS 'HR', 
-SUM(walks) AS 'BB', 
-SUM(strikeouts) AS 'K', 
-SUM(hitbypitch) AS 'HBP', 
-SUM(sacrifices) AS 'SAC',
-SUM(stolenbases) AS 'SB',
-SUM(attstolenbases) AS 'ASB', 
-SUM(putouts) AS 'PO', 
-SUM(assists) AS 'AST', 
-SUM(errors) AS 'E' 
-FROM batting 
-WHERE teamName='Yankees' 
-GROUP BY playerName; 
-CREATE OR REPLACE VIEW YankeesbattingStatsView AS 
-SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
-FORMAT(AVG(H/AB), 3) AS 'AVG', 
-FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
-FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
-FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
-FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
-FROM tempbattingStatsView 
-GROUP BY PLAYER; 
-SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file';
-
-
-
-cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW tempbattingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(games) AS 'GMSP',   SUM(atbats) AS 'AB',   SUM(runs) AS 'R',   SUM(hits) AS 'H',   SUM(rbis) AS 'RBI',   SUM(doubles) AS '2B',  SUM(triples) AS '3B',  SUM(homeruns) AS 'HR',  SUM(walks) AS 'BB',  SUM(strikeouts) AS 'K',  SUM(hitbypitch) AS 'HBP',  SUM(sacrifices) AS 'SAC', SUM(stolenbases) AS 'SB', SUM(attstolenbases) AS 'ASB',  SUM(putouts) AS 'PO',  SUM(assists) AS 'AST',  SUM(errors) AS 'E'  FROM batting  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeesbattingStatsView AS  SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E,  FORMAT(AVG(H/AB), 3) AS 'AVG',  FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG',  FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP',  FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS',  FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT' FROM tempbattingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file'; "
-
-stdout = 
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
->>>>> Executing FUNCTION sql_rows()
-
-Team Selected = Yankees
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM batting WHERE teamName='Yankees'"
-stdout = 16
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of rows to process:  16 
-
->>>>> Executing FUNCTION sql_columns()
-
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeesbattingStatsView'"
-
-stdout = 23
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of Columns:  23 
-
-Batting: Yankees
-
-Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT
----------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----
-LeMahieu, DJ       4   19    3    8    2    0    0    0    0    3    0    0    0    0   26    2    0  0.421  0.421  0.421  0.842  1.000  
-Judge, A           4   13    4    3    3    0    0    2    5    5    0    0    0    0    8    0    0  0.231  0.692  0.444  1.137  1.000  
-Urshela, G         4   16    2    5    1    1    0    0    2    1    0    0    0    0    3    7    0  0.313  0.375  0.389  0.764  1.000  
-Torres, G          4   16    2    3    1    1    0    1    2    5    0    0    0    0    5   16    1  0.188  0.438  0.278  0.715  0.955  
-Encarnacion, E     3   10    0    1    1    0    0    0    0    3    0    0    0    0   10    0    1  0.100  0.100  0.100  0.200  0.909  
-Sanchez, G         4   17    2    3    5    0    0    2    0    8    0    0    0    0    2    0    0  0.177  0.529  0.176  0.706  1.000  
-Gardner, B         4   14    1    3    1    1    0    1    1    1    0    1    0    0   11    2    0  0.214  0.500  0.250  0.750  1.000  
-Gregorius, D       3    9    0    1    0    0    0    0    0    3    0    0    0    0    2    5    1  0.111  0.111  0.111  0.222  0.875  
-Hicks, A           4   14    2    5    0    3    0    0    1    2    0    0    0    0    5    0    0  0.357  0.571  0.400  0.971  1.000  
-Voit, L            4    5    1    1    2    0    0    1    1    1    0    1    0    0    2    0    0  0.200  0.800  0.286  1.086  1.000  
-Maybin, C          1    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tanaka, M          1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    1    0  0.000  0.000  0.000  0.000  1.000  
-Sabathia, CC       1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tauchman, M        1    3    0    0    0    0    0    0    0    2    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Stanton, G         1    5    0    2    2    0    0    0    0    2    0    0    0    0    0    0    0  0.400  0.400  0.400  0.800  0.000  
-Frazier, C         1    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-
-stdout = LeMahieu, DJ|Judge, A|Urshela, G
-
-stderr = 
-result =  0 
-
->>>>> Executing CheckProcessUpdates
-
-List of Players to Update
-LeMahieu, DJ
-Judge, A
-Urshela, G
-
->>>>> Executing FUNCTION sql_update()
-
-
-stdout = 
-stderr = 
-result =  1 
-
->>>>> Executing CreateSQLView
-
-USE baseballTDB;
-CREATE OR REPLACE VIEW tempbattingStatsView AS 
-SELECT  playerName AS 'PLAYER', 
-SUM(games) AS 'GMSP',  
-SUM(atbats) AS 'AB',  
-SUM(runs) AS 'R',  
-SUM(hits) AS 'H',  
-SUM(rbis) AS 'RBI',  
-SUM(doubles) AS '2B', 
-SUM(triples) AS '3B', 
-SUM(homeruns) AS 'HR', 
-SUM(walks) AS 'BB', 
-SUM(strikeouts) AS 'K', 
-SUM(hitbypitch) AS 'HBP', 
-SUM(sacrifices) AS 'SAC',
-SUM(stolenbases) AS 'SB',
-SUM(attstolenbases) AS 'ASB', 
-SUM(putouts) AS 'PO', 
-SUM(assists) AS 'AST', 
-SUM(errors) AS 'E' 
-FROM batting 
-WHERE teamName='Yankees' 
-GROUP BY playerName; 
-CREATE OR REPLACE VIEW YankeesbattingStatsView AS 
-SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
-FORMAT(AVG(H/AB), 3) AS 'AVG', 
-FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
-FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
-FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
-FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
-FROM tempbattingStatsView 
-GROUP BY PLAYER; 
-SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file';
-
-
-
-cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW tempbattingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(games) AS 'GMSP',   SUM(atbats) AS 'AB',   SUM(runs) AS 'R',   SUM(hits) AS 'H',   SUM(rbis) AS 'RBI',   SUM(doubles) AS '2B',  SUM(triples) AS '3B',  SUM(homeruns) AS 'HR',  SUM(walks) AS 'BB',  SUM(strikeouts) AS 'K',  SUM(hitbypitch) AS 'HBP',  SUM(sacrifices) AS 'SAC', SUM(stolenbases) AS 'SB', SUM(attstolenbases) AS 'ASB',  SUM(putouts) AS 'PO',  SUM(assists) AS 'AST',  SUM(errors) AS 'E'  FROM batting  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeesbattingStatsView AS  SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E,  FORMAT(AVG(H/AB), 3) AS 'AVG',  FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG',  FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP',  FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS',  FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT' FROM tempbattingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file'; "
-
-stdout = 
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
->>>>> Executing FUNCTION sql_rows()
-
-Team Selected = Yankees
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM batting WHERE teamName='Yankees'"
-stdout = 16
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of rows to process:  16 
-
->>>>> Executing FUNCTION sql_columns()
-
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeesbattingStatsView'"
-
-stdout = 23
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of Columns:  23 
-
-Batting: Yankees
-
-Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT
----------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----
-LeMahieu, DJ       4   19    3    8    2    0    0    0    0    3    0    0    0    0   26    2    0  0.421  0.421  0.421  0.842  1.000  
-Judge, A           4   13    4    3    3    0    0    2    5    5    0    0    0    0    8    0    0  0.231  0.692  0.444  1.137  1.000  
-Urshela, G         4   16    2    5    1    1    0    0    2    1    0    0    0    0    3    7    0  0.313  0.375  0.389  0.764  1.000  
-Torres, G          4   16    2    3    1    1    0    1    2    5    0    0    0    0    5   16    1  0.188  0.438  0.278  0.715  0.955  
-Encarnacion, E     3   10    0    1    1    0    0    0    0    3    0    0    0    0   10    0    1  0.100  0.100  0.100  0.200  0.909  
-Sanchez, G         4   17    2    3    5    0    0    2    0    8    0    0    0    0    2    0    0  0.177  0.529  0.176  0.706  1.000  
-Gardner, B         4   14    1    3    1    1    0    1    1    1    0    1    0    0   11    2    0  0.214  0.500  0.250  0.750  1.000  
-Gregorius, D       3    9    0    1    0    0    0    0    0    3    0    0    0    0    2    5    1  0.111  0.111  0.111  0.222  0.875  
-Hicks, A           4   14    2    5    0    3    0    0    1    2    0    0    0    0    5    0    0  0.357  0.571  0.400  0.971  1.000  
-Voit, L            4    5    1    1    2    0    0    1    1    1    0    1    0    0    2    0    0  0.200  0.800  0.286  1.086  1.000  
-Maybin, C          1    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tanaka, M          1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    1    0  0.000  0.000  0.000  0.000  1.000  
-Sabathia, CC       1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tauchman, M        1    3    0    0    0    0    0    0    0    2    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Stanton, G         1    5    0    2    2    0    0    0    0    2    0    0    0    0    0    0    0  0.400  0.400  0.400  0.800  0.000  
-Frazier, C         1    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-
-stdout = Report
-
-stderr = 
-result =  1 
-
->>>>> Executing PrintStats
-
->>>>> Executing FUNCTION sql_rows()
-
-Team Selected = Yankees
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM batting WHERE teamName='Yankees'"
-stdout = 16
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of rows to process:  16 
-
-
-
-USE baseballTDB;
-CREATE OR REPLACE VIEW tempbattingStatsView AS 
-SELECT  playerName AS 'PLAYER', 
-SUM(games) AS 'GMSP',  
-SUM(atbats) AS 'AB',  
-SUM(runs) AS 'R',  
-SUM(hits) AS 'H',  
-SUM(rbis) AS 'RBI',  
-SUM(doubles) AS '2B', 
-SUM(triples) AS '3B', 
-SUM(homeruns) AS 'HR', 
-SUM(walks) AS 'BB', 
-SUM(strikeouts) AS 'K', 
-SUM(hitbypitch) AS 'HBP', 
-SUM(sacrifices) AS 'SAC',
-SUM(stolenbases) AS 'SB',
-SUM(attstolenbases) AS 'ASB', 
-SUM(putouts) AS 'PO', 
-SUM(assists) AS 'AST', 
-SUM(errors) AS 'E' 
-FROM batting 
-WHERE teamName='Yankees' 
-GROUP BY playerName; 
-CREATE OR REPLACE VIEW YankeesbattingStatsView AS 
-SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
-FORMAT(AVG(H/AB), 3) AS 'AVG', 
-FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
-FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
-FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
-FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
-FROM tempbattingStatsView 
-GROUP BY PLAYER; 
-SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file';
-
-
-cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB;CREATE OR REPLACE VIEW tempbattingStatsView AS SELECT  playerName AS 'PLAYER', SUM(games) AS 'GMSP',  SUM(atbats) AS 'AB',  SUM(runs) AS 'R',  SUM(hits) AS 'H',  SUM(rbis) AS 'RBI',  SUM(doubles) AS '2B', SUM(triples) AS '3B', SUM(homeruns) AS 'HR', SUM(walks) AS 'BB', SUM(strikeouts) AS 'K', SUM(hitbypitch) AS 'HBP', SUM(sacrifices) AS 'SAC',SUM(stolenbases) AS 'SB',SUM(attstolenbases) AS 'ASB', SUM(putouts) AS 'PO', SUM(assists) AS 'AST', SUM(errors) AS 'E' FROM batting WHERE teamName='Yankees' GROUP BY playerName; CREATE OR REPLACE VIEW YankeesbattingStatsView AS SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, FORMAT(AVG(H/AB), 3) AS 'AVG', FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'FROM tempbattingStatsView GROUP BY PLAYER; SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file';"
-stdout = 
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-ERROR 1086 (HY000) at line 1: File '/var/lib/mysql-files/Yankees-battingstats.file' already exists
-
-result =  1 
-
->>>>> Executing FUNCTION sql_columns()
-
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeesbattingStatsView'"
-
-stdout = 23
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of Columns:  23 
-
-Batting: Yankees
-
-Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT
----------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----
-LeMahieu, DJ       4   19    3    8    2    0    0    0    0    3    0    0    0    0   26    2    0  0.421  0.421  0.421  0.842  1.000  
-Judge, A           4   13    4    3    3    0    0    2    5    5    0    0    0    0    8    0    0  0.231  0.692  0.444  1.137  1.000  
-Urshela, G         4   16    2    5    1    1    0    0    2    1    0    0    0    0    3    7    0  0.313  0.375  0.389  0.764  1.000  
-Torres, G          4   16    2    3    1    1    0    1    2    5    0    0    0    0    5   16    1  0.188  0.438  0.278  0.715  0.955  
-Encarnacion, E     3   10    0    1    1    0    0    0    0    3    0    0    0    0   10    0    1  0.100  0.100  0.100  0.200  0.909  
-Sanchez, G         4   17    2    3    5    0    0    2    0    8    0    0    0    0    2    0    0  0.177  0.529  0.176  0.706  1.000  
-Gardner, B         4   14    1    3    1    1    0    1    1    1    0    1    0    0   11    2    0  0.214  0.500  0.250  0.750  1.000  
-Gregorius, D       3    9    0    1    0    0    0    0    0    3    0    0    0    0    2    5    1  0.111  0.111  0.111  0.222  0.875  
-Hicks, A           4   14    2    5    0    3    0    0    1    2    0    0    0    0    5    0    0  0.357  0.571  0.400  0.971  1.000  
-Voit, L            4    5    1    1    2    0    0    1    1    1    0    1    0    0    2    0    0  0.200  0.800  0.286  1.086  1.000  
-Maybin, C          1    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tanaka, M          1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    1    0  0.000  0.000  0.000  0.000  1.000  
-Sabathia, CC       1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Tauchman, M        1    3    0    0    0    0    0    0    0    2    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-Stanton, G         1    5    0    2    2    0    0    0    0    2    0    0    0    0    0    0    0  0.400  0.400  0.400  0.800  0.000  
-Frazier, C         1    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
-
-stdout = QUIT
-
-stderr = 
-result =  1 
-
->>>>> Executing (battingStats) endPROG
-
-
-*** battingStats - Terminated Normally - Return to calling Program ***
->>>>> Executing SUB LoadConfigFile
-
-ARGS to pass to pitchingStats
-TeamName: Yankees
-GameID: 
-GamesPlayed: 1
-Config ARG1: SQLDB=baseballTDB
-Config ARG2: SQLUSER=gjmcginn
-Config ARG3: SQLPWD=mysql
-Config ARG4: SQLBATTBL=batting
-Config ARG5: SQLPITCHTBL=pitching
-Config ARG6: SQLOUTDIR=/var/lib/mysql-files/
-Config ARG7: INNINGS=9
-
->>>>> Calling: pitchingStats
-
-Number of ARGS:  10 
-(pitchingStats) ARGS Passed: TEAMNAME:Yankees
-(pitchingStats) ARGS Passed: GAMEID:
-(pitchingStats) ARGS Passed: GAMES:1
-(pitchingStats) ARGS Passed: SQLDB=baseballTDB
-(pitchingStats) ARGS Passed: SQLUSER=gjmcginn
-(pitchingStats) ARGS Passed: SQLPWD=mysql
-(pitchingStats) ARGS Passed: SQLBATTBL=batting
-(pitchingStats) ARGS Passed: SQLPITCHTBL=pitching
-(pitchingStats) ARGS Passed: SQLOUTDIR=/var/lib/mysql-files/
-(pitchingStats) ARGS Passed: INNINGS=9
-
-TOKEN: TEAMNAME
-VALUE: Yankees
-TOKEN: GAMEID
-VALUE: 
-TOKEN: GAMES
-VALUE: 1
-TOKEN: SQLDB
-VALUE: baseballTDB
-TOKEN: SQLUSER
-VALUE: gjmcginn
-TOKEN: SQLPWD
-VALUE: mysql
-TOKEN: SQLBATTBL
-VALUE: batting
-TOKEN: SQLPITCHTBL
-VALUE: pitching
-TOKEN: SQLOUTDIR
-VALUE: /var/lib/mysql-files/
-TOKEN: INNINGS
-VALUE: 9
-
-
-*** variable innings =  9 
-
->>>>> Executing ProcessSQLFile
-
->>>>> Executing CreateSQLView
-
-USE baseballTDB;
-CREATE OR REPLACE VIEW temppitchingStatsView AS 
-SELECT  playerName AS 'PLAYER', 
-SUM(wins) AS 'W',
-SUM(loses) AS 'L',
-SUM(saves) AS 'SV',
-SUM(games) AS 'GP',
-SUM(saveopportunities) AS 'SVO',
-SUM(gamesstarted) AS 'GS',
-SUM(completedgames) AS 'GC',
-SUM(outspitched) AS 'IP',
-SUM(totalbattersfaced) AS 'TBF',
-SUM(hits) AS 'H',
-SUM(walks) AS 'BB',
-SUM(strikeouts) AS 'K',
-SUM(runsallowed) AS 'RA',
-SUM(earnedruns) AS 'ER',
-SUM(homeruns) AS 'HR',
-SUM(hitbypitch) AS 'HBP',
-SUM(sacrificeflies) AS 'SF'
-FROM pitching 
-WHERE teamName='Yankees' 
-GROUP BY playerName; 
-CREATE OR REPLACE VIEW YankeespitchingStatsView AS 
-SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
-FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', 
-FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
-FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP',
-FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
-FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP' 
-FROM temppitchingStatsView 
-GROUP BY PLAYER; 
-SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';
-
-
-
-cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW temppitchingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(wins) AS 'W', SUM(loses) AS 'L', SUM(saves) AS 'SV', SUM(games) AS 'GP', SUM(saveopportunities) AS 'SVO', SUM(gamesstarted) AS 'GS', SUM(completedgames) AS 'GC', SUM(outspitched) AS 'IP', SUM(totalbattersfaced) AS 'TBF', SUM(hits) AS 'H', SUM(walks) AS 'BB', SUM(strikeouts) AS 'K', SUM(runsallowed) AS 'RA', SUM(earnedruns) AS 'ER', SUM(homeruns) AS 'HR', SUM(hitbypitch) AS 'HBP', SUM(sacrificeflies) AS 'SF' FROM pitching  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeespitchingStatsView AS  SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF, FORMAT(((ER*(3*9))/IP), 2) AS 'ERA',  FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG, FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP', FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP', FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP'  FROM temppitchingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file'; "
-
-stdout = 
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
->>>>> Executing FUNCTION sql_rows()
-
-Team Selected = Yankees
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM pitching WHERE teamName='Yankees'"
-stdout = 6
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of rows to process:  6 
-
->>>>> Executing FUNCTION sql_columns()
-
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeespitchingStatsView'"
-
-stdout = 23
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of Columns:  23 
-
-Pitching: Yankees
-
-Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
----------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
-Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   2.000   0.182  14.88  
-Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.857   0.125   5.79  
-Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   1.571   0.217   9.93  
-Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   1.688   0.150   6.96  
-Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   4.000   0.500   4.21  
-Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.778   0.130   2.21  
-
-stdout = Report
-
-stderr = 
-result =  1 
-
->>>>> Executing PrintStats
-
->>>>> Executing FUNCTION sql_rows()
-
-Team Selected = Yankees
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM pitching WHERE teamName='Yankees'"
-stdout = 6
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of rows to process:  6 
-
-
-
-USE baseballTDB;
-CREATE OR REPLACE VIEW temppitchingStatsView AS 
-SELECT  playerName AS 'PLAYER', 
-SUM(wins) AS 'W',
-SUM(loses) AS 'L',
-SUM(saves) AS 'SV',
-SUM(games) AS 'GP',
-SUM(saveopportunities) AS 'SVO',
-SUM(gamesstarted) AS 'GS',
-SUM(completedgames) AS 'GC',
-SUM(outspitched) AS 'IP',
-SUM(totalbattersfaced) AS 'TBF',
-SUM(hits) AS 'H',
-SUM(walks) AS 'BB',
-SUM(strikeouts) AS 'K',
-SUM(runsallowed) AS 'RA',
-SUM(earnedruns) AS 'ER',
-SUM(homeruns) AS 'HR',
-SUM(hitbypitch) AS 'HBP',
-SUM(sacrificeflies) AS 'SF'
-FROM pitching 
-WHERE teamName='Yankees' 
-GROUP BY playerName; 
-CREATE OR REPLACE VIEW YankeespitchingStatsView AS 
-SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,
-FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', 
-FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,
-FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP',
-FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',
-FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP' 
-FROM temppitchingStatsView 
-GROUP BY PLAYER; 
-SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';
-
-
-cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB;CREATE OR REPLACE VIEW temppitchingStatsView AS SELECT  playerName AS 'PLAYER', SUM(wins) AS 'W',SUM(loses) AS 'L',SUM(saves) AS 'SV',SUM(games) AS 'GP',SUM(saveopportunities) AS 'SVO',SUM(gamesstarted) AS 'GS',SUM(completedgames) AS 'GC',SUM(outspitched) AS 'IP',SUM(totalbattersfaced) AS 'TBF',SUM(hits) AS 'H',SUM(walks) AS 'BB',SUM(strikeouts) AS 'K',SUM(runsallowed) AS 'RA',SUM(earnedruns) AS 'ER',SUM(homeruns) AS 'HR',SUM(hitbypitch) AS 'HBP',SUM(sacrificeflies) AS 'SF'FROM pitching WHERE teamName='Yankees' GROUP BY playerName; CREATE OR REPLACE VIEW YankeespitchingStatsView AS SELECT PLAYER, W, L, SV, SVO, GP, GS, GC, IP, TBF, H, BB, K, RA, ER, HR, HBP, SF,FORMAT(((ER*(3*9))/IP), 2) AS 'ERA', FORMAT((H/(TBF-(BB+HBP))), 3) AS AVG,FORMAT(((H+BB)/(IP/3)), 3) AS 'WHIP',FORMAT(((H-HR)/(TBF-K-HR+SF)), 3) AS 'BABIP',FORMAT((((13*HR)+(3*(BB+HBP))-(2*K))/(IP/3)+3.214), 2) AS 'FIP' FROM temppitchingStatsView GROUP BY PLAYER; SELECT * FROM YankeespitchingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-pitchingstats.file';"
-stdout = 
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-ERROR 1086 (HY000) at line 1: File '/var/lib/mysql-files/Yankees-pitchingstats.file' already exists
-
-result =  1 
-
->>>>> Executing FUNCTION sql_columns()
-
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeespitchingStatsView'"
-
-stdout = 23
-
-stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
-
-result =  0 
-
-The number of Columns:  23 
-
-Pitching: Yankees
-
-Player Name       W    L    SV  SVO   GP   GS   GC    IP   TBF   H    BB   K    RA   ER   HR  HBP   SF   ERA     AVG     WHIP   BABIP   FIP 
----------------- ---  ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----   -----   -----   -----  -----
-Tanaka, M          0    0    0    0    1    1    0    6.0   29    9    3    2    9    9    5    0    0  13.50   0.346   2.000   0.182  14.88  
-Britton, Z         0    1    0    0    3    0    0    7.0   25    4    2    7    2    2    2    0    0   2.57   0.174   0.857   0.125   5.79  
-Sabathia, CC       0    1    0    0    1    1    0    7.0   33    9    2    7    9    9    4    1    1  11.57   0.300   1.571   0.217   9.93  
-Happ, JA           0    1    0    0    1    1    0    5.1   25    4    5    4    8    7    1    0    0  11.81   0.200   1.688   0.150   6.96  
-Ottavino, A        0    0    0    0    1    0    0    1.0    6    3    1    1    3    2    0    0    1  18.00   0.600   4.000   0.500   4.21  
-Severino, L        1    0    0    0    1    1    1    9.0   35    3    4   12    2    2    0    1    0   2.00   0.100   0.778   0.130   2.21  
-
-stdout = QUIT
-
-stderr = 
-result =  1 
-
->>>>> Executing (pitchingStats) endPROG
-
-
-*** pitchingStats - Terminated Normally - Return to calling Program ***
+*** baseballConfig - Terminated Normally - Return to calling Program ***
 >>>>> Executing SUB LoadConfigFile
 
 >>>>> Calling: leagueStats
@@ -754,17 +182,14 @@ Bluejays           3    1   3.86  0.239  0.551  0.983  0.750
 Yankees            1    3   7.90  0.247  0.437  0.973  0.250  
 Orioles            0    3   6.00  0.141  0.239  0.929  0.000  
 
-stdout = Report
-
+stdout = 
 stderr = 
-result =  1 
-
->>>>> Executing PrintLeagueStats
+result =  0 
 
 >>>>> Executing FUNCTION sql_rows()
 
 League Selected
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct TEAM) FROM leagueView"
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct TEAM) FROM teambattingView"
 stdout = 5
 
 stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
@@ -775,23 +200,233 @@ The number of rows to process:  5
 
 >>>>> Executing FUNCTION sql_columns()
 
-mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='leagueView'"
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='teambattingView'"
 
-stdout = 10
+stdout = 22
 
 stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
 
 result =  0 
 
-The number of Columns:  10 
+The number of Columns:  22 
 
+Batting Stats by Team
 
-(leagueStats): Error   9 at line   663 - Subscript out of range
+Team              AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT
+---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----
+Redsox             100    20    30    20     1     1     9     9    19     4     0     1     2    42    22     4 0.300  0.600  0.381  0.981  0.941  
+Bluejays           138    28    33    27     4     0    13    13    42     0     4     0     0    81    38     2 0.239  0.551  0.297  0.847  0.983  
+Rays               147    31    40    27     6     0     7    19    29     1     2     2     0    67    31     2 0.272  0.456  0.355  0.811  0.980  
+Yankees            142    18    35    18     6     0     7    12    36     0     2     0     0    74    33     3 0.247  0.437  0.301  0.738  0.973  
+Orioles             92     7    13     7     3     0     2    13    31     1     3     0     1    44    34     6 0.141  0.239  0.248  0.487  0.929  
+
+stdout = 
+stderr = 
+result =  0 
+
+>>>>> Executing FUNCTION sql_rows()
+
+League Selected
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct TEAM) FROM teampitchingView"
+stdout = 5
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of rows to process:  5 
+
+>>>>> Executing FUNCTION sql_columns()
+
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='teampitchingView'"
+
+stdout = 22
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of Columns:  22 
+
+Team Pitching Stats
+
+Team              W    L    SV  SVO   GP   GC    IP   TBP   H    BB   K    RA   ER   HR  HBP   SF   ERA   OP-AVG    WHIP   BABIP   FIP 
+---------------- ---  ---  ---  ---  ---  ---  -----  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  ------   -----   -----  -----
+Redsox             3    0    0    0    3    2   27.0  123   27    9   37   14   14    7    0    0   4.67   0.237   1.333   0.253   4.84  
+Rays               3    1    0    0    4    2   37.0  155   30   15   42   14   12    5    2    0   2.92   0.217   1.216   0.231   4.08  
+Bluejays           3    1    0    0    4    3   35.0  148   26   18   21   18   15    4    1    1   3.86   0.202   1.257   0.177   5.13  
+Yankees            1    3    0    0    4    1   35.1  153   32   17   33   33   31   12    2    2   7.90   0.239   1.387   0.182   7.37  
+Orioles            0    3    0    0    3    1   27.0  126   35   11   27   21   18   10    1    0   6.00   0.307   1.704   0.281   7.36  
+
+stdout = QUIT
+
+stderr = 
+result =  1 
 
 >>>>> Executing (leagueStats) endPROG
 
 
 *** leagueStats - Terminated Normally - Return to calling Program ***
+>>>>> Calling: baseballConfig
+
+>>>>> Executing DisplayForm
+
+Result  =  1 
+stdout  = QUIT
+stderr  = 
+
+>>>>> Executing (baseballConfig) endPROG
+
+*** baseballConfig - Terminated Normally - Return to calling Program ***
+>>>>> Executing SUB LoadConfigFile
+
+ARGS to pass to battingStats
+TeamName: Yankees
+GameID: 
+GamesPlayed: 1
+Config ARG1: SQLDB=baseballTDB
+Config ARG2: SQLUSER=gjmcginn
+Config ARG3: SQLPWD=mysql
+Config ARG4: SQLBATTBL=batting
+Config ARG5: SQLPITCHTBL=pitching
+Config ARG6: SQLOUTDIR=/var/lib/mysql-files/
+Config ARG7: INNINGS=9
+
+>>>>> Calling: battingStats
+
+Number of ARGS:  9 
+(battingStats) ARGS Passed: TEAMNAME:Yankees
+(battingStats) ARGS Passed: GAMEID:
+(battingStats) ARGS Passed: GAMES:1
+(battingStats) ARGS Passed: SQLDB=baseballTDB
+(battingStats) ARGS Passed: SQLUSER=gjmcginn
+(battingStats) ARGS Passed: SQLPWD=mysql
+(battingStats) ARGS Passed: SQLBATTBL=batting
+(battingStats) ARGS Passed: SQLPITCHTBL=pitching
+(battingStats) ARGS Passed: SQLOUTDIR=/var/lib/mysql-files/
+
+TOKEN: TEAMNAME
+VALUE: Yankees
+TOKEN: GAMEID
+VALUE: 
+TOKEN: GAMES
+VALUE: 1
+TOKEN: SQLDB
+VALUE: baseballTDB
+TOKEN: SQLUSER
+VALUE: gjmcginn
+TOKEN: SQLPWD
+VALUE: mysql
+TOKEN: SQLBATTBL
+VALUE: batting
+TOKEN: SQLPITCHTBL
+VALUE: pitching
+TOKEN: SQLOUTDIR
+VALUE: /var/lib/mysql-files/
+
+>>>>> Executing DetermineArraySize
+
+>>>>> Executing ProcessSQLFile
+
+>>>>> Executing CreateSQLView
+
+USE baseballTDB;
+CREATE OR REPLACE VIEW tempbattingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(games) AS 'GMSP',  
+SUM(atbats) AS 'AB',  
+SUM(runs) AS 'R',  
+SUM(hits) AS 'H',  
+SUM(rbis) AS 'RBI',  
+SUM(doubles) AS '2B', 
+SUM(triples) AS '3B', 
+SUM(homeruns) AS 'HR', 
+SUM(walks) AS 'BB', 
+SUM(strikeouts) AS 'K', 
+SUM(hitbypitch) AS 'HBP', 
+SUM(sacrifices) AS 'SAC',
+SUM(stolenbases) AS 'SB',
+SUM(attstolenbases) AS 'ASB', 
+SUM(putouts) AS 'PO', 
+SUM(assists) AS 'AST', 
+SUM(errors) AS 'E' 
+FROM batting 
+WHERE teamName='Yankees' 
+GROUP BY playerName; 
+CREATE OR REPLACE VIEW YankeesbattingStatsView AS 
+SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E, 
+FORMAT(AVG(H/AB), 3) AS 'AVG', 
+FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG', 
+FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP', 
+FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS', 
+FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT'
+FROM tempbattingStatsView 
+GROUP BY PLAYER; 
+SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file';
+
+
+
+cmd = mysql -ugjmcginn -pmysql baseballTDB -s -e "USE baseballTDB; CREATE OR REPLACE VIEW tempbattingStatsView AS  SELECT  playerName AS 'PLAYER',  SUM(games) AS 'GMSP',   SUM(atbats) AS 'AB',   SUM(runs) AS 'R',   SUM(hits) AS 'H',   SUM(rbis) AS 'RBI',   SUM(doubles) AS '2B',  SUM(triples) AS '3B',  SUM(homeruns) AS 'HR',  SUM(walks) AS 'BB',  SUM(strikeouts) AS 'K',  SUM(hitbypitch) AS 'HBP',  SUM(sacrifices) AS 'SAC', SUM(stolenbases) AS 'SB', SUM(attstolenbases) AS 'ASB',  SUM(putouts) AS 'PO',  SUM(assists) AS 'AST',  SUM(errors) AS 'E'  FROM batting  WHERE teamName='Yankees'  GROUP BY playerName;  CREATE OR REPLACE VIEW YankeesbattingStatsView AS  SELECT PLAYER, GMSP, AB, R, H, RBI, 2B, 3B, HR, BB, K, HBP, SAC, SB, ASB, PO, AST, E,  FORMAT(AVG(H/AB), 3) AS 'AVG',  FORMAT((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB) ,3) AS 'SLUG',  FORMAT((H+BB+HBP)/(AB+BB+HBP+SAC) ,3) AS 'OBP',  FORMAT(((((H-(2B+3B+HR))+(2B*2)+(3B*3)+(HR*4))/AB)+((H+BB+HBP)/(AB+BB+HBP+SAC))), 3) AS 'OPS',  FORMAT(((PO+AST)/(PO+AST+E)), 3) AS 'FPCT' FROM tempbattingStatsView  GROUP BY PLAYER;  SELECT * FROM YankeesbattingStatsView INTO OUTFILE '/var/lib/mysql-files/Yankees-battingstats.file'; "
+
+stdout = 
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+>>>>> Executing FUNCTION sql_rows()
+
+Team Selected = Yankees
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(distinct playerName) FROM batting WHERE teamName='Yankees'"
+stdout = 16
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of rows to process:  16 
+
+>>>>> Executing FUNCTION sql_columns()
+
+mysql -ugjmcginn -pmysql baseballTDB -s -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema='baseballTDB' AND table_name='YankeesbattingStatsView'"
+
+stdout = 23
+
+stderr = mysql: [Warning] Using a password on the command line interface can be insecure.
+
+result =  0 
+
+The number of Columns:  23 
+
+Batting: Yankees
+
+Player Name       GP   AB   R    H   RBI   2B   3B   HR   BB   K   HBP  SAC   SB  ASB   PO  AST   E    AVG    SLUG   OBP    OPS    FPCT
+---------------- ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  ---  -----  -----  -----  -----  -----
+LeMahieu, DJ       4   19    3    8    2    0    0    0    0    3    0    0    0    0   26    2    0  0.421  0.421  0.421  0.842  1.000  
+Judge, A           4   13    4    3    3    0    0    2    5    5    0    0    0    0    8    0    0  0.231  0.692  0.444  1.137  1.000  
+Urshela, G         4   16    2    5    1    1    0    0    2    1    0    0    0    0    3    7    0  0.313  0.375  0.389  0.764  1.000  
+Torres, G          4   16    2    3    1    1    0    1    2    5    0    0    0    0    5   16    1  0.188  0.438  0.278  0.715  0.955  
+Encarnacion, E     3   10    0    1    1    0    0    0    0    3    0    0    0    0   10    0    1  0.100  0.100  0.100  0.200  0.909  
+Sanchez, G         4   17    2    3    5    0    0    2    0    8    0    0    0    0    2    0    0  0.177  0.529  0.176  0.706  1.000  
+Gardner, B         4   14    1    3    1    1    0    1    1    1    0    1    0    0   11    2    0  0.214  0.500  0.250  0.750  1.000  
+Gregorius, D       3    9    0    1    0    0    0    0    0    3    0    0    0    0    2    5    1  0.111  0.111  0.111  0.222  0.875  
+Hicks, A           4   14    2    5    0    3    0    0    1    2    0    0    0    0    5    0    0  0.357  0.571  0.400  0.971  1.000  
+Voit, L            4    5    1    1    2    0    0    1    1    1    0    1    0    0    2    0    0  0.200  0.800  0.286  1.086  1.000  
+Maybin, C          1    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
+Tanaka, M          1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    1    0  0.000  0.000  0.000  0.000  1.000  
+Sabathia, CC       1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
+Tauchman, M        1    3    0    0    0    0    0    0    0    2    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
+Stanton, G         1    5    0    2    2    0    0    0    0    2    0    0    0    0    0    0    0  0.400  0.400  0.400  0.800  0.000  
+Frazier, C         1    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  0.000  0.000  0.000  0.000  0.000  
+
+stdout = QUIT
+
+stderr = 
+result =  1 
+
+>>>>> Executing (battingStats) endPROG
+
+
+*** battingStats - Terminated Normally - Return to calling Program ***
 >>>>> Executing endPROG
 
 

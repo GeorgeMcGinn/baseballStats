@@ -1,5 +1,5 @@
-REM $TITLE: baseballConfig.bas Version 0.17  09/30/2021 - Last Update: 12/07/2021
-_TITLE "baseballConfig.bas"
+REM $TITLE: baseballConfig.bas Version 0.18  09/30/2021 - Last Update: 1214/2021
+_TITLE "Configuration Management Version 0.18  09/30/2021 - Last Update: 12/14/2021"
 ' baseballConfig.bas    Version 1.0  09/30/21
 '-------------------------------------------------------------------------------
 '       PROGRAM: baseballConfig.bas
@@ -29,6 +29,7 @@ _TITLE "baseballConfig.bas"
 ' 11/21/21 v0.16 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
 ' 12/07/21 v0.17 GJM - Updated CC licensing
+' 12/14/21 v0.18 GJM - Minor adjustment to the way container text displayed
 '-------------------------------------------------------------------------------
 '  Copyright ©2021 by George McGinn.  All Rights Reserved.
 '
@@ -133,7 +134,7 @@ DisplayForm:
 ' *** Display the Configuration Update form with values from Config File
     IF COMMAND$(1) = "INSTALL" THEN
         cmd = "zenity --forms --title=" + CHR$(34) + "Config File - Baseball/Softball Statistics System - v1.0  " + CHR$(34) + _
-              " --text=" + CHR$(34) + "Install/New Region: Enter all fields" + CHR$(34) + _
+              " --text=" + CHR$(34) + "Install/New Region: Enter all fields  " + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL DATABASE (" + mysqlDB$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL USER (" + mysql_userid$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL PASSWORD (" + mysql_password$ + ")" + CHR$(34) + _
@@ -144,7 +145,7 @@ DisplayForm:
               " --width=500 --height=200 --ok-label=CREATE --extra-button=HELP --extra-button=QUIT"
     ELSE
         cmd = "zenity --forms --title=" + CHR$(34) + "Config File - Baseball/Softball Statistics System - v1.0  " + CHR$(34) + _
-              " --text=" + CHR$(34) + "Update: Enter new value(s) to change" + CHR$(34) + _
+              " --text=" + CHR$(34) + "Update: Enter new value(s) to change  " + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL DATABASE (" + mysqlDB$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL USER (" + mysql_userid$ + ")" + CHR$(34) + _
               " --add-entry=" + CHR$(34) + "SQL PASSWORD (" + mysql_password$ + ")" + CHR$(34) + _
@@ -173,7 +174,7 @@ DisplayForm:
 	IF result = 1 AND stdbutton = "QUIT" THEN GOTO endPROG
 
 ' *** If HELP button pressed, display the HELP Screen	
-    IF result = 1 AND stdbutton = "HELP" THEN
+    IF stdbutton = "HELP" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "HELP: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
               " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _

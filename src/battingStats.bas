@@ -1,5 +1,5 @@
-REM $TITLE: battingStats.bas Version 0.26  08/09/2021 - Last Update: 12/10/2021
-_TITLE "Batting/Fielding Statistics Version 0.26  08/09/2021 - Last Update: 12/10/2021"
+REM $TITLE: battingStats.bas Version 0.27  08/09/2021 - Last Update: 12/14/2021
+_TITLE "Batting/Fielding Statistics Version 0.27  08/09/2021 - Last Update: 12/14/2021"
 ' battingStats.bas    Version 1.0  08/09/2021
 '-------------------------------------------------------------------------------------
 '       PROGRAM: battingStats.bas
@@ -51,6 +51,10 @@ _TITLE "Batting/Fielding Statistics Version 0.26  08/09/2021 - Last Update: 12/1
 ' 12/10/21 v0.26 GJM - Created a screen display when enscript isn't installed (This
 '                      is required if application is started from an ICON or directly
 '                      from Files or a File Manager).
+' 12/14/21 v0.27 GJM - Modified the text displayed in the display and update screens
+'                      so that the intent is clearer. Added the ABOUT button 
+'                      (As this module can run stand-a-lone). Fixed logic for 
+'                      stand-a-lone execution.
 '-------------------------------------------------------------------------------------
 '  Copyright (C)2021 by George McGinn.  All Rights Reserved.
 '
@@ -91,12 +95,18 @@ setLeague = FALSE
 '$INCLUDE: 'include/baseballProcessArgs.inc'
 
 '----------------------------------------------------
-' *** Determine/set OSType
+' *** If started from this program, do systems checks
 '
-IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
-IF OStype <> "LINUX" THEN
-    PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
-    GOTO endPROG
+IF cntargs = 0 THEN
+	IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
+	IF OStype <> "LINUX" THEN
+		PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
+		GOTO endPROG
+	END IF
+	result = SystemsCheck
+	IF result = FALSE THEN GOTO endPROG
+	DisplayAbout
+    LoadConfigFile
 END IF
 
 
@@ -104,10 +114,6 @@ QB64Main:
 '-------------------------------------------------------------------------------------
 ' *** MAIN Logic
 '
-	IF cntargs = 0 THEN
-		result = SystemsCheck
-		IF result = FALSE THEN GOTO endPROG
-	END IF
 
 DetermineArraySize:
 ' *** Initialize SQL variables and do a SELECT to determine number of columns and
@@ -234,6 +240,8 @@ SubmitMenu:
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Batting Stats Update" + CHR$(34) + " \" + CHR$(10)
+	PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Update all fields needed, then select all records to update:" + CHR$(34) +  "\" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --editable --multiple --print-column=ALL \" + CHR$(10)
 	PUT #f3%, , tmpLine$
@@ -400,6 +408,8 @@ submitMenu:
 	tmpLine$ = "zenity --list \" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --title=" + CHR$(34) + teamName + " Batting Stats" + CHR$(34) + " \" + CHR$(10)
+	PUT #f3%, , tmpLine$
+	tmpLine$ = "       --text="+ CHR$(34) + "Check all players you wish to update below:" + CHR$(34) +  "\" + CHR$(10)
 	PUT #f3%, , tmpLine$
 	tmpLine$ = "       --width=1350 --height=500 --checklist \" + CHR$(10)
 	PUT #f3%, , tmpLine$
@@ -628,6 +638,11 @@ SUB getBattingStatsFile
 	END IF
 	
 END SUB
+
+
+'$INCLUDE: 'include/baseballAboutDisplay.inc'
+
+'$INCLUDE: 'include/baseballDisplayHelpMenu.inc'
 
 '$INCLUDE: 'include/baseballConfig.inc'
 

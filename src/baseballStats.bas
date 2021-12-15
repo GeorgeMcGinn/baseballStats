@@ -1,5 +1,5 @@
-REM $TITLE: baseballStats.bas Version 0.22  09/20/2021 - Last Update: 12/07/2021
-_TITLE "baseballStats.bas"
+REM $TITLE: baseballStats.bas Version 0.23  09/20/2021 - Last Update: 12/14/2021
+_TITLE "Main Menu Processing Version 0.23  09/20/2021 - Last Update: 12/14/2021"
 ' baseballStats.bas    Version 1.0  09/20/21
 '-------------------------------------------------------------------------------
 '       PROGRAM: baseballStats.bas
@@ -39,6 +39,14 @@ _TITLE "baseballStats.bas"
 ' 11/21/21 v0.21 GJM - Add the output mySQL directory to the config.ini file
 '                      and standardized the size of the HELP screen
 ' 12/07/21 v0.22 GJM - Updated CC licensing
+' 12/14/21 v0.23 GJM - Added the Splash Screen to display two sets - one for
+'                      the first run, asking users to agree to license before
+'                      setting up the system, and one that displays when the
+'                      [ABOUT] button is pressed, or at the start without the
+'                      checkbox after the system has been set up. Part of the 
+'                      splash screen produces a menu so all the HELP topics can 
+'                      be viewed ahead of time, and the other the legal code 
+'                      for licensing.
 '-------------------------------------------------------------------------------
 '  Copyright ©2021 by George McGinn.  All Rights Reserved.
 '
@@ -50,8 +58,6 @@ _TITLE "baseballStats.bas"
 '-------------------------------------------------------------------------------------
 ' PROGRAM NOTES
 ' --------------
-' 11/21 - Verify that the proper ARGS are being passed. The SQL Output Directory
-'         must be in ARG6, or ARG7 for the calls that already use ARG6.
 '
 '-------------------------------------------------------------------------------
 
@@ -61,6 +67,7 @@ $CONSOLE:ONLY
 OPTION BASE 1
 
 ON ERROR GOTO ehandler
+
 
 '-------------------------------------------------------------
 ' *** Initialize Section
@@ -80,8 +87,17 @@ QBMain:
     PRINT #flog%, ">>>>> Executing PGM=baseballStats"
     PRINT #flog%, ""
 
+	IF INSTR(_OS$, "LINUX") THEN OStype = "LINUX"
+	IF OStype <> "LINUX" THEN
+		PRINT #flog%, "*** (" + ProgramName$ + ") ERROR: Program runs in Linux only. Program Terminated. ***": PRINT #flog%, ""
+		GOTO endPROG
+	END IF
+
     result = SystemsCheck
     IF result = FALSE THEN GOTO endPROG
+    
+' *** Display the Splash/About Screen
+	DisplayAbout
 
 ' *** If Config File does not exist, Call baseballInstall
 	IF NOT _FILEEXISTS(ConfigFile$) THEN
@@ -99,7 +115,7 @@ submitMenu:
 		  "       --title=" + CHR$(34) + "Main Menu - Baseball/Softball Statistics System - v1.0   " + CHR$(34) + _
 		  "       --text=" + CHR$(34) + "Select/Double Click on Option to Process:" + CHR$(34) + _
 	  	  "       --width=430 --height=225 --hide-header --column=" + CHR$(34) + "Select One" + CHR$(34) + _
-		  "       --extra-button=HELP --extra-button=QUIT " + _
+		  "       --extra-button=HELP --extra-button=ABOUT --extra-button=QUIT " + _
 		  CHR$(34) + "Boxscores - Add/Update" + CHR$(34) + " \ " + _
 		  CHR$(34) + "Batting - Add/Update"  + CHR$(34) + " \ " + _
 		  CHR$(34) + "Pitching - Add/Update" + CHR$(34) + " \ " + _
@@ -128,6 +144,9 @@ submitMenu:
         GOTO SubmitMenu
     END IF
 
+' *** If ABOUT button pressed, display the ABOUT Splash Screen	
+    IF result = 1 AND stdbutton = "ABOUT" THEN DisplayAbout: GOTO submitMenu
+    
 ' *** Process menu selection
 	SELECT CASE stdmenu
 		   CASE "Boxscores - Add/Update"
@@ -206,17 +225,8 @@ endPROG:
 ' *** Remove work files if they exist
 '$INCLUDE: 'include/deleteWorkFiles.inc'
 
-	
-''    PRINT #flog%, ">>>>> Executing endPROG"
-''    PRINT #flog%, ""
-''    PRINT #flog%, "": PRINT #flog%, "*** " + ProgramName$ + " - Terminated Normally ***"
-''    CLOSE #flog%
-''    SYSTEM
 
 END SUB
-
-'*** 11/21 (GJM)- Verify that the proper ARGS are being passed. The SQL Output Directory
-'***              must be in ARG6, or ARG7 for the calls that already use ARG6.
 
 
 SUB CallBatting
@@ -381,7 +391,6 @@ FUNCTION IssueWarning
 ' *** Issue a warning that the config.ini file will be erased and give an
 ' *** option to abort
 '
-
 	cmd = "zenity --warning \ " + _
           "       --width=200 --height=60 \ " + _
           "       --extra-button=NO --ok-label=YES" + _ 
@@ -400,6 +409,10 @@ END FUNCTION
 
 
 '-----------------------------------------------------------------------
+
+'$INCLUDE: 'include/baseballAboutDisplay.inc'
+
+'$INCLUDE: 'include/baseballDisplayHelpMenu.inc'
 
 '$INCLUDE: 'include/baseballConfig.inc'
 

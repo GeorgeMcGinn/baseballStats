@@ -10,6 +10,8 @@ This is a working system as it is right now. It will record and produce baseball
 
 If you wish to track multiple seasons, the only way to do this with this pre-release is to either create a new database with new tables, or create new tables within your database. When the official v1 release comes out, this will all be built in.
 
+Also built into the HELP and ABOUT boxes is CSS to automatically detect and switch between Light, Dark and Standard desktop themes. The dark themes are based on what Ubuntu produces, so if you have a different color scheme, you will need to change the `<style>` background and foreground colors to yours in the HTML files located in the `help` directory.
+
 For now, users of QB64 need to have any version of Linux, install Zenity, and install and run the MySQL server. If you want formatted reports on your printer, make sure you have `enscript` installed. If not, then all reports will be displayed in a generated screen.
 
 you will need to compile the five program located in the `src` directory. To compile for you version of Linux, copy the source code to the main directory of this extract, and compile all five programs (the `include` directory is needed as a sub-directory to do compiles. 
@@ -71,6 +73,47 @@ service mysql restart
 6. The system has an extensive HELP file system, which you should familiarize yourself with.
 &nbsp;
 &nbsp;
+
+<a name="Running BaseballStats"></a>
+# Running BaseballStats
+Once you have loaded the binaries to the main directory (or followed the recompile process), you need to click on the `baseballStats` module to get started. After you are presented with an introduction/splash screen, if this is the first time executing the program, a check box where you must acknowledge the license and conditions for using the program. Nothing will happen until you check that box. Once you do, the [OK] button will become available and you can proceed to setup your MySQL database and tables.
+
+While all the programs are also designed to run stand-a-lone, if you do not go through the set up process, all the programs will error out. If you try to run a module and nothing happens, check the `logs` directory for the file `baseballStats.log` and open it up in a text editor. Below are some of the errors you may encounter:
+
+```
+*** Batting Stats Log File ***
+
+>>>>> Executing SUB LoadConfigFile
+
+*** pitchingStats ERROR: config.ini File Missing, Program Terminated.
+
+```
+This shows that the pitchingStats module failed due to lack of set up.
+
+
+```
+*** BaseballStats Log File ***
+
+>>>>> Executing PGM=baseballStats
+
+*** (baseballStats) ERROR: Program runs in Linux only. Program Terminated. ***
+
+>>>>> Executing endPROG
+
+*** baseballStats - Terminated Normally ***
+```
+This shows that you tried to run the binaries on a system that isn't Linux.
+
+The log file records everything that the system does, including all the SQL it executes, return codes, and what buttons were pressed. Since this is a multi-program system, it tells you which program was running, was called.
+
+Unless you encounter an error, you will not have a need to look at this file. Most errors, such as dependencies not installed will be found here, and you can correct those. However, if there is a program logic error, a message will appear towards the bottom of the log. 
+
+For support, please send me the entire log, what release you are running, and as detailed as possible the issue you are having. I may need to have you export your MySQL tables, and if so, I can guide you through that process.
+
+I have included what a typical log file looks like in this release.
+
+Once you run through the set up process, you can run the application from its main program, `baseballStats`, or any of the other programs, such as the `battingStats` if you just want to work on batting statistics, `pitchingStats` for pitching records, `leagueStats` to just look at your league statistics, or the `baseballConfig` to update your configuration file.
+
 
 <a name="InstallQB64"></a>
 # Installing QB64 and Compiling the Source Code
@@ -146,11 +189,11 @@ Licenses for <b>QB64</b> can be found at their GitHub page: <a href="https://git
 <b>Zenity</b> is licensed under the GNU Lesser General Public License v2.1, February 1999, and can be found at <a href="https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html">GNU Lesser General Public License, version 2.1</a>
 <br>
 <br>
-Questions or permissions beyond the scope of this license may be available at <a href="mailto:gbytes58@gmail.com?subject=Baseball/Softball Statisical System Licensing">Contact: George McGinn (Email)</a>
+Questions or permissions beyond the scope of this license may be available at <a href="mailto:gbytes58@gmail.com?subject=Baseball/Softball Statistical System Licensing">Contact: George McGinn (Email)</a>
 <br>
 <br>
 
 * * *
 <br>
 
-***Last Update: 12/13/2021 17:53***
+***Last Update: 12/14/2021 23:15***

@@ -1,9 +1,3 @@
 *.bas
-baseballStats
-battingStats
-pitchingStats
-baseballConfig
-leagueStats
-leagueDebug
 pipestderr
-logs/baseballstats.log
+help.sh
