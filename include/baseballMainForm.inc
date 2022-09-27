@@ -3,8 +3,8 @@
 ' *** If ARGS=0 or teamName is not passed, execute GUI to retrieve all fields
 
 ProcessTeamForm:
-	IF cntargs = 0 OR teamName = "" THEN
-		stdout = "": stderr = ""
+	IF cntargs = 0 OR teamName = NULL THEN
+		stdout = NULL: stderr = NULL
 		cmd = "zenity --forms --title=" + CHR$(34) + "Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
 			  " --text=" + CHR$(34) + "Enter Team Name For Statisical Review" + CHR$(34) + _
 			  " --width=415 " + _
@@ -12,11 +12,11 @@ ProcessTeamForm:
 			  " --add-entry=" + CHR$(34) + "Game ID" + CHR$(34) + _
 			  " --add-entry=" + CHR$(34) + "Games Played" + CHR$(34) + _
 			  " --extra-button=HELP --extra-button=QUIT"
-		result = pipecom(cmd, stdout, stderr)
+		retcode = pipecom(cmd, stdout, stderr)
 		lenstr = LEN(stdout): stdout = LEFT$(stdout, lenstr - 1)
 		stdbutton = LEFT$(stdout, lenstr - 1)
-		IF stdbutton = "QUIT" THEN GOTO endPROG
-		IF result = 1 AND stdbutton = "HELP" THEN
+		IF stdbutton = "QUIT" THEN endPROG
+		IF retcode = 1 AND stdbutton = "HELP" THEN
 			cmd = "zenity --text-info " + _
 			  	  " --title=" + CHR$(34) + "HELP/ABOUT: Baseball Stats" + CHR$(34) + _
 				  " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
@@ -24,15 +24,15 @@ ProcessTeamForm:
 			SHELL (cmd)
 			GOTO ProcessTeamForm
 		END IF
-		IF result <> 0 THEN
+		IF retcode <> 0 THEN
 			SHELL ("zenity --error --text=" + CHR$(34) + "(" + ProgramName$ + "): Main Form did not load. Program Terminated." + CHR$(34) + " --width=175 --height=100")
-			GOTO endPROG
+			endPROG
 		END IF
 ' *** Split out names of selected records into the Query array
 		REDIM Query(3)
 		Delim$ = "|"
 		qString$ = stdout
-		retcode = StrSplit$(qString$, Delim$)		
+		return$ = StrSplit$(qString$, Delim$)		
 ' *** Populate the variables based on FORM input
 		teamName = Query(1)
 		gameID = Query(2)
@@ -41,7 +41,7 @@ ProcessTeamForm:
 		ELSE
 			gamesPlayed = "1"
 		END IF	
-		IF teamName = "" THEN 
+		IF teamName = NULL THEN 
 			SHELL ("zenity --warning --text=" + CHR$(34) + "(" + ProgramName$ + "): Team Name Required - press OK to correct." + CHR$(34) + " --width=175 --height=100")		
 			GOTO ProcessTeamForm
 		END IF			

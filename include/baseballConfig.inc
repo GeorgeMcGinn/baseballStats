@@ -6,7 +6,8 @@ SUB LoadConfigFile:
 ' *** programs.
 '
 
-	PRINT #flog%, ">>>>> Executing SUB LoadConfigFile": PRINT #flog%, ""
+	PRINT #flog%, "(" + ProgramName$ + "): >>>>> Executing SUB LoadConfigFile"
+	PRINT #flog%, "(" + ProgramName$ + "): "
 
 ' *** Read Config File IF EXISTS. If not, create it with default values
 	Delim$ = "="
@@ -18,44 +19,43 @@ SUB LoadConfigFile:
 			IF ISNUMERIC(qString$) THEN 
 				nbrUpdates = VAL(qString$)
 				REDIM Query(2)
-			ELSE
-				IF LEFT$(qString$, 1) <> ";" THEN
-					retcode = StrSplit$(qString$, Delim$)
-					IF Query(1) = "SQLDB" THEN 
-						mySQLDB$ = Query(2)
-						ARG1$ = qString$
-					END IF
-					IF Query(1) = "SQLUSER" THEN 
-						mysql_userid$ = Query(2)
-						ARG2$ = qString$
-					END IF
-					IF Query(1) = "SQLPWD" THEN 
-						mysql_password$ = Query(2)
-						ARG3$ = qString$
-					END IF
-					IF Query(1) = "SQLBATTBL" THEN 
-						mysql_battingTable$ = Query(2)
-						ARG4$ = qString$
-					END IF
-					IF Query(1) = "SQLPITCHTBL" THEN 
-						mysql_pitchingTable$ = Query(2)
-						ARG5$ = qString$
-					END IF
-					IF Query(1) = "SQLOUTDIR" THEN 
-						mysql_outputdir$ = Query(2)
-						ARG6$ = qString$
-					END IF
-					IF Query(1) = "INNINGS" THEN 
-						nbr_innings$ = Query(2)
-						ARG7$ = qString$
-					END IF
-				END IF
+			ELSEIF LEFT$(qString$, 2) <> "/*" THEN
+				return$ = StrSplit$(qString$, Delim$)
+				SELECT CASE Query(1)
+					   CASE "SQLDB"
+							mySQLDB$ = Query(2)
+							ARG1$ = qString$
+					   CASE "SQLUSER"
+							mysql_userid$ = Query(2)
+							ARG2$ = qString$
+					   CASE "SQLPWD" 
+							mysql_password$ = Query(2)
+							ARG3$ = qString$
+					   CASE "SQLBATTBL" 
+							mysql_battingTable$ = Query(2)
+							ARG4$ = qString$
+					   CASE "SQLPITCHTBL" 
+							mysql_pitchingTable$ = Query(2)
+							ARG5$ = qString$
+					   CASE "SQLOUTDIR"
+							mysql_outputdir$ = Query(2)
+							ARG6$ = qString$
+					   CASE "SQLOUTFILE" 
+							mysql_outfile$ = Query(2)
+							ARG7$ = qString$
+					   CASE "PRINTREPORT" 
+							mysql_printreport$ = Query(2)
+							ARG8$ = qString$
+					   CASE "INNINGS"
+							nbr_innings$ = Query(2)
+							ARG9$ = qString$
+				END SELECT
 			END IF
 		LOOP
 		CLOSE #f1%
 	ELSE
-		PRINT #flog%, ""
-		PRINT #flog%, "*** " + ProgramName$ + " ERROR: config.ini File Missing, Program Terminated."
+		PRINT #flog%, "(" + ProgramName$ + "): "
+		PRINT #flog%, "(" + ProgramName$ + "): ERROR: config.ini File Missing, Program Terminated."
 		CLOSE #flog%
 		SYSTEM 1
 	END IF

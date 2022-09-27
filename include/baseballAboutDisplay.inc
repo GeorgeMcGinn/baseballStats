@@ -16,7 +16,7 @@ submitAbout:
               " --extra-button=" + CHR$(34) + "HELP MENU" + CHR$(34) + _
               " --checkbox=" + CHR$(34) + "I agree with the licensing and conditions set for using this program. (Required for first time use)" + CHR$(34) + _
               " --filename=help/baseballAbout.html 2> /dev/null"
-        result = pipecom(cmd, stdout, stderr)
+        retcode = pipecom(cmd, stdout, stderr)
     ELSE
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "ABOUT: Baseball/Softball Statistics System - (Pre-release)" + CHR$(34) + _
@@ -25,7 +25,7 @@ submitAbout:
               " --extra-button=" + CHR$(34) + "LICENSE" + CHR$(34) + _
               " --extra-button=" + CHR$(34) + "HELP MENU" + CHR$(34) + _
               " --filename=help/baseballAbout.html 2> /dev/null"
-        result = pipecom(cmd, stdout, stderr)
+        retcode = pipecom(cmd, stdout, stderr)
 	END IF
 
 ' *** Save menu selection and/or button pressed   
@@ -34,15 +34,15 @@ submitAbout:
 	stdbutton = stdout
 
 ' *** If X, Cancel or QUIT buttons are pressed, end program
-	IF result = 1 AND stdbutton = "" THEN 
+	IF retcode = 1 AND stdbutton = NULL THEN 
 		IF NOT _FILEEXISTS(ConfigFile$) THEN GOTO endPROG
 	END IF
-	IF result = 1 AND stdbutton = "QUIT" THEN 
+	IF retcode = 1 AND stdbutton = "QUIT" THEN 
 		IF NOT _FILEEXISTS(ConfigFile$) THEN GOTO endPROG
 	END IF
 
 ' *** If LICENSE button pressed, display license and redisplay ABOUT 
-    IF result = 1 AND stdbutton = "LICENSE" THEN
+    IF retcode = 1 AND stdbutton = "LICENSE" THEN
         cmd = "zenity --text-info " + _
               " --title=" + CHR$(34) + "LICENSE: Baseball/Softball Statistics System - v1.0" + CHR$(34) + _
               " --width=1000 --height=850 --html --ok-label=" + CHR$(34) + "Return to Menu" + CHR$(34) +  _
@@ -64,10 +64,11 @@ endPROG:
 ' *** Remove work files if they exist
 '$INCLUDE: '../include/deleteWorkFiles.inc'
 	
-    PRINT #flog%, ">>>>> Executing endPROG"
-    PRINT #flog%, ""
+    PRINT #flog%, "(" + ProgramName$ + "): >>>>> Executing endPROG"
+    PRINT #flog%, "(" + ProgramName$ + "): "
 
-    PRINT #flog%, "": PRINT #flog%, "*** " + ProgramName$ + " - Terminated Normally ***"
+    PRINT #flog%, "(" + ProgramName$ + "): "
+    PRINT #flog%, "(" + ProgramName$ + "): Terminated Normally ***"
     CLOSE #flog%
     SYSTEM
 

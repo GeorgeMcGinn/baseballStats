@@ -1,0 +1,23 @@
+22
+CREATE OR REPLACE VIEW tempbattingStatsView AS 
+SELECT playerName AS 'PLAYER', 
+SUM(games) AS 'GMSP', 
+SUM(atbats) AS 'AB', 
+SUM(runs) AS 'R', 
+SUM(hits) AS 'H', 
+SUM(rbis) AS 'RBI', 
+SUM(doubles) AS '2B', 
+SUM(triples) AS '3B', 
+SUM(homeruns) AS 'HR', 
+SUM(walks) AS 'BB', 
+SUM(strikeouts) AS 'K', 
+SUM(hitbypitch) AS 'HBP', 
+SUM(sacrifices) AS 'SAC', 
+SUM(stolenbases) AS 'SB', 
+SUM(attstolenbases) AS 'ASB', 
+SUM(putouts) AS 'PO', 
+SUM(assists) AS 'AST', 
+SUM(errors) AS 'E' 
+FROM <BATSQLTBL> 
+WHERE teamName='<TEAMNAME>' 
+GROUP BY playerName;

@@ -1,0 +1,15 @@
+14
+CREATE OR REPLACE VIEW leagueView AS 
+SELECT teampitchingView.TEAM, 
+teampitchingView.W,  
+teampitchingView.L, 
+teampitchingView.IP,
+teampitchingView.ER,
+teampitchingView.ERA, 
+teambattingView.AVG, 
+teambattingView.SLUG, 
+teambattingView.FPCT, 
+FORMAT(teampitchingView.W/(teampitchingView.W+teampitchingView.L), 3) AS 'WPCT' 
+FROM teampitchingView, teambattingView 
+WHERE teampitchingView.TEAM = teambattingView.TEAM 
+ORDER BY WPCT DESC;	

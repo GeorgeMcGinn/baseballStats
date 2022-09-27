@@ -16,7 +16,7 @@ submitHELP:
 		  CHR$(34) + "Pitching Data Processing" + CHR$(34) + " \ " + _
 		  CHR$(34) + "League/Team Display Statistics" + CHR$(34)  
 
-    result = pipecom(cmd, stdout, stderr)
+    retcode = pipecom(cmd, stdout, stderr)
 
 ' *** Save menu selection and/or button pressed   
     lenstr = LEN(stdout): stdout = LEFT$(stdout, lenstr - 1) 
@@ -24,7 +24,7 @@ submitHELP:
 	stdbutton = stdout
 
 ' *** If X, Cancel or QUIT buttons are pressed, end program
-	IF result = 1 AND stdbutton = "" THEN GOTO endPROG
+	IF retcode = 1 AND stdbutton = NULL THEN endPROG
 	IF stdbutton = "RETURN" THEN EXIT SUB
 
     
@@ -69,20 +69,5 @@ submitHELP:
 	END SELECT
 
 	GOTO submitHELP
-
-
-endPROG:
-' *** CLOSE Log File
-'
-
-' *** Remove work files if they exist
-'$INCLUDE: '../include/deleteWorkFiles.inc'
-	
-    PRINT #flog%, ">>>>> Executing endPROG"
-    PRINT #flog%, ""
-
-    PRINT #flog%, "": PRINT #flog%, "*** " + ProgramName$ + " - Terminated Normally ***"
-    CLOSE #flog%
-    SYSTEM
 
 END SUB

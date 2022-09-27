@@ -1,0 +1,355 @@
+# FUNCTION: Display the HELP text
+help() {
+	clear	
+	echo 
+	echo "Baseball/Softball Statistical System Install Help - v1.0.0"
+	echo "----------------------------------------------------------"
+	echo
+	echo "Usage: install.sh <switches/values>"
+	echo
+	echo "Options:"
+	echo "  -q <directory>  Set the directory name for the QB64 Compiler (uses your PATH location if missing)"
+	echo "  -s <directory>  Set the directory name for installation source"
+	echo "  -d <directory>  Set the directory name for install destination"
+	echo "  -r <rdms name>  Set the value for the Relative Database Management System (values: mariadb, mysql)"
+	echo "  -b              Install from binaries (no compiles executed)"
+	echo "  -h              Display this information"
+	echo "  --help          Display this information"
+	echo
+	echo "Example: install.sh -s /home/<userid>/Downloads/baseballStats -d /home/<userid>/baseballStats -q /home/<userid>/qb64"
+	echo "This will use the Downloads/baseballStats to pull the files from and copy and compile them to"
+	echo "the directory in the -d argument. It will use the QB64 compiler in directory /home/<userid>/qb64"
+	echo
+	echo "If -s or -d is not provided, install script will use the current working directory (PWD) for each."
+	echo "If -q is not provided, install script will check the directories in your PATH to find QB64 compiler."
+	echo "If -r is not provided, mySQL will be the default server, unless running on a Raspberry Pi, then mariaDB is the default."
+	echo
+	echo "To install from binaries: install.sh -b -s /home/<userid>/Downloads/baseballStats -d /home/<userid>/baseballStats"
+	echo
+	echo "To install with mariaDB: install.sh -s /home/<userid>/Downloads/baseballStats -d /home/<userid>/baseballStats -r mariadb"
+	echo
+	echo "To use/install the QB64 compiler: install -s /home/<userid>/Downloads/baseballStats -d /home/<userid>/baseballStats -q <directory to QB64>"
+	echo "NOTE: If the directory for QB64 does not exist, it will be built and used to compile the system, then will be deleted."
+	echo "      If the install finds the directory, it will verify it, and use that to compile. It will not be deleted in this case."
+	echo "      Not providing a -q will check to see if QB64 is in your PATH variable. If found, it will be used, otherwise, install will fail."
+	echo
+	echo "NOTE: /home/<userid>/... this example points to the full directory on your system. You may install it anywhere on your system."
+	echo "      <userid> is used as an example that you replace with your own userid. All directories must be full directories. Will not work"
+	echo "      if you use relative directory. The only exception is if you do not provide either a -s or -d. Then the current PWD will be used."
+	echo
+	echo "This install is set to automatically run on the following Linux Distro's:"
+	echo "   Arch Linux"
+	echo "   Debian"
+	echo "   Fedora, RedHat and CentOS"
+	echo "   Linux Mint"
+	echo "   Ubuntu (Including: KUbuntu, LUbuntu & XUbuntu"
+	echo "   Raspbian (PI ARM processors only)"
+	echo "   Slackware"
+	echo "   VoidLinux"
+	echo "   Zorin"
+	echo
+	echo "If the auto dependency install fails, you will need to install them manually before running this script again."
+	echo
+	echo "A note on choosing a RDMS: If you try to install, say, maraiDB when you already have mySQL installed, the script will fail."
+	echo "Because mariaDB and mySQL share some of the same items and aliases, trying to install one while the other is already installed"
+	echo "leads to a broken package management as well as an unusable SQL server."
+	echo 
+	echo "Report bugs to gbytes58@gmail.com"
+	echo
+}
+
+# FUNCTION: Exit on compiler error & clean up files
+abend() {
+	rm -r $destination_directory
+	if [ $delete_qb64 == True ]; then
+		echo "Deleting QB64 directories and files from destination..." 
+		rm -r $qb64_directory
+		echo -e "${GREEN}QB64 sucessfully removed from destination directory$RESET"
+		echo
+	fi
+	echo -e "${GREEN}Temporary files, destination directory & the temporary qb64 compiler (if created) deleted.$RESET"	
+	echo
+	echo -e "${REDBG}Baseball/Softball Statistical Recordkeeping System DID NOT Install. Please correct error(s) and retry.$RESET"
+	exit 1	
+}
+
+# FUNCTION: Convert text to all lowercase
+lowercase(){
+    echo "$1" | sed "y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/"
+}
+
+# FUNCTION: Convert text to all lowercase
+uppercase(){
+    echo "$1" | sed "y/abcdefghijklmnopqrstuvwxyz/ABCDEFGHIJKLMNOPQRSTUVWXYZ/"
+}
+
+# FUNCTION: Determine OS/processor types
+#           Note: There may be a need to determine if the script is running
+#                 on a Raspberry PI, independent of what OS is running. To
+#                 do so: `grep "Raspberry Pi" /proc/cpuinfo` will return true
+#                 if you are running on a hardware PI. Ubuntu and Kali Linux
+#                 have PI versions, so it may be necessary to check for this
+#                 rather than using the check for the "armv" processor. 
+ostype(){
+	OS=`lowercase \`uname\``
+	KERNEL=`uname -r`
+	MACH=`uname -m`
+	SUB="armv"
+	if [ "{$OS}" == "windowsnt" ]; then
+		OS=windows
+	elif [ "{$OS}" == "darwin" ]; then
+		OS=mac
+	else
+		OS=`uname`
+		if [ "${OS}" = "SunOS" ] ; then
+			OS=Solaris
+			ARCH=`uname -p`
+			OSSTR="${OS} ${REV}(${ARCH} `uname -v`)"
+		elif [ "${OS}" = "AIX" ] ; then
+			OSSTR="${OS} `oslevel` (`oslevel -r`)"
+		elif [ "${OS}" = "Linux" ] ; then
+			if [ -f /etc/redhat-release ] ; then
+				DistroBasedOn='RedHat'
+				DIST=`cat /etc/redhat-release |sed s/\ release.*//`
+				PSUEDONAME=`cat /etc/redhat-release | sed s/.*\(// | sed s/\)//`
+				REV=`cat /etc/redhat-release | sed s/.*release\ // | sed s/\ .*//`
+			elif [ -f /etc/SuSE-release ] ; then
+				DistroBasedOn='SuSe'
+				PSUEDONAME=`cat /etc/SuSE-release | tr "\n" ' '| sed s/VERSION.*//`
+				REV=`cat /etc/SuSE-release | tr "\n" ' ' | sed s/.*=\ //`
+			elif [ -f /etc/mandrake-release ] ; then
+				DistroBasedOn='Mandrake'
+				PSUEDONAME=`cat /etc/mandrake-release | sed s/.*\(// | sed s/\)//`
+				REV=`cat /etc/mandrake-release | sed s/.*release\ // | sed s/\ .*//`
+			elif [ -f /etc/debian_version ] ; then
+				DistroBasedOn='Debian'
+				if $(cat /proc/cpuinfo | grep "Raspberry Pi" >/dev/null); then
+				    DIST=`cat /usr/lib/os-release | grep '^PRETTY_NAME=' | sed 's/"//g' | awk -F=  '{ print $2 }'`
+				    PSUEDONAME=`cat /usr/lib/os-release | grep '^VERSION_CODENAME=' | awk -F=  '{ print $2 }'`
+				    REV=`cat /usr/lib/os-release | grep '^VERSION=' | sed 's/"//g' | awk -F=  '{ print $2 }'`
+				else
+				    DIST=`cat /usr/lib/os-release | grep '^PRETTY_NAME=' | sed 's/"//g' | awk -F=  '{ print $2 }'`
+				    PSUEDONAME=`cat /etc/lsb-release | grep '^DISTRIB_CODENAME=' | awk -F=  '{ print $2 }'`
+				    REV=`cat /etc/lsb-release | grep '^DISTRIB_RELEASE' | awk -F=  '{ print $2 }'`
+				fi
+			fi
+			if [ -f /etc/UnitedLinux-release ] ; then
+				DIST="${DIST}[`cat /etc/UnitedLinux-release | tr "\n" ' ' | sed s/VERSION.*//`]"
+			fi
+			OS=`uppercase $OS`
+			DistroBasedOn=$DistroBasedOn
+			readonly OS
+			readonly DIST
+			readonly DistroBasedOn
+			readonly PSUEDONAME
+			readonly REV
+			readonly KERNEL
+			readonly MACH
+		fi
+	fi
+	echo
+	echo "System Information"
+	echo "---------------------------------------------------"
+	echo "OS: "$OS
+	echo "KERNEL type: "$KERNEL
+	echo "Processor: "$MACH
+	echo "Distribution: "$DIST
+	echo "Distro based on: "$DistroBasedOn
+	echo "Distro Codename: "$PSUEDONAME
+	echo "Distro Release: "$REV
+	echo
+}
+
+
+# FUNCTION: Check with DISTRO and install any required packages needed and runs
+#           the specific DISTRO package manager to install them if missing
+install_dependencies() {
+
+# NOTE: The following code is commented as it may be needed to install mySQL in quiet mode
+#       on x86_64 Linux machines. Otherwise a mySQL install wizard may interfere with this
+#       script. Testing with mariaDB does not have this issue. The code below will need to
+#       be properly placed, as this is here only to hold it if needed.
+#	DEBIAN_FRONTEND=noninteractive 
+#	sudo apt -y install mysql-server >/dev/null 2>&1
+
+	DISTRO=
+	lsb_command=`which lsb_release 2>/dev/null`
+	if [ -z "$lsb_command" ]; then
+		lsb_command=`which lsb_release 2>/dev/null`
+	fi
+
+#Outputs from lsb_command/arch:
+#Arch Linux  = arch
+#Debian      = debian
+#Fedora      = Fedora
+#KUbuntu     = ubuntu
+#LUbuntu     = ubuntu
+#Linux Mint  = linuxmint
+#Ubuntu      = ubuntu
+#Raspbian    = raspbian
+#Slackware   = slackware
+#VoidLinux   = voidlinux
+#XUbuntu     = ubuntu
+#Zorin       = Zorin
+	if [ -n "$lsb_command" ]; then
+		DISTRO=`$lsb_command -si | tr '[:upper:]' '[:lower:]'`
+	elif [ -e /etc/arch-release ]; then
+		DISTRO=arch
+	elif [ -e /etc/debian_version ] || [ -e /etc/debian_release ]; then
+		DISTRO=debian
+	elif [ -e /etc/fedora-release ]; then
+		DISTRO=fedora
+	elif [ -e /etc/redhat-release ]; then
+		DISTRO=redhat
+	elif [ -e /etc/centos-release ]; then
+		DISTRO=centos
+	elif $(arch | grep arm >/dev/null); then
+		DISTRO=raspbian
+	fi
+
+	echo "DISTRO detected = $DISTRO"
+
+#Find and install packages
+	if [ "$DISTRO" == "arch" ]; then
+		echo "ArchLinux detected."
+		pkg_list="gcc zlib xorg-xmessage zenity $rdms"-server" enscript $GET_WGET"
+		installed_packages=`pacman -Q`
+		installer_command="sudo pacman -S "
+		pkg_install
+	elif [ "$DISTRO" == "linuxmint" ] || [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ] || [ "$DISTRO" == "zorin" ] || [ "$DISTRO" == "raspbian" ]; then
+		echo "Debian/Raspian based distro detected."
+		if $(cat /proc/cpuinfo | grep "Raspberry Pi" > /dev/null); then
+			pkg_list="g++ x11-utils mesa-common-dev libglu1-mesa-dev libasound2-dev zlib1g-dev zenity mariadb-server enscript $GET_WGET"
+		else
+			pkg_list="g++ x11-utils mesa-common-dev libglu1-mesa-dev libasound2-dev zlib1g-dev zenity $rdms"-server" enscript $GET_WGET"
+		fi
+		installed_packages=`dpkg -l`
+		installer_command="sudo apt-get -y install "
+		pkg_install
+	elif [ "$DISTRO" == "fedora" ] || [ "$DISTRO" == "redhat" ] || [ "$DISTRO" == "centos" ]; then
+		echo "Fedora/Redhat based distro detected."
+		pkg_list="gcc-c++ xmessage mesa-libGLU-devel alsa-lib-devel zlib-devel zenity $rdms"-server" enscript $GET_WGET"
+		installed_packages=`yum list installed`
+		installer_command="sudo yum install "
+		pkg_install
+	elif [ "$DISTRO" == "voidlinux" ]; then
+		echo "VoidLinux detected."
+		pkg_list="gcc xmessage glu-devel zlib-devel alsa-lib-devel zenity $rdms"-server" enscript $GET_WGET"
+		installed_packages=`xbps-query -l |grep -v libgcc`
+		installer_command="sudo xbps-install -Sy "
+		pkg_install
+	elif [ -z "$DISTRO" ]; then
+		echo "Unable to detect distro, cannot continue installation"
+		echo "Please be aware that for QB64 to compile, you will need the following installed:"
+		echo "  OpenGL developement libraries"
+		echo "  ALSA development libraries"
+		echo "  GNU C++ Compiler (g++)"
+		echo "  xmessage (x11-utils)"
+		echo "  zlib"
+		echo "  zenity"
+		echo "  mysql-server or mariadb-server"
+		echo "  enscript"
+		echo
+		echo -e "${REDBG}ERROR: Your Linux distro is not recognized. Please install the libraries above manually and rerun. Script Terminated.$RESET"	
+		abend	
+	fi
+}
+
+
+# FUNCTION: Install packages routine (generated list from install_dependencies)
+pkg_install() {
+	packages_to_install=
+	echo "Installing the following packages/dependencies (if any):"
+	for pkg in $pkg_list; do
+		if [ -z "$(echo "$installed_packages" | grep $pkg)" ]; then
+			packages_to_install="$packages_to_install $pkg"
+			echo "Package/Dependency: $pkg"
+		fi
+	done
+	if [ -n "$packages_to_install" ]; then
+		echo "Installing required packages. If prompted to, please enter your password..."
+		$installer_command $packages_to_install  > /dev/null 2>&1
+		echo -e "${GREENBOLD}Required packages listed installed..$RESET"
+	fi
+	echo
+}
+
+# FUNCTION: Install & build the QB64 compiler into your destination directory and set qb64_dir variable
+install_qb64 () {	
+	echo
+	echo "Compiling and installing QB64..."
+	echo
+
+### Build process
+#	cd $qb64_directory
+    QB64_ICON_PATH="internal/source"
+#Name of the Icon picture
+    QB64_ICON_NAME="qb64icon32.png"
+    
+	find . -name "*.sh" -exec chmod +x {} \;
+	find internal/c/parts -type f -iname "*.a" -exec rm -f {} \;
+	find internal/c/parts -type f -iname "*.o" -exec rm -f {} \;
+	find internal/c/libqb -type f -iname "*.o" -exec rm -f {} \;
+	rm ./internal/temp/*
+
+#If running on an ARM processor, replace the OBJ and G++ files with proper settings
+	if $(arch | grep arm >/dev/null); then
+		echo "Updating files for the ARM processor..."
+		echo "Updating makedat_lnx32.txt file..."
+		pushd internal/c >/dev/null
+		cat > makedat_lnx32.txt <<EOF
+objcopy -Ibinary -Oelf32-littlearm -Barm
+EOF
+		echo "Updating makedat_lnx64.txt file..."
+		cat > makedat_lnx64.txt <<EOF
+objcopy -Ibinary -Oelf64-littlearm -Barm
+EOF
+		echo "Updating makeline_lnx_nogui.txt file..."
+		cat > makeline_lnx_nogui.txt <<EOF
+g++ -no-pie -w qbx.cpp -fpermissive \$(mariadb_config --include --libs) parts/core/os/lnx/src.a -lpthread -ldl -lrt -D FREEGLUT_STATIC -o 
+EOF
+		echo "Updating makeline_lnx.txt file..."
+		cat > makeline_lnx.txt <<EOF
+g++ -no-pie -w qbx.cpp -fpermissive \$(mariadb_config --include --libs) parts/core/os/lnx/src.a -lGL -lGLU -lX11 -lpthread -ldl -lrt -D FREEGLUT_STATIC -o 
+EOF
+		popd >/dev/null
+	fi
+
+	echo "Building library 'LibQB'"
+	pushd internal/c/libqb/os/lnx >/dev/null
+	rm -f libqb_setup.o
+	./setup_build.sh
+	popd >/dev/null
+
+	echo "Building library 'FreeType'"
+	pushd internal/c/parts/video/font/ttf/os/lnx >/dev/null
+	rm -f src.o
+	./setup_build.sh
+	popd >/dev/null
+
+	echo "Building library 'Core:FreeGLUT'"
+	pushd internal/c/parts/core/os/lnx >/dev/null
+	rm -f src.a
+	./setup_build.sh
+	popd >/dev/null
+
+	echo "Building 'QB64'"
+	cp -r ./internal/source/* ./internal/temp/
+	pushd internal/c >/dev/null
+	g++ -no-pie -w qbx.cpp libqb/os/lnx/libqb_setup.o parts/video/font/ttf/os/lnx/src.o parts/core/os/lnx/src.a -lGL -lGLU -lX11 -lpthread -ldl -lrt -D FREEGLUT_STATIC -o ../../qb64
+	popd
+
+	if [ -e $qb64_directory"/qb64" ]; then
+		echo -e "${GREENBOLD}QB64 compiled sucessfully.$RESET"
+		echo
+	else
+		echo -e "${REDBG}ERROR: QB64 did not compile/install successfully. Please fix and retry.$RESET"
+		echo
+		echo "Output of compilelog.txt (incase there is a c++ error detected)"
+		echo "---------------------------------------------------------------"
+		cat cat $qb64_directory"/internal/temp/compilelog.txt"
+		echo
+		abend
+	fi
+}
+

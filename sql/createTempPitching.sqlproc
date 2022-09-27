@@ -1,0 +1,23 @@
+22
+CREATE OR REPLACE VIEW temppitchingStatsView AS 
+SELECT  playerName AS 'PLAYER', 
+SUM(wins) AS 'W',
+SUM(loses) AS 'L',
+SUM(saves) AS 'SV',
+SUM(games) AS 'GP',
+SUM(saveopportunities) AS 'SVO',
+SUM(gamesstarted) AS 'GS',
+SUM(completedgames) AS 'GC',
+SUM(outspitched) AS 'IP',
+SUM(totalbattersfaced) AS 'TBF',
+SUM(hits) AS 'H',
+SUM(walks) AS 'BB',
+SUM(strikeouts) AS 'K',
+SUM(runsallowed) AS 'RA',
+SUM(earnedruns) AS 'ER',
+SUM(homeruns) AS 'HR',
+SUM(hitbypitch) AS 'HBP',
+SUM(sacrificeflies) AS 'SF'
+FROM <PITCHSQLTBL> 
+WHERE teamName='<TEAMNAME>' 
+GROUP BY playerName; 

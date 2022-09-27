@@ -19,6 +19,7 @@
  11/20/2021 v1.00 GJM - New Program.
  12/14/2021 v0.10 GJM - Added CSS Style to auto-detect desktop Light/Standard/Dark themes
  12/15/2021 v0.11 GJM - Added the CSS Style as an include link
+ 03/07/2022 v0.12 GJM - Added Deserved Runs Average (DRA) to the display and reports
 -------------------------------------------------------------------------------------
   Copyright (C)2021 by George McGinn.  All Rights Reserved.
 
@@ -197,6 +198,10 @@ records. For now, update is the only option available.</p>
   <tr>
     <td width=35% valign="top" style="text-align: right"><b>SF (SAC Flies)</b></td>
     <td>Number of sacrifice flies given that scored a run.</td>
+  </tr>    
+  <tr>
+    <td width=35% valign="top" style="text-align: right"><b>DRA (Deserved Run Average)</b></td>
+    <td>An estimate of how many runs a pitcher should be credited for allowing. It tries to remove every factor that isn’t what the pitcher did. ((RA*9)/IP)</td>
   </tr>    
   <tr>
     <td width=35% valign="top" style="text-align: right"><b>ERA (Earned Run Average)</b></td>

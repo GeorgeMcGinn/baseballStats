@@ -18,10 +18,10 @@
 		LOOP
 		CLOSE #f1%
 	ELSE
-		SHELL ("zenity --error --text=" + COMMAND$(0) + CHR$(34) + " Program (" + ProgramName$ + ") failed - missing " + CHR$(34) + sqlstmtfile$ + CHR$(34) + " SQL Statement File. Program Terminated" + CHR$(34) + " --width=175 --height=100")
-		PRINT #flog%, ">>>>> Executing endPROG"
-		PRINT #flog%, ""
-		PRINT #flog%, "": PRINT #flog%, "*** " + ProgramName$ + " - Terminated Abnormally ***"
+		SHELL ("zenity --error --text=" + COMMAND$(0) + CHR$(34) + " Program (" + ProgramName$ + "): failed - missing " + CHR$(34) + sqlstmtfile$ + CHR$(34) + " SQL Statement File. Program Terminated" + CHR$(34) + " --width=175 --height=100")
+		PRINT #flog%, "(" + ProgramName$ + "): >>>>> Executing endPROG"
+		PRINT #flog%, "(" + ProgramName$ + "): "
+		PRINT #flog%, "(" + ProgramName$ + "): - Terminated Abnormally ***"
 		CLOSE #flog%
 		SYSTEM 1
 	END IF
@@ -69,20 +69,21 @@
     NEXT x
 
 ' *** Create the SQL command to execute Create the SQL Database/Tables in pipecom
-    cmd = ""
-    cmd = cmd + mysqlCMD$ + CHR$(34)
+    cmd = NULL
     FOR x = 1 TO nbrLines
-        PRINT #flog%, sqlStmt(x)
+        PRINT #flog%, "(" + ProgramName$ + "): "; sqlStmt(x)
         cmd = cmd + sqlStmt(x) + " "
     NEXT x
-    cmd = cmd + CHR$(34)
-    PRINT #flog%, ""
-    PRINT #flog%, "": PRINT #flog%, "": PRINT #flog%, "cmd = "; cmd
-	PRINT #flog%, ""
+    PRINT #flog%, "(" + ProgramName$ + "): "  
+    PRINT #flog%, "(" + ProgramName$ + "): cmd = "; cmd
+	PRINT #flog%, "(" + ProgramName$ + "): "
 	
 ' *** Execute the SQL statements using pipecom to create the SQL Database/Tables
-	result = pipecom(cmd, stdout, stderr)
-    PRINT #flog%, "stdout = "; stdout
-    PRINT #flog%, "stderr = "; stderr
-    PRINT #flog%, "result = "; result
-    PRINT #flog%, ""
+	retcode = sqlCMD(cmd + CHR$(0))
+	IF retcode <> 0 THEN
+		PRINT #flog%, "(" + ProgramName$ + " - baseballSQLstmt.inc): SQL Command Failed. Please check output and run again. Return Code ="; retcode
+		retcode = sqlDisonnect
+		SYSTEM 99
+	ELSE
+		PRINT #flog%, "(" + ProgramName$ + " - baseballSQLstmt.inc): SQL Command executed normally"
+	END IF

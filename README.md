@@ -42,7 +42,7 @@ This is a Linux-only application, and requires the following to be installed and
 - **QB64 v2.0 or later *(May be required)*:** QB64 is what the application is written in. This distribution provides binaries compiled in Ubuntu 20.04 LTS. If it runs, then QB64 isn't needed. It will be needed if you need to recompile the modules to run on you version of Linux. To download this, click on the QB64 badge/image above and you will be taken to its download page, or go to the section on  [Installing QB64 and Compiling the Source Code](#InstallQB64) of this `Readme.md` below.
 - **MySQL Server v8.0 or later *(Required)*:** You should be able to find this in your distribution repository. If not, click on the badge above and it will take you to the MySQL Community Server download page. MySQL Server needs to be running for this application to work.
 - **Zenity (gdialog) v3.32 or later *(Required)*:** This also should be available from your Linux repository. Zenity (formally gdialog) is the GUI package this application uses. Zenity allows you to display GTK+ dialogs from shell scripts or programs; it is a rewrite of the 'gdialog' command from GNOME 1.
-- **enscript v1.6 or later *(Optional)*:** Used to send formatted reports to your local printer. GNU Enscript takes ASCII files (often source code) and converts them to PostScript, HTML or RTF.  It can store generated output to a fil or send it directly to the printer. If the application does not detect enscript installed, it will display in a terminal instead of printing reports to the local printer.
+- **enscript v1.6 or later *(Optional)*:** Used to send formatted reports to your local printer. GNU Enscript takes ASCII files (often source code) and converts them to PostScript, HTML or RTF.  It can store generated output to a file or send it directly to the printer. If the application does not detect enscript installed, it will display in a terminal instead of printing reports to the local printer.
 &nbsp;
 &nbsp;
 
@@ -153,9 +153,9 @@ To generate a binary without running it, hit F11.
 
 Additionally, if you do not wish to use the integrated IDE and to only compile your program, you can use the following command-line calls:
 
-```qb64 -c yourfile.bas```
+`qb64 -c yourfile.bas`
 
-```qb64 -c yourfile.bas -o outputname.exe```
+`qb64 -c yourfile.bas -o outputname.exe`
 
 Replacing `-c` with `-x` will compile without opening a separate compiler window.
 <br>
@@ -205,4 +205,4 @@ Questions or permissions beyond the scope of this license may be available at <a
 * * *
 <br>
 
-<b><i><small>Last Update: 12/15/2021 13:10</small></i></b>
+<b><i><small>Last Update: 12/22/2021 13:10</small></i></b>

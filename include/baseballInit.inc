@@ -9,14 +9,17 @@ TRUE = -1: FALSE = 0
 '
 DIM SHARED AS STRING Query(100), sqlStmt(100)
 DIM SHARED AS STRING Answer(1000, 1000)
-DIM SHARED mysqlCMD$, mysqlTable$, mysqlView$, mysqlDB$, mysql_userid$, mysql_password$, mysql_outputdir$
+DIM SHARED mysqlCMD$, mysqlTable$, mysqlView$, mysqlDB$, mysql_userid$, mysql_password$, mysql_outputdir$, mysql_outfile$, mysql_printreport$
 DIM SHARED qString$, battingfile$, pitchingfile$, leaguefile$, ReportFile$, ConfigFile$
 DIM SHARED mysql_battingTable$, mysql_pitchingTable$
-DIM SHARED AS INTEGER result, cntargs, PrintReport, setLeague
-DIM SHARED AS STRING retcode, OStype
+DIM SHARED AS INTEGER result, retcode, cntargs, PrintReport, setLeague, sqlActive
+DIM SHARED AS STRING OStype
 DIM SHARED flog%
 DIM SHARED AS INTEGER lenstr, nbrRows, nbrCols, nbrLines, nbrUpdates
-DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ARG7$, ProgramName$, fontfile$, style$
+DIM SHARED Delim$, ARG1$, ARG2$, ARG3$, ARG4$, ARG5$, ARG6$, ARG7$, ARG8$, ARG9$, ProgramName$, return$, fontfile$, style$
+DIM SHARED select_what$, select_from$, select_filename$
+DIM SHARED AS STRING NULL
+
 
 '----------------------------------------------------
 ' *** Variables for Baseball Stats
@@ -28,7 +31,7 @@ DIM SHARED nbr_innings$
 '----------------------------------------------------
 ' *** Variables for pipecom
 '
-DIM SHARED AS STRING cmd, stdout, stderr, stdbutton, stdmenu
+DIM SHARED AS STRING cmd, stdout, stderr, stdbutton, stdmenu, pstdout
 
 '----------------------------------------------------
 ' *** Setup NUMERIC Check Table
@@ -42,6 +45,7 @@ NEXT I
 ' *** Initialize GLOBAL Variables
 '
 nbrRows = 0: nbrCols = 0
+NULL = ""
 
 '-----------------------------------------------------
 ' *** Define Foreground & Background Color Values
@@ -49,10 +53,61 @@ nbrRows = 0: nbrCols = 0
 CONST BGColor~& = 4282400832  ' *** HEX$(FFF8F8F8)
 CONST FGColor~& = 4293980400  ' *** HEX$(FF404040)
 
-'----------------------------------------------------
+'-----------------------------------------------------
+' *** DEFINE GLOBAL CONSTANT HITTING HEADER POINTERS
+CONST HIT.PLAYERNAME = 1      
+CONST HIT.GP = 2   
+CONST HIT.AB = 3   
+CONST HIT.R = 4    
+CONST HIT.H = 5   
+CONST HIT.RBI = 6   
+CONST HIT.2B = 7   
+CONST HIT.3B = 8   
+CONST HIT.HR = 9   
+CONST HIT.BB = 10   
+CONST HIT.K = 11   
+CONST HIT.HBP = 12  
+CONST HIT.SAC = 13   
+CONST HIT.SB = 14  
+CONST HIT.ASB = 15   
+CONST HIT.PO = 16  
+CONST HIT.AST = 17   
+CONST HIT.E = 18    
+CONST HIT.AVG = 19    
+CONST HIT.SLUG = 20   
+CONST HIT.OBP = 21    
+CONST HIT.OPS = 22    
+CONST HIT.FPCT = 23
+
+'-----------------------------------------------------------
+' *** DEFINE GLOBAL CONSTANT LEAGUE HITTING HEADER POINTERS
+CONST LHIT.TEAM = 1         
+CONST LHIT.AB = 2   
+CONST LHIT.R = 3   
+CONST LHIT.H = 4   
+CONST LHIT.RBI = 5   
+CONST LHIT.2B = 6  
+CONST LHIT.3B = 7   
+CONST LHIT.HR = 8   
+CONST LHIT.BB = 9   
+CONST LHIT.K = 10   
+CONST LHIT.HBP = 11  
+CONST LHIT.SAC = 12   
+CONST LHIT.SB = 13 
+CONST LHIT.ASB = 14   
+CONST LHIT.PO = 15  
+CONST LHIT.AST = 16   
+CONST LHIT.E = 17    
+CONST LHIT.AVG = 18    
+CONST LHIT.SLUG = 19   
+CONST LHIT.OBP = 20    
+CONST LHIT.OPS = 21    
+CONST LHIT.FPCT = 22
+
+'-----------------------------------------------------
 ' *** DEFINE GLOBAL CONSTANT PITCHING HEADER POINTERS
 '
-CONST PITCH.TEAM = 1
+CONST PITCH.PLAYERNAME = 1
 CONST PITCH.W = 2
 CONST PITCH.L = 3
 CONST PITCH.SV = 4
@@ -70,11 +125,12 @@ CONST PITCH.ER = 15
 CONST PITCH.HR = 16
 CONST PITCH.HBP = 17
 CONST PITCH.SF = 18
-CONST PITCH.ERA = 19
-CONST PITCH.OPPAVG = 20
-CONST PITCH.WHIP = 1
-CONST PITCH.BABIP = 22
-CONST PITCH.FIP = 23
+CONST PITCH.DRA = 19
+CONST PITCH.ERA = 20
+CONST PITCH.OPPAVG = 21
+CONST PITCH.WHIP = 22
+CONST PITCH.BABIP = 23
+CONST PITCH.FIP = 24
 
 '------------------------------------------------------------
 ' *** DEFINE GLOBAL CONSTANT LEAGUE PITCHING HEADER POINTERS
@@ -96,11 +152,12 @@ CONST LPITCH.ER = 14
 CONST LPITCH.HR = 15
 CONST LPITCH.HBP = 16
 CONST LPITCH.SF = 17
-CONST LPITCH.ERA = 18
-CONST LPITCH.OPPAVG = 19
-CONST LPITCH.WHIP = 20
-CONST LPITCH.BABIP = 21
-CONST LPITCH.FIP = 22
+CONST LPITCH.DRA = 18
+CONST LPITCH.ERA = 19
+CONST LPITCH.OPPAVG = 20
+CONST LPITCH.WHIP = 21
+CONST LPITCH.BABIP = 22
+CONST LPITCH.FIP = 23
 
 '----------------------------------------------------
 ' *** DEFINE GLOBAL CONSTANT LEAGUE HEADER POINTERS
@@ -127,7 +184,9 @@ mysql_userid$ = "*** PLEASE UPDATE ***"
 mysql_password$ = "*** PLEASE UPDATE ***"
 mysql_battingTable$ = "*** PLEASE UPDATE ***"
 mysql_pitchingTable$ = "*** PLEASE UPDATE ***"
-mysql_outputdir$ = "/var/lib/mysql-files/"    
+mysql_outputdir$ = "/var/lib/mysql-files/" 
+mysql_outfile$ = "N"   
+mysql_printreport$ = "N"
 nbr_innings$ = "*** PLEASE UPDATE ***"
 
 ' *** Populate ProgramName$
@@ -139,5 +198,6 @@ style$ = "monospace" 'font style is not case sensitive
 f& = _LOADFONT(fontfile$, 17, style$)
 _FONT f& 
 
-
+' *** Set sqlActive to FALSE
+sqlActive = FALSE
 

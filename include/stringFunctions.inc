@@ -82,7 +82,7 @@ FUNCTION StrSplit$ (qString$, Delim$)
 END FUNCTION
 
 
-FUNCTION format$ (text AS STRING, template AS STRING)
+FUNCTION strFormat$ (text AS STRING, template AS STRING)
 '-----------------------------------------------------------------------------
 ' *** Return a formatted string to a variable
 '
@@ -94,7 +94,7 @@ FUNCTION format$ (text AS STRING, template AS STRING)
         t$ = t$ + CHR$(SCREEN(1, i))
     NEXT
     IF LEFT$(t$, 1) = "%" THEN t$ = MID$(t$, 2)
-    format$ = _TRIM$(t$)
+    strFormat$ = _TRIM$(t$)
     _DEST d: _SOURCE s
     _FREEIMAGE n
 END FUNCTION

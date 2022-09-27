@@ -1,7 +1,7 @@
 $IF PIPECOM = UNDEFINED THEN
     $LET PIPECOM = TRUE
     FUNCTION pipecom& (cmd AS STRING, stdout AS STRING, stderr AS STRING)
-         stdout = "": stderr = ""
+         stdout = NULL: stderr = NULL
         DECLARE CUSTOMTYPE LIBRARY
             FUNCTION popen%& (cmd AS STRING, readtype AS STRING)
             FUNCTION feof& (BYVAL stream AS _OFFSET)
@@ -21,7 +21,7 @@ $IF PIPECOM = UNDEFINED THEN
         stream = popen(cmd + " 2>pipestderr" + CHR$(0), "r")
         IF stream THEN
             WHILE feof(stream) = 0
-                IF fgets(buffer, 4096, stream) <> "" AND feof(stream) = 0 THEN
+                IF fgets(buffer, 4096, stream) <> NULL AND feof(stream) = 0 THEN
                     stdout = stdout + MID$(buffer, 1, INSTR(buffer, CHR$(0)) - 1)
                 END IF
             WEND
@@ -49,7 +49,7 @@ $IF PIPECOM = UNDEFINED THEN
         DIM AS LONG a
         DIM AS STRING stdout, stderr
         a = pipecom(cmd, stdout, stderr)
-        IF stderr <> "" THEN
+        IF stderr <> NULL THEN
             pipecom_lite = stderr
         ELSE
             pipecom_lite = stdout
